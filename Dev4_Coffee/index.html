@@ -3,72 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Spill Simulation</title>
+    <title>What's in Your Coffee Cup Today?</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f5f5f5;
-        }
-        canvas {
-            border: 2px solid black;
-            margin-top: 10px;
-            background-color: white;
-        }
-        .input-container {
-            margin: 10px;
-        }
-        label {
-            font-size: 14px;
-            margin-right: 10px;
-        }
-        input, select {
-            margin-bottom: 10px;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-    <h1>Coffee Spill Visualization</h1>
+    <header>
+        <h1>What's in Your Coffee Cup Today? ☕</h1>
+        <p>Record and visualize your coffee experience through beautiful data.</p>
+        <hr>
+    </header>
 
-    <div class="input-container">
-        <label>Total Volume (ml): </label>
-        <input type="range" id="volume" min="50" max="500" value="250" oninput="updateValue('volumeValue', this.value)">
-        <span id="volumeValue">250</span> ml
+    <!-- 主体容器，左右布局 -->
+    <div class="main-container">
+        <!-- 左侧输入区域 -->
+        <div class="input-container">
+            <div class="form-group">
+                <label>Total Volume (ml):</label>
+                <div class="input-slider">
+                    <input type="range" id="volumeRange" min="50" max="500" value="250" oninput="syncInput('volumeRange', 'volumeInput')">
+                    <input type="number" id="volumeInput" min="50" max="500" value="250" oninput="syncInput('volumeInput', 'volumeRange')">
+                </div>
+            </div>
 
-        <br>
+            <div class="form-group">
+                <label>Shots of Espresso:</label>
+                <div class="input-slider">
+                    <input type="range" id="shotsRange" min="1" max="5" value="1" oninput="syncInput('shotsRange', 'shotsInput')">
+                    <input type="number" id="shotsInput" min="1" max="5" value="1" oninput="syncInput('shotsInput', 'shotsRange')">
+                </div>
+            </div>
 
-        <label>Caffeine Concentration (%): </label>
-        <input type="range" id="caffeine" min="0.5" max="5" step="0.1" value="1.5" oninput="updateValue('caffeineValue', this.value)">
-        <span id="caffeineValue">1.5</span> %
+            <div class="form-group">
+                <label>Time to Enjoy (min):</label>
+                <div class="input-slider">
+                    <input type="range" id="timeRange" min="1" max="60" value="5" oninput="syncInput('timeRange', 'timeInput')">
+                    <input type="number" id="timeInput" min="1" max="60" value="5" oninput="syncInput('timeInput', 'timeRange')">
+                </div>
+            </div>
 
-        <br>
+            <div class="form-group">
+                <label>Flavor (Direction):</label>
+                <select id="flavor">
+                    <option value="floral">Floral</option>
+                    <option value="fruity">Fruity</option>
+                    <option value="sour">Sour</option>
+                    <option value="vegetative">Vegetative</option>
+                    <option value="other">Other</option>
+                    <option value="roasted">Roasted</option>
+                    <option value="spices">Spices</option>
+                    <option value="nutty">Nutty/Cocoa</option>
+                    <option value="sweet">Sweet</option>
+                </select>
+            </div>
 
-        <label>Drinking Time (min): </label>
-        <input type="range" id="time" min="1" max="15" value="5" oninput="updateValue('timeValue', this.value)">
-        <span id="timeValue">5</span> min
+            <button onclick="generateVisualization()">Generate</button>
 
-        <br>
+            <button onclick="saveImage()">Save Image</button>
 
-        <label>Flavor (Direction): </label>
-        <select id="flavor">
-            <option value="left">Bitter</option>
-            <option value="right">Sweet</option>
-            <option value="up">Sour</option>
-            <option value="down">Mild</option>
-        </select>
+        </div>
 
-        <br>
-        
-        <button onclick="generateVisualization()">Generate Spill</button>
+        <!-- 右侧画布区域 -->
+            <div class="canvas-container" id="canvas-container">
+        </div>
+
     </div>
 
-    <script src="sketch.js"></script>
 
+</section>
+
+    </div>
+
+    <footer>
+        <hr>
+        <p>Created with Coffee ☕ and Love ❤️ - Visualizing Coffee Data</p>
+        <p>Iris Xu</p> 
+    </footer>
+
+    <script src="sketch.js"></script>
     <script>
-        function updateValue(spanId, value) {
-            document.getElementById(spanId).textContent = value;
+        function syncInput(sourceId, targetId) {
+            document.getElementById(targetId).value = document.getElementById(sourceId).value;
         }
     </script>
 
