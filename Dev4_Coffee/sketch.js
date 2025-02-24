@@ -2,24 +2,24 @@ let particles = [];
 
 function setup() {
     let canvas = createCanvas(600, 600);
-    canvas.parent("canvas-container"); // **确保画布放入正确的 div**
+    canvas.parent("canvas-container"); // **画布放入正确的div**
     angleMode(RADIANS);
     noLoop();
 }
 
-// **绘制坐标轴**
+// **坐标轴**
 function drawAxis() {
     stroke(0, 50);
     strokeWeight(1);
 
-    // **X 轴（Time to Enjoy）**
+    // **X（Time to Enjoy）**
     line(50, height - 50, width - 50, height - 50);
     textSize(14);
     textAlign(RIGHT, BOTTOM);
     fill(0, 100);
     text("Time to Enjoy (min)", width - 60, height - 55); 
 
-    // **Y 轴（Total Volume）**
+    // **Y（Total Volume）**
     line(50, 50, 50, height - 50);
     textAlign(LEFT, TOP);
     text("Total Volume (ml)", 55, 50);
@@ -85,6 +85,10 @@ function getGradientColor(flavor, alpha) {
 
 // **创建粒子**
 function createParticles(angle, spreadX, spreadY, density, flavorKey) {
+    let tempParticles = []; // **临时存储粒子用于计算偏移**
+    let sumX = 0;
+    let sumY = 0;
+
     for (let i = 0; i < density; i++) {
         let r = random(5, spreadY);
         let theta = angle + random(-PI / 8, PI / 8);  
@@ -98,13 +102,31 @@ function createParticles(angle, spreadX, spreadY, density, flavorKey) {
 
         y += map(r, 0, spreadY, 0, 40);  
 
-        let size = random(3, 7);  // **让粒子更自然**
-        let alpha = map(r, 0, spreadY, 220, 50); // **边缘更透明**
+        let size = random(3, 7);
+        let alpha = map(r, 0, spreadY, 220, 50);
 
         let gradientColor = getGradientColor(flavorKey, alpha);
 
-        particles.push({ x, y, size, gradientColor });
+        tempParticles.push({ x, y, size, gradientColor });
+
+        sumX += x;
+        sumY += y;
     }
+
+    // **计算粒子群重心**
+    let centerX = sumX / density;
+    let centerY = sumY / density;
+
+    // **调整所有粒子，让它们以 `canvas` 中心为中心**
+    let offsetX = width / 2 - centerX;
+    let offsetY = height / 2 - centerY;
+
+    particles = tempParticles.map(p => ({
+        x: p.x + offsetX,
+        y: p.y + offsetY,
+        size: p.size,
+        gradientColor: p.gradientColor
+    }));
 
     drawParticles();
 }
@@ -118,6 +140,7 @@ function drawParticles() {
     }
 }
 
+// **保存图片**
 function saveImage() {
     saveCanvas('my_coffee_visualization', 'png'); // **保存为 PNG**
 }
