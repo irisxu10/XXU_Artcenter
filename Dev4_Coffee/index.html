@@ -13,41 +13,43 @@
 
     <header>
         <h1>What's in Your Coffee Cup Today? ☕</h1>
-        <p>Record and visualize your coffee experience through beautiful data.</p>
+        <p>Record and Visualize Your Coffee Experience.</p>
         <hr>
     </header>
 
-    <!-- 主体容器，左右布局 -->
+    <!-- 主体布局 -->
     <div class="main-container">
+
         <!-- 左侧输入区域 -->
         <div class="input-container">
             <div class="form-group">
                 <label>Total Volume (ml):</label>
                 <div class="input-slider">
-                    <input type="range" id="volumeRange" min="50" max="500" value="250" oninput="syncInput('volumeRange', 'volumeInput')">
-                    <input type="number" id="volumeInput" min="50" max="500" value="250" oninput="syncInput('volumeInput', 'volumeRange')">
+                    <input type="range" id="volumeRange" min="20" max="710" value="450" oninput="syncInput('volumeRange', 'volumeInput')">
+                    <input type="number" id="volumeInput" min="20" max="710" value="450" oninput="syncInput('volumeInput', 'volumeRange')">
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Shots of Espresso:</label>
                 <div class="input-slider">
-                    <input type="range" id="shotsRange" min="1" max="5" value="1" oninput="syncInput('shotsRange', 'shotsInput')">
-                    <input type="number" id="shotsInput" min="1" max="5" value="1" oninput="syncInput('shotsInput', 'shotsRange')">
+                    <input type="range" id="shotsRange" min="1" max="6" value="1" oninput="syncInput('shotsRange', 'shotsInput')">
+                    <input type="number" id="shotsInput" min="1" max="6" value="1" oninput="syncInput('shotsInput', 'shotsRange')">
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Time to Enjoy (min):</label>
                 <div class="input-slider">
-                    <input type="range" id="timeRange" min="1" max="60" value="5" oninput="syncInput('timeRange', 'timeInput')">
-                    <input type="number" id="timeInput" min="1" max="60" value="5" oninput="syncInput('timeInput', 'timeRange')">
+                    <input type="range" id="timeRange" min="1" max="120" value="15" oninput="syncInput('timeRange', 'timeInput')">
+                    <input type="number" id="timeInput" min="1" max="120" value="15" oninput="syncInput('timeInput', 'timeRange')">
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Flavor (Direction):</label>
                 <select id="flavor">
+                    <option value="not_sure" selected>Not Sure</option>
                     <option value="floral">Floral</option>
                     <option value="fruity">Fruity</option>
                     <option value="sour">Sour</option>
@@ -60,21 +62,54 @@
                 </select>
             </div>
 
-            <button onclick="generateVisualization()">Generate</button>
+            <div class="form-group">
+                <label>Brew Method:</label>
+                <select id="brewMethod">
+                    <option value="none" selected>Not Displayed</option>
+                    <option value="Espresso">Espresso</option>
+                    <option value="Pour Over">Pour Over</option>
+                    <option value="French Press">French Press</option>
+                    <option value="AeroPress">AeroPress</option>
+                    <option value="Cold Brew">Cold Brew</option>
+                </select>            
+            </div>
 
-            <button onclick="saveImage()">Save Image</button>
+            <div class="form-group">
+                <label>Drinking Mood:</label>
+                <select id="mood">
+                    <option value="none" selected>Not Displayed</option>
+                    <option value="😊">😊 Happy</option>
+                    <option value="😐">😐 Neutral</option>
+                    <option value="😞">😞 Sad</option>
+                </select>
+            </div>
 
+            <div class="form-group">
+                <label>Weather:</label>
+                <select id="weather">
+                    <option value="none" selected>Not Displayed</option>
+                    <option value="☀️">☀️ Sunny</option>
+                    <option value="🌧️">🌧️ Rainy</option>
+                    <option value="⛅">⛅ Cloudy</option>
+                    <option value="❄️">❄️ Snowy</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="date" id="dateInput">
+                <input type="checkbox" id="showDate" checked> Show Date
+            </div>
+
+            <!-- 按钮 -->
+            <div class="button-container">
+                <button onclick="generateVisualization()">Generate</button>
+                <button onclick="saveImage()">Save Image</button>
+            </div>
         </div>
 
         <!-- 右侧画布区域 -->
-            <div class="canvas-container" id="canvas-container">
-        </div>
-
-    </div>
-
-
-</section>
-
+        <div class="canvas-container" id="canvas-container"></div>
     </div>
 
     <footer>
