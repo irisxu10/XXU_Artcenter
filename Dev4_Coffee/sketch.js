@@ -32,9 +32,10 @@ function generateVisualization() {
     let maxVolume = 500;
 
     // **计算扩散范围**
-    let spreadX = map(time, 0, maxTime, 50, 250);
-    let spreadY = map(volume, 0, maxVolume, 50, 300);
+    let spreadX = map(time, 0, maxTime, 10, 250);
+    let spreadY = map(volume, 0, maxVolume, 20, 300);
     let density = map(shots / volume, 0.002, 0.1, 1200, 8000);
+   
 
     // **创建粒子**
     createParticles(flavorAngle, spreadX, spreadY, density, flavorKey);
@@ -223,14 +224,14 @@ function createParticles(angle, spreadX, spreadY, density, flavorKey) {
 }
 
 
-// // **绘制粒子**
-// function drawParticles() {
-//     noStroke();
-//     for (let p of particles) {
-//         fill(p.gradientColor);
-//         ellipse(p.x, p.y, p.size);
-//     }
-// }
+// **绘制粒子**
+function drawParticles() {
+    noStroke();
+    for (let p of particles) {
+        fill(p.gradientColor);
+        ellipse(p.x, p.y, p.size);
+    }
+}
 
 // **绘制粒子 - 改为水渍状**
 function drawParticles() {
@@ -298,38 +299,38 @@ function updateImageHistory() {
     });
 }
 
-// **查看大图（支持 ESC 关闭）**
-function showLargeImage(imgSrc) {
-    let overlay = document.createElement("div");
-    overlay.className = "image-overlay"; // 统一样式
-    overlay.onclick = closeLargeImage;
+// // **查看大图（支持 ESC 关闭）**
+// function showLargeImage(imgSrc) {
+//     let overlay = document.createElement("div");
+//     overlay.className = "image-overlay"; // 统一样式
+//     overlay.onclick = closeLargeImage;
 
-    let img = document.createElement("img");
-    img.src = imgSrc;
-    img.className = "large-image";
+//     let img = document.createElement("img");
+//     img.src = imgSrc;
+//     img.className = "large-image";
 
-    overlay.appendChild(img);
-    document.body.appendChild(overlay);
+//     overlay.appendChild(img);
+//     document.body.appendChild(overlay);
 
-    // 监听 ESC 键关闭
-    document.addEventListener("keydown", escCloseLargeImage);
-}
+//     // 监听 ESC 键关闭
+//     document.addEventListener("keydown", escCloseLargeImage);
+// }
 
-// **关闭大图**
-function closeLargeImage() {
-    let overlay = document.querySelector(".image-overlay");
-    if (overlay) {
-        document.body.removeChild(overlay);
-        document.removeEventListener("keydown", escCloseLargeImage);
-    }
-}
+// // **关闭大图**
+// function closeLargeImage() {
+//     let overlay = document.querySelector(".image-overlay");
+//     if (overlay) {
+//         document.body.removeChild(overlay);
+//         document.removeEventListener("keydown", escCloseLargeImage);
+//     }
+// }
 
-// **ESC 关闭大图**
-function escCloseLargeImage(event) {
-    if (event.key === "Escape") {
-        closeLargeImage();
-    }
-}
+// // **ESC 关闭大图**
+// function escCloseLargeImage(event) {
+//     if (event.key === "Escape") {
+//         closeLargeImage();
+//     }
+// }
 
 // **初始化历史记录**
 window.onload = () => {
