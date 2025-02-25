@@ -238,5 +238,5 @@ footer p {
 }
 
 .image-history img:hover {
-    transform: scale(1.05); /* 鼠标悬停时稍微放大 */
+    transform: scale(1.8); /* 鼠标悬停时稍微放大 */
 }
