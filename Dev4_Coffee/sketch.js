@@ -223,12 +223,34 @@ function createParticles(angle, spreadX, spreadY, density, flavorKey) {
 }
 
 
-// **绘制粒子**
+// // **绘制粒子**
+// function drawParticles() {
+//     noStroke();
+//     for (let p of particles) {
+//         fill(p.gradientColor);
+//         ellipse(p.x, p.y, p.size);
+//     }
+// }
+
+// **绘制粒子 - 改为水渍状**
 function drawParticles() {
     noStroke();
+
     for (let p of particles) {
         fill(p.gradientColor);
-        ellipse(p.x, p.y, p.size);
+
+        let numPoints = int(random(5, 10)); // **水渍上的点数（形状复杂度）**
+        let radius = p.size * random(0.3, 1.0); // **随机化水渍的大小**
+        
+        beginShape();
+        for (let i = 0; i < numPoints; i++) {
+            let angle = map(i, 0, numPoints, 0, TWO_PI);
+            let rOffset = random(-radius * 0.5, radius * 0.5); // **随机形状变化**
+            let x = p.x + (radius + rOffset) * cos(angle);
+            let y = p.y + (radius + rOffset) * sin(angle);
+            curveVertex(x, y);
+        }
+        endShape(CLOSE);
     }
 }
 
