@@ -168,7 +168,7 @@ button:hover {
     background: linear-gradient(90deg, #8B5E3B, #6D4C41);
 }
 
-/* 🎨 右侧画布 */
+/* 右侧画布 */
 .canvas-container {
     flex-grow: 1;
     display: flex;
@@ -176,14 +176,14 @@ button:hover {
     align-items: center;
 }
 
-/* 🖼️ 画布 */
+/* 画布 */
 canvas {
     background: white;
     border-radius: 15px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 📌 分割线 */
+/* 分割线 */
 hr {
     width: 80%;
     border: none;
@@ -192,14 +192,14 @@ hr {
     margin: 20px auto;
 }
 
-/* 📌 页脚 */
+/* 页脚 */
 footer p {
     font-size: 12px;
     color: #6D4C41;
     margin-bottom: 10px;
 }
 
-/* 📱 响应式 */
+/*  响应式 */
 @media (max-width: 900px) {
     .main-container {
         flex-direction: column;
@@ -211,7 +211,7 @@ footer p {
     }
 }
 
-/* 📸 生成的图片历史 */
+/* 图片历史 */
 .image-history-container {
     overflow-x: auto;
     white-space: nowrap;
@@ -227,10 +227,10 @@ footer p {
     padding: 10px;
 }
 
-/* 📷 缓存的图片样式 */
+/* 缓存图片 */
 .image-history img {
-    width: calc(100% / 7 - 10px); /* 保持 7 张为一行 */
-    max-width: 120px; /* 限制最大宽度 */
+    width: calc(100% / 7 - 10px); 
+    max-width: 120px; /* 最大宽度 */
     height: auto;
     border-radius: 8px;
     cursor: pointer;
