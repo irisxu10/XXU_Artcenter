@@ -236,3 +236,80 @@ function drawParticles() {
 function saveImage() {
     saveCanvas('my_coffee_visualization', 'png');
 }
+
+// **缓存已生成的图片（不会下载，只存储到网页）**
+function saveImageToHistory() {
+    let img = get(); // 获取当前画布
+    let imgData = img.canvas.toDataURL(); // 转换成 base64 图片
+
+    let storedImages = JSON.parse(localStorage.getItem("coffeeImages")) || [];
+
+    // 限制最多存 31 张图片
+    if (storedImages.length >= 31) {
+        storedImages.pop(); // 删除最旧的一张
+    }
+
+    storedImages.unshift(imgData); // **新图片插入最前面**
+    localStorage.setItem("coffeeImages", JSON.stringify(storedImages));
+
+    updateImageHistory(); // 刷新显示
+}
+
+// **下载图片（不会缓存，只下载）**
+function downloadImage() {
+    saveCanvas('my_coffee_visualization', 'png'); // 直接下载 PNG
+}
+
+// **更新图片历史**
+function updateImageHistory() {
+    let storedImages = JSON.parse(localStorage.getItem("coffeeImages")) || [];
+    let imageContainer = document.querySelector(".image-history");
+
+    imageContainer.innerHTML = ""; // 清空旧的
+
+    storedImages.forEach((imgData, index) => {
+        let imgElement = document.createElement("img");
+        imgElement.src = imgData;
+        imgElement.alt = `Saved Image ${index + 1}`;
+        imgElement.onclick = () => showLargeImage(imgData);
+        imageContainer.appendChild(imgElement);
+    });
+}
+
+// **查看大图（支持 ESC 关闭）**
+function showLargeImage(imgSrc) {
+    let overlay = document.createElement("div");
+    overlay.className = "image-overlay"; // 统一样式
+    overlay.onclick = closeLargeImage;
+
+    let img = document.createElement("img");
+    img.src = imgSrc;
+    img.className = "large-image";
+
+    overlay.appendChild(img);
+    document.body.appendChild(overlay);
+
+    // 监听 ESC 键关闭
+    document.addEventListener("keydown", escCloseLargeImage);
+}
+
+// **关闭大图**
+function closeLargeImage() {
+    let overlay = document.querySelector(".image-overlay");
+    if (overlay) {
+        document.body.removeChild(overlay);
+        document.removeEventListener("keydown", escCloseLargeImage);
+    }
+}
+
+// **ESC 关闭大图**
+function escCloseLargeImage(event) {
+    if (event.key === "Escape") {
+        closeLargeImage();
+    }
+}
+
+// **初始化历史记录**
+window.onload = () => {
+    updateImageHistory();
+};

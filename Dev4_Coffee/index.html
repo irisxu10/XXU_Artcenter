@@ -104,13 +104,33 @@
             <!-- 按钮 -->
             <div class="button-container">
                 <button onclick="generateVisualization()">Generate</button>
-                <button onclick="saveImage()">Save Image</button>
+                <button onclick="saveImageToHistory()">Record</button>
+                <button onclick="downloadImage()">Download Image</button>
             </div>
         </div>
 
         <!-- 右侧画布区域 -->
         <div class="canvas-container" id="canvas-container"></div>
     </div>
+
+<!-- 生成的图像历史 -->
+<div id="image-history-container">
+    <h2>Saved Coffee Visualizations</h2>
+    <div class="image-history-container">
+        <div class="image-history"></div>
+    </div>
+</div>
+
+
+<!-- 生成的图像历史
+<div id="image-history-container">
+    <h2>Saved Coffee Visualizations</h2>
+    <div class="image-history-wrapper">
+        <button id="prev-btn">⬅️</button>
+        <div class="image-history"></div>
+        <button id="next-btn">➡️</button>
+    </div>
+</div> -->
 
     <footer>
         <hr>
