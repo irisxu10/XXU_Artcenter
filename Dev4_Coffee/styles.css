@@ -1,6 +1,6 @@
 /*  全局 */
 body {
-    background-color: #FDFDFB; 
+    background-color: #fefefd; 
     font-family: 'Inter', sans-serif;
     text-align: center;
     color: #5A3E2B;
@@ -174,7 +174,9 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 12px;  /* 增加间距 */
 }
+
 
 /* 画布 */
 canvas {
@@ -229,14 +231,16 @@ footer p {
 
 /* 缓存图片 */
 .image-history img {
-    width: calc(100% / 7 - 10px); 
-    max-width: 120px; /* 最大宽度 */
+    width: calc(100% / 7 - 10px);
+    max-width: 110px; /* 稍微小一点，避免太密集 */
     height: auto;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
 }
 
 .image-history img:hover {
-    transform: scale(1.8); /* 鼠标悬停时稍微放大 */
+    transform: scale(1.4);
 }
+
+
