@@ -285,6 +285,20 @@ footer p {
     .input-container {
         width: 80%; 
     }
+
+    .canvas-container {
+        width: 80%;
+    }
+
+    .button-container button{
+        width: 60%
+    }
+
+    .image-history img{
+        width: calc(100%/5-10px);
+    }
+
+
 }
 
 
