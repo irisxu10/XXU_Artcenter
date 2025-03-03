@@ -14,11 +14,16 @@ header h1 {
     color: #5A3E2B; 
     margin-top: 20px;
     font-weight: 600;
+    letter-spacing: 1px;
+    font-family: 'Georgia', serif;
+    text-align: center;
 }
 
 header p {
-    font-size: 15px;
+    font-size: 18px;
     color: #6D4C41;
+    line-height: 1.5;
+    text-align: center;
 }
 
 /*  主体 */
@@ -29,6 +34,8 @@ header p {
     margin: 30px auto;
     max-width: 1100px;
     gap: 40px;
+    margin-top: 60px; 
+    margin-bottom: 60px;
 }
 
 /* ✅ 输入框 */
@@ -50,7 +57,7 @@ header p {
     justify-content: space-between;
 }
 
-/* ✅ 滑块 + 数字输入框 */
+/* 滑块 */
 .input-slider {
     display: flex;
     align-items: center;
@@ -76,6 +83,7 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 50%;
     cursor: pointer;
 }
+
 
 /*  数字输入框 */
 input[type="number"] {
@@ -125,12 +133,6 @@ label {
     text-align: left;
 }
 
-/* 按钮区域
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-} */
 
 /* 按钮样式 */
 .button-container button {
@@ -140,31 +142,15 @@ label {
     cursor: pointer;
     transition: 0.3s;
     border: none;
-    padding: 12px;
-    border-radius: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
     font-size: 16px;
     margin: 5px;
-}
-
-.button-container button:hover {
-    background: linear-gradient(90deg, #8B5E3B, #6D4C41);
-}
-
-/*  按钮样式 */
-button {
-    background: linear-gradient(90deg, #A67B5B, #8B5E3B);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
     width: 48%;
 }
 
-button:hover {
+.button-container button:hover {
     background: linear-gradient(90deg, #8B5E3B, #6D4C41);
 }
 
@@ -184,6 +170,7 @@ canvas {
     border-radius: 15px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 
 /* 分割线 */
 hr {
@@ -213,15 +200,25 @@ footer p {
     }
 }
 
-/* 图片历史 */
-.image-history-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 10px 0;
-    display: flex;
-    justify-content: center;
+/* 历史图片区域 */
+#image-history-container {
+    margin-top: 60px;  
+    text-align: center;
 }
 
+/* Wrapper */
+.image-history-wrapper {
+    width: 80%; 
+    margin: 0 auto;  
+    overflow-x: auto; 
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    scrollbar-width: thin;  
+}
+
+/* 历史图片 */
 .image-history {
     display: flex;
     gap: 10px;
@@ -229,10 +226,10 @@ footer p {
     padding: 10px;
 }
 
-/* 缓存图片 */
+/* 缓存图片样式 */
 .image-history img {
     width: calc(100% / 7 - 10px);
-    max-width: 110px; /* 稍微小一点，避免太密集 */
+    max-width: 110px; 
     height: auto;
     border-radius: 10px;
     cursor: pointer;
@@ -242,5 +239,22 @@ footer p {
 .image-history img:hover {
     transform: scale(1.4);
 }
+
+
+#detailed-view {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+#detailed-view img {
+    width: 80%;
+    max-width: 600px; /* 控制最大宽度 */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
 
 

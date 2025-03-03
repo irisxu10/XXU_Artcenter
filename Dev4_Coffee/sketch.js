@@ -5,6 +5,16 @@ function setup() {
     canvas.parent("canvas-container");
     angleMode(RADIANS);
     noLoop();
+    drawPlaceholderText(); // **初始画布**
+}
+
+// **绘制默认的提示文本**
+function drawPlaceholderText() {
+    background(255);
+    fill(111, 78, 55, 150);// **(RGBA)**
+    textSize(18);
+    textAlign(CENTER, CENTER);
+    text("Your coffee visualization will appear here", width / 2, height / 2);
 }
 
 // **生成粒子**
@@ -21,7 +31,7 @@ function generateVisualization() {
 
     // **获取 Brew Method / 日期 / 天气 / 心情**
     let date = document.getElementById("dateInput").value || "No Date";
-    let weather = document.getElementById("weather").value;
+    let weather = document.getElementById("weather").value || "Select";
     let mood = document.getElementById("mood").value;
     let brewMethod = document.getElementById("brewMethod").value;
 
@@ -43,6 +53,7 @@ function generateVisualization() {
     // **绘制 Brew Method / 日期 / 天气 / 心情**
     drawVisualizationInfo(date, weather, mood, brewMethod);
 }
+
 
 // **绘制 Brew Method / 日期 / 天气 / 心情**
 function drawVisualizationInfo(date, weather, mood, brewMethod) {
@@ -283,10 +294,12 @@ function downloadImage() {
     saveCanvas('my_coffee_visualization', 'png'); // 直接下载 PNG
 }
 
-// **更新图片历史**
+
+// **图片历史**
 function updateImageHistory() {
     let storedImages = JSON.parse(localStorage.getItem("coffeeImages")) || [];
     let imageContainer = document.querySelector(".image-history");
+    let detailImage = document.getElementById("detailed-view-img");
 
     imageContainer.innerHTML = ""; // 清空旧的
 
@@ -294,45 +307,29 @@ function updateImageHistory() {
         let imgElement = document.createElement("img");
         imgElement.src = imgData;
         imgElement.alt = `Saved Image ${index + 1}`;
-        imgElement.onclick = () => showLargeImage(imgData);
+        imgElement.onclick = () => updateDetailView(imgData); // 点击时更新详细图
+
         imageContainer.appendChild(imgElement);
     });
+
+    // **如果有存储的最后查看图片，加载它**
+    let lastViewedImage = localStorage.getItem("lastViewedImage");
+    if (lastViewedImage) {
+        detailImage.src = lastViewedImage;
+    }
 }
 
-// // **查看大图（支持 ESC 关闭）**
-// function showLargeImage(imgSrc) {
-//     let overlay = document.createElement("div");
-//     overlay.className = "image-overlay"; // 统一样式
-//     overlay.onclick = closeLargeImage;
+// **更新详细图片**
+function updateDetailView(imgSrc) {
+    let detailImage = document.getElementById("detailed-view-img");
+    detailImage.src = imgSrc;
 
-//     let img = document.createElement("img");
-//     img.src = imgSrc;
-//     img.className = "large-image";
-
-//     overlay.appendChild(img);
-//     document.body.appendChild(overlay);
-
-//     // 监听 ESC 键关闭
-//     document.addEventListener("keydown", escCloseLargeImage);
-// }
-
-// // **关闭大图**
-// function closeLargeImage() {
-//     let overlay = document.querySelector(".image-overlay");
-//     if (overlay) {
-//         document.body.removeChild(overlay);
-//         document.removeEventListener("keydown", escCloseLargeImage);
-//     }
-// }
-
-// // **ESC 关闭大图**
-// function escCloseLargeImage(event) {
-//     if (event.key === "Escape") {
-//         closeLargeImage();
-//     }
-// }
+    // 存储最后查看的大图，页面刷新后仍然显示
+    localStorage.setItem("lastViewedImage", imgSrc);
+}
 
 // **初始化历史记录**
 window.onload = () => {
     updateImageHistory();
 };
+
