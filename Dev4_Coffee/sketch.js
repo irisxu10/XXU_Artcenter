@@ -97,7 +97,7 @@ function drawVisualizationInfo(date, weather, mood, brewMethod) {
     if (brewMethod !== "none") {
         textSize(14);
         textAlign(RIGHT, TOP);
-        text(`Brew: ${brewMethod}`, width - 20, 20);
+        text(`Brew Method: ${brewMethod}`, width - 20, 20);
     }
 }
 
