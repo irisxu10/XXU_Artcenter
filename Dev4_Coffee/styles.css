@@ -275,36 +275,29 @@ footer p {
 }
 
 
-/*  响应式 */
+/* 响应式布局 */
 @media (max-width: 900px) {
     .main-container {
         flex-direction: column;
         align-items: center;
     }
 
-    .header {
-        margin: 20px 10px
-    }
-    .input-container {
-        width: 80%; 
-    }
-    .input-container {
-        width: 80%; 
-    }
-
+    .input-container,
     .canvas-container {
         width: 80%;
     }
 
-    .button-container button{
-        width: 60%
+    .divider {
+        display: none;
     }
 
-    .image-history img{
-        width: calc(100%/5-10px);
+    .button-container button {
+        width: 60%;
     }
 
-
+    .image-history img {
+        width: calc(100% / 5 - 10px);
+    }
 }
 
 
