@@ -282,6 +282,12 @@ footer p {
         align-items: center;
     }
 
+    .header {
+        margin: 20px 10px
+    }
+    .input-container {
+        width: 80%; 
+    }
     .input-container {
         width: 80%; 
     }
