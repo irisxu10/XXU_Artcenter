@@ -30,7 +30,8 @@ header p {
 .main-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    /* align-items: flex-start; */
+    align-items: stretch;  
     margin: 30px auto;
     max-width: 1100px;
     gap: 40px;
@@ -39,12 +40,15 @@ header p {
 }
 
 /* ✅ 输入框 */
-.input-container {
-    width: 350px;
-    background: #FFF;
+.input-container {   
+    /* background:#FFF; */
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    background: transparent;
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-right: 2px solid #A67B5B;
+    padding-right: 60px;
+
+    width: 350px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -82,8 +86,12 @@ input[type="range"]::-webkit-slider-thumb {
     background: #8B5E3B;
     border-radius: 50%;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
 
 /*  数字输入框 */
 input[type="number"] {
@@ -139,19 +147,27 @@ label {
     background: linear-gradient(90deg, #A67B5B, #8B5E3B);
     color: white;
     font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
     border: none;
     padding: 10px 12px;
     border-radius: 10px;
     font-size: 16px;
-    margin: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    margin: 2.5%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 48%;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; 
 }
 
 .button-container button:hover {
     background: linear-gradient(90deg, #8B5E3B, #6D4C41);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+/* 按钮效果 */
+.button-container button:active {
+    transform: scale(0.92);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* 右侧画布 */
@@ -169,6 +185,12 @@ canvas {
     background: white;
     border-radius: 15px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    opacity: 1; /* **保持可见，让文本显示** */
+    transition: opacity 1.25s ease-in-out;
+}
+
+.canvas-fade {
+    opacity: 0;
 }
 
 
@@ -202,7 +224,7 @@ footer p {
 
 /* 历史图片区域 */
 #image-history-container {
-    margin-top: 60px;  
+    margin-top: 45px;  
     text-align: center;
 }
 
@@ -211,6 +233,7 @@ footer p {
     width: 80%; 
     margin: 0 auto;  
     overflow-x: auto; 
+    overflow-y: hidden;
     white-space: nowrap;
     display: flex;
     justify-content: center;

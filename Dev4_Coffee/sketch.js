@@ -17,8 +17,16 @@ function drawPlaceholderText() {
     text("Your coffee visualization will appear here", width / 2, height / 2);
 }
 
+
 // **生成粒子**
 function generateVisualization() {
+    let canvasElement = document.querySelector("canvas");
+
+    // **旧画面淡出**
+    canvasElement.classList.add("canvas-fade");
+
+    setTimeout(() => {
+    
     background(255);
     drawAxis();
     particles = [];
@@ -31,7 +39,7 @@ function generateVisualization() {
 
     // **获取 Brew Method / 日期 / 天气 / 心情**
     let date = document.getElementById("dateInput").value || "No Date";
-    let weather = document.getElementById("weather").value || "Select";
+    let weather = document.getElementById("weather").value ;
     let mood = document.getElementById("mood").value;
     let brewMethod = document.getElementById("brewMethod").value;
 
@@ -52,6 +60,12 @@ function generateVisualization() {
 
     // **绘制 Brew Method / 日期 / 天气 / 心情**
     drawVisualizationInfo(date, weather, mood, brewMethod);
+    
+    
+    setTimeout(() => {
+        canvasElement.classList.remove("canvas-fade");
+    }, 600);
+}, 600);
 }
 
 
@@ -244,7 +258,7 @@ function drawParticles() {
     }
 }
 
-// **绘制粒子 - 改为水渍状**
+// **绘制粒子 - 水渍状**
 function drawParticles() {
     noStroke();
 
