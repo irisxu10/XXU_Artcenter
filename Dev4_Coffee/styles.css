@@ -8,7 +8,8 @@ body {
     padding: 0;
 }
 
-/*  Header */
+/*  Header_________________________________________________________________________________ */
+
 header h1 {
     font-size: 34px;
     color: #5A3E2B; 
@@ -26,7 +27,8 @@ header p {
     text-align: center;
 }
 
-/*  主体 */
+/*  主体_________________________________________________________________________________ */
+
 .main-container {
     display: flex;
     justify-content: center;
@@ -39,7 +41,8 @@ header p {
     margin-bottom: 60px;
 }
 
-/* ✅ 输入框 */
+/*  输入_________________________________________________________________________________ */
+
 .input-container {   
     /* background:#FFF; */
     /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
@@ -104,7 +107,7 @@ input[type="number"] {
     text-align: right;
 }
 
-/* ✅ 让 select 右对齐 */
+/* Select */
 select {
     width: 60%;
     padding: 8px;
@@ -133,7 +136,7 @@ select {
     color: #5A3E2B;
 }
 
-/* Label 文字 */
+/* Label*/
 label {
     font-size: 14px;
     font-weight: 600;
@@ -148,12 +151,12 @@ label {
     color: white;
     font-weight: 600;
     border: none;
-    padding: 10px 12px;
+    padding: 10px 15px;
     border-radius: 10px;
     font-size: 16px;
     margin: 2.5%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 48%;
+    width: 50%;
     cursor: pointer;
     transition: all 0.2s ease-in-out; 
 }
@@ -169,6 +172,8 @@ label {
     transform: scale(0.92);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
+
+/*  P5.js画布_________________________________________________________________________________ */
 
 /* 右侧画布 */
 .canvas-container {
@@ -193,6 +198,7 @@ canvas {
     opacity: 0;
 }
 
+/* 其他_________________________________________________________________________________ */
 
 /* 分割线 */
 hr {
@@ -203,26 +209,15 @@ hr {
     margin: 20px auto;
 }
 
-/* 页脚 */
+/* 页脚_________________________________________________________________________________ */
 footer p {
     font-size: 12px;
     color: #6D4C41;
     margin-bottom: 10px;
 }
 
-/*  响应式 */
-@media (max-width: 900px) {
-    .main-container {
-        flex-direction: column;
-        align-items: center;
-    }
+/* 历史图片区域_________________________________________________________________________________ */
 
-    .input-container {
-        width: 90%; 
-    }
-}
-
-/* 历史图片区域 */
 #image-history-container {
     margin-top: 45px;  
     text-align: center;
@@ -279,5 +274,16 @@ footer p {
 }
 
 
+/*  响应式 */
+@media (max-width: 900px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .input-container {
+        width: 90%; 
+    }
+}
 
 
