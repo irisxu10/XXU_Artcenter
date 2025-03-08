@@ -18,10 +18,10 @@
     </header>
 
     
-    <!-- 主体布局 -->
+    <!-- Main -->
     <div class="main-container">
 
-        <!-- 左侧输入区域 -->
+        <!-- Input -->
         <div class="input-container">
             <div class="form-group">
                 <label>Total Volume (ml) </label>
@@ -68,10 +68,10 @@
                 <select id="brewMethod">
                     <option value="none" selected>Not Displayed</option>
                     <option value="Espresso">Espresso</option>
+                    <option value="Cold Brew">Cold Brew</option>
+                    <option value="Batch Brew">Batch Brew</option>
                     <option value="Pour Over">Pour Over</option>
                     <option value="French Press">French Press</option>
-                    <option value="AeroPress">AeroPress</option>
-                    <option value="Cold Brew">Cold Brew</option>
                 </select>            
             </div>
 
@@ -108,7 +108,7 @@
                 <input type="checkbox" id="showDate" checked> Show Date
             </div>
 
-            <!-- 按钮 -->
+
             <div class="button-container">
                 <button onclick="generateVisualization()">Generate</button>
                 <button onclick="saveImageToHistory()">Record</button>
@@ -117,14 +117,14 @@
         </div>
 
 
-        <!-- 右侧画布区域 -->
+        <!-- P5js -->
         <div class="canvas-container" id="canvas-container"></div>
 
     </div>
 
     <hr>
 
-    <!-- 生成的图像历史 -->
+    <!-- 历史 -->
     <div id="image-history-container">
         <h2>Saved Coffee Visualizations</h2>
         <div class="image-history-wrapper">
@@ -132,7 +132,7 @@
         </div>
     </div>
 
-    <!-- 详细图片查看区域 -->
+    <!-- 历史查看 -->
     <div id="detailed-view">
         <h3>Click and View</h3>
         <img id="detailed-view-img" src="" alt="Click on a saved image to view it here">

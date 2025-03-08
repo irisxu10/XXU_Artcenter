@@ -5,10 +5,10 @@ function setup() {
     canvas.parent("canvas-container");
     angleMode(RADIANS);
     noLoop();
-    drawPlaceholderText(); // **初始画布**
+    drawPlaceholderText(); 
 }
 
-// **绘制默认的提示文本**
+// **初始文本**
 function drawPlaceholderText() {
     background(255);
     fill(111, 78, 55, 150);// **(RGBA)**
@@ -22,7 +22,7 @@ function drawPlaceholderText() {
 function generateVisualization() {
     let canvasElement = document.querySelector("canvas");
 
-    // **旧画面淡出**
+    // **淡出**
     canvasElement.classList.add("canvas-fade");
 
     setTimeout(() => {
@@ -31,25 +31,25 @@ function generateVisualization() {
     drawAxis();
     particles = [];
 
-    // **获取用户输入**
+    // **主要信息**
     let volume = parseFloat(document.getElementById("volumeInput").value);
     let shots = parseFloat(document.getElementById("shotsInput").value);
     let time = parseFloat(document.getElementById("timeInput").value);
     let flavorKey = document.getElementById("flavor").value;
 
-    // **获取 Brew Method / 日期 / 天气 / 心情**
+    // **选填信息**
     let date = document.getElementById("dateInput").value || "No Date";
     let weather = document.getElementById("weather").value ;
     let mood = document.getElementById("mood").value;
     let brewMethod = document.getElementById("brewMethod").value;
 
-    // **计算风味方向**
+    // **计算方向**
     let flavorAngle = getFlavorAngle(flavorKey);
 
     let maxTime = 60;
     let maxVolume = 500;
 
-    // **计算扩散范围**
+    // **计算范围**
     let spreadX = map(time, 0, maxTime, 10, 250);
     let spreadY = map(volume, 0, maxVolume, 20, 300);
     let density = map(shots / volume, 0.002, 0.1, 1200, 8000);
@@ -58,7 +58,7 @@ function generateVisualization() {
     // **创建粒子**
     createParticles(flavorAngle, spreadX, spreadY, density, flavorKey);
 
-    // **绘制 Brew Method / 日期 / 天气 / 心情**
+    // **绘制选填信息**
     drawVisualizationInfo(date, weather, mood, brewMethod);
     
     
@@ -77,7 +77,7 @@ function drawVisualizationInfo(date, weather, mood, brewMethod) {
 
     let displayText = [];
 
-    // **检查 Show Date 复选框是否勾选**
+    // **Show Date复选框**
     if (document.getElementById("showDate").checked && date !== "No Date") {
         displayText.push(date);
     }
@@ -155,12 +155,12 @@ function getFlavorAngle(flavor) {
     return angles[flavor] || random(TWO_PI); // **"Not Sure" 随机方向**
 }
 
-// **获取随机颜色**
+// **随机颜色**
 function getRandomColor(alpha) {
     return color(random(255), random(255), random(255), alpha);
 }
 
-// **获取风味颜色**
+// **风味颜色**
 function getGradientColor(flavor, alpha) {
     let baseColors = {
         "floral": color(255, 182, 193, alpha),
@@ -184,7 +184,7 @@ function createParticles(angle, spreadX, spreadY, density, flavorKey) {
     let sumY = 0;
 
     if (flavorKey === "not_sure") {
-        // **"Not Sure" 颜色随机，粒子从中心向外扩散**
+        // **"Not Sure" 颜色随机&粒子从中心向外扩散**
         for (let i = 0; i < density; i++) {
             let r = random(0, spreadY / 2);  // 受 total volume 影响
             let theta = random(TWO_PI);  // 360° 随机方向
@@ -234,7 +234,7 @@ function createParticles(angle, spreadX, spreadY, density, flavorKey) {
     let centerX = sumX / density;
     let centerY = sumY / density;
 
-    // **调整粒子位置，使其整体居中**
+    // **使其粒子群整体居中**
     let offsetX = width / 2 - centerX;
     let offsetY = height / 2 - centerY;
 
@@ -285,7 +285,7 @@ function saveImage() {
     saveCanvas('my_coffee_visualization', 'png');
 }
 
-// **缓存已生成的图片（不会下载，只存储到网页）**
+// **缓存已生成的图片/存储到网页**
 function saveImageToHistory() {
     let img = get(); // 获取当前画布
     let imgData = img.canvas.toDataURL(); // 转换成 base64 图片
@@ -303,9 +303,9 @@ function saveImageToHistory() {
     updateImageHistory(); // 刷新显示
 }
 
-// **下载图片（不会缓存，只下载）**
+// **下载图片**
 function downloadImage() {
-    saveCanvas('my_coffee_visualization', 'png'); // 直接下载 PNG
+    saveCanvas('my_coffee_visualization', 'png'); 
 }
 
 
