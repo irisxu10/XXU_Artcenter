@@ -3,76 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archeology of the Futures</title>
+    <title>Digital materiality</title>
     <link rel="stylesheet" href="css/styles_1.css">
 </head>
 <body>
     <header>
-        <h1>Archeology of the Futures</h1>
+        <h1>Digital materiality -- TouchDesigner</h1>
     </header>
 
 
     <section class="intro">
         <h2>Project Description</h2>
-        <p>This project began with a speculative design prompt:
-            Imagine a future world and create an object that exists within it using Blender.</p>
-        <p>We were first asked to map our imagined future on a conceptual axis — defining its values, priorities, and power structures (e.g. technology vs. nature, individualism vs. collectivism). From there, we developed a design idea that reflects this world’s logic and aesthetic.</p>
-        <p>The final output is a 3D-modeled object that represents how design might look, feel, and function in that future context.</p>
+        <p>This project uses TouchDesigner to explore digital materiality by generating 2D image textures, observing the similarities and differences between digital and physical artifacts. It focuses on four key aspects: Permutation, Intention, Complexity, and Control, while documenting observations throughout the creation process</p>
+        
     </section>
     
     <section class="ideas">
         <h2>My Idea</h2>
-        <p>My idea is to create a small island similar to the one I have in the game called "Animal Crossing." I truly enjoy the relaxed pace of the game, where I can fish, plant trees, and build houses. However, the game requires a significant time investment, so I haven’t been able to keep up. That’s why I want to try and build a prototype of my imagined island in Unity, to see how much of the experience I can replicate.</p>
+        <p>In this project, I explored a wide variety of image textures, experimenting with different ways to generate and transform them. I also incorporated audio as an input at various stages to influence and animate the movement of the textures. Each time I created a basic exploration of shape and material movement, I would dive deeper into it, so each type often has more than one version.</p>
     </section>
     
-    <section class="sketch">
-        <h2>Framing</h2>
-        <p>First, I used a conceptual axis to define the direction I wanted to explore. I also gathered some visual and thematic references along the way. </p>
-        <img src="images/1_8.png" alt="Framing" style="max-width: 100%; height: auto;">
-    </section>
+
+    <!-- # -->
+    <section class="projects">
+        <div class="project-text">
+          <h2>Audio-Driven Shape Transformation</h2>
+          <p>
+            This project explores the use of audio input to drive the transformation and movement of 3D geometries in TouchDesigner.
+            Starting with a basic sphere, I applied a noise function to distort its surface, then used real-time audio spectrum data
+            to animate and influence its deformation over time.
+          </p>
+          <p>
+            Each component — from geometry creation, noise distortion, to audio analysis and control — was carefully linked to build a responsive system.
+          </p>
+        </div>
+      
+        <div class="project-image">
+          <img src="images/TD/B1.png" alt="TouchDesigner Network Screenshot">
+        </div>
+          
+        <div class="project-video">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/fwBASZIWMF0?si=WDp2D6HeypBO1IAU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>>
+        </div>
+      </section>      
+          
+
+
+        <!-- # -->
+      <section class="projects">
+        <div class="project-text">
+          <h2>From Wireframe to Liquid Surface</h2>
+          <p>
+            Building on my previous audio-driven shape exploration, this new iteration adds dynamic surface textures, vivid color shifts, and richer visual layers.
+            While the earlier version focused on wireframe deformation, the updated version introduces noise-based material distortion and fluid, organic motion, enhanced by vibrant purple tones.
+          </p>
+          <p>
+            Multiple noise layers were added to create more depth and detail in the movement. Final outputs were captured after additional transformations and compositing, allowing the audio to influence both geometry and texture flow.
+          </p>
+        </div>
+      
+        <div class="project-image">
+          <img src="images/TD/B2.png" alt="TouchDesigner Network Screenshot">
+        </div>
+          
+        <div class="project-video">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/fEXJpk0AEPA?si=fL96qpWWy6jX9ELj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </section> 
+
+
+        <!-- # -->
+        <section class="projects">
+        <div class="project-text">
+            <h2>Patterned Motion: Audio-Responsive Arrays</h2>
+            <p>
+            Continuing the exploration of audio-driven deformation, this version expands into patterned repetition. A single spiked structure, shaped by noise distortion and audio input, is tiled across the canvas to create a synchronized array.
+            The combination of sharp forms, vibrant purple gradients, and rhythmic motion transforms the piece into a breathing, reactive field.
+            </p>
+            <p>
+            By introducing tiling and maintaining real-time audio control, the system highlights the beauty of synchronized patterns and dynamic symmetry.
+            </p>
+        </div>
+
+        <div class="project-image">
+            <img src="images/TD/B3.png" alt="TouchDesigner Audio Array Screenshot">
+        </div>
+
+        <div class="project-video">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/I1Pufw5VT2U?si=78MxN0SIyu8gxhzy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        </section>
+
+
+        <!-- # -->
+        <section class="projects">
+            <div class="project-text">
+              <h2>Audio-Responsive Particle Fields</h2>
+              <p>
+                Learned by a point cloud tutorialhttps://www.youtube.com/watch?v=Mt2hwb5cngA, this piece extends the original idea by integrating real-time audio-driven noise distortion.
+                Each particle responds subtly to sound frequencies, creating an evolving symmetrical field that breathes and flows with the music.
+              </p>
+              <p>
+                Beyond the basic setup, additional transformations and noise layers were customized to enrich the motion, making the entire system more dynamic and alive.
+              </p>
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/P1.png" alt="TouchDesigner Particle Field Screenshot">
+            </div>
+          
+            <div class="project-video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/pan7SA7c4Qc?si=TkJwfhHGwIKOiZxc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </section>
+
+
+        <!-- # -->
+        <section class="projects">
+            <div class="project-text">
+              <h2>Deep Field: Audio-Synchronized Background Particles</h2>
+              <p>
+                Building on the previous particle system, this version introduces a secondary layer of background particles.
+                Reacting to the rhythm of the music, these particles subtly converge toward the center, creating a breathing, gravitational effect that deepens the spatial experience.
+              </p>
+              <p>
+                By layering multiple reactive fields, the piece achieves a richer dynamic symmetry and a stronger sense of immersive motion driven entirely by sound.
+                The full video runs for 3 minutes and 19 seconds, set to the track "Mystic State & Elias - XOYO."
+              </p>
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/P2.png" alt="TouchDesigner Deep Particle Field Screenshot">
+            </div>
+          
+            <div class="project-video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/C2Y2ZkuNj64?si=mGyETnkpRtkZW7UU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </section>
+
+
+        <!-- # -->          
+        <section class="projects">
+            <div class="project-text">
+              <h2>Displaced Memories: Audio-Reactive Cat Form</h2>
+              <p>
+                Expanding on a classroom exercise originally based on simple displacement techniques, this project introduces a playful twist by replacing the original banana image with a cat figure.
+                The cat's form is dynamically distorted by real-time audio input, while layered gradients and circular compositions build a dreamy, rhythmic background.
+              </p>
+              <p>
+                The piece transforms technical practice into a lively character-driven exploration, where sound sculpts both shape and atmosphere.
+              </p>
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/C1.png" alt="TouchDesigner Cat Displacement Screenshot">
+            </div>
+          
+            <div class="project-video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/zW3vGs4BuuA?si=YB6nBx1k_IxTRIxz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>>
+            </div>
+          </section>
+
+        <!-- # -->
+        <section class="projects">
+            <div class="project-text">
+              <h2>OIIA Cat: Sound-Driven Softness</h2>
+              <p>
+                Inspired by the recent viral "OIIA Cat," this evolution of the cat displacement project focuses on enhancing fluid motion and softness.
+                The cat reacts to audio input, creating a lively yet dreamy figure that pulses with the rhythm.
+              </p>
+              <p>
+                Background patterns and texture layers were refined to amplify the floating, breathing quality, blending sound and motion into a cohesive character animation.
+              </p>
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/C2.png" alt="TouchDesigner OIIA Cat Animation Screenshot">
+            </div>
+          
+            <div class="project-video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/-E_AWv5eTYY?si=Fc0mhWdMkfmQoWa8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </section>
+          
+        <!-- # -->
+        <section class="projects">
+            <div class="project-text">
+              <h2>A Friend's Cat</h2>          
+              <p>This project builds on the previous cat series with several key changes:</p>         
+              <ul>
+                <li><strong>New material:</strong> Replaced the standard image with a real photo of a friend's cat, adding more personal connection.</li>
+                <li><strong>Scale adjustment:</strong> Enlarged the cat and centered it to make it the visual focus.</li>
+                <li><strong>Background change:</strong> Added a striped background that flashes according to the music rhythm.</li>
+                <li><strong>Motion refinement:</strong> Made the cat's deformation softer to preserve its original cuteness.</li>
+                <li><strong>Technical update:</strong> Introduced an LFO to control the background’s flashing and subtle movement.</li>
+                <li><strong>Atmosphere:</strong> Overall, the animation feels more intimate, lively, and warm compared to the previous, more mystical version.</li>
+              </ul>         
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/C4.png" alt="TouchDesigner Friend's Cat Screenshot">
+            </div>
+          
+            <div class="project-video">
+            </div>
+          </section>
+          
+        
+        <!-- # -->
+        <section class="projects">
+            <div class="project-text">
+              <h2>Resonance Fields: Sound-Woven Geometry</h2>          
+              <p>This project explores abstract form through sound-responsive geometry:</p>          
+              <ul>
+                <li><strong>Base structure:</strong> Repeating circles transformed and layered to form double-helix-like fields.</li>
+                <li><strong>Motion:</strong> Audio input dynamically controls rotation, scaling, and distortion of the shapes.</li>
+                <li><strong>Visual effect:</strong> Semi-transparent purple layers create deep, flowing textures across space.</li>
+                <li><strong>Atmosphere:</strong> The entire field pulses and breathes with the rhythm, turning sound into spatial movement.</li>
+              </ul>     
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/R.png" alt="TouchDesigner Resonance Fields Screenshot">
+            </div>
+          
+            <div class="project-video">
+              </video>
+            </div>
+          </section>
+          
+        <!-- # -->
+        <section class="projects">
+            <div class="project-text">
+              <h2>Rotating Arrays: Audio-Driven Minimalism</h2>
+          
+              <p>This project explores sound-responsive grid systems through geometric repetition:</p>
+          
+              <ul>
+                <li><strong>Base structure:</strong> Simple circle shapes cut into slices using gradients.</li>
+                <li><strong>Arrangement:</strong> Organized into a uniform grid across the canvas.</li>
+                <li><strong>Motion:</strong> Each slice rotates subtly in response to audio spectrum data.</li>
+                <li><strong>Visual style:</strong> Cool-toned, clean, and minimalistic, emphasizing structure and rhythm.</li>
+              </ul>
+          
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/L.png" alt="TouchDesigner Rotating Arrays Screenshot">
+            </div>
+          
+            <div class="project-video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/6TyeDztKyes?si=dCIgAppSpO9Bxk7Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </section>
+          
+          
+        <!-- # -->
+        <section class="projects">
+            <div class="project-text">
+              <h2>Living Lattice: Audio-Driven Point Fields</h2>
+          
+              <p>This project explores complex deformation and particle-based visualization:</p>
+          
+              <ul>
+                <li><strong>Base structure:</strong> Combined sphere and twisted tube geometries, heavily deformed by noise and twist operations.</li>
+                <li><strong>Data conversion:</strong> Surface points converted into CHOP data streams to drive particle placement.</li>
+                <li><strong>Audio integration:</strong> Dynamically modulates particle movement and density.</li>
+                <li><strong>Visual style:</strong> Minimal black-and-white palette emphasizes organic motion within a digital lattice.</li>
+              </ul>
+          
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/S1.png" alt="TouchDesigner Living Lattice Screenshot">
+            </div>
+          
+            <div class="project-video">
+              <video controls width="800">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/yQutImgYF_4?si=wq7S6OuUVcD9EGq5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </section>
+          
+
+        <!-- # -->
+        <section class="projects">
+            <div class="project-text">
+              <h2>Golden Lattice: Evolved Particle Dynamics</h2>
+          
+              <p>This project advances the living lattice exploration with enhanced materiality and depth:</p>
+          
+              <ul>
+                <li><strong>Material change:</strong> Shifted from white particles to a golden tone for stronger visual presence.</li>
+                <li><strong>Lighting and rendering:</strong> Added real-time lighting to create depth and highlight particle textures.</li>
+                <li><strong>Motion refinement:</strong> Smoothed audio-driven movement with stretched and normalized spectrum data.</li>
+                <li><strong>Atmosphere:</strong> The lattice breathes and flows like a living energy field, responding naturally to sound.</li>
+              </ul>
+          
+            </div>
+          
+            <div class="project-image">
+              <img src="images/TD/S2.png" alt="TouchDesigner Golden Lattice Screenshot">
+            </div>
+          
+            <div class="project-video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/l-KDVd_jVXg?si=rUz0EBFT9k3QwVP4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </section>
+          
+          
+
     
-    <section class="steps">
-        <h2>First step</h2>
-        <p>Next, I began refining the shape by using modifiers in Blender.</p>
-        <p>I started with a Mirror Modifier to work symmetrically, allowing me to model only half of the object while keeping it balanced.</p>
-        <p>Then I explored other modifiers like Bevel, Subdivision Surface, and Solidify to gradually shape the base form of the meditation device, adding smoothness and volume.</p>
-        <img src="images/1_1.png" alt="1_1" style="max-width: 100%; height: auto;">
-        <img src="images/1_2.png" alt="1_2" style="max-width: 100%; height: auto;">
-    </section>
-
-    <section class="steps">
-        <h2>Shaping the Form</h2>
-        <p>I continued refining the shape using Subdivision Surface to create a smooth and organic body.I then selected and modified specific faces to form a central cut or indentation, which later becomes the holographic projection area of the AI Meditation Stone.</p>
-        <img src="images/1_3.png" alt="Island with plants and water" style="max-width: 100%; height: auto;">
-    </section>
-    
-    <section class="steps">
-        <h2>Creating the Core</h2>
-        <p>I added a sphere and adjusted its position and rotation to fit the shape of the meditation stone.
-        This object is used to form the inner cavity — the place where light, symbols, or spiritual energy would be projected.</p>
-        <img src="images/1_4.png" alt="Wooden house and tent on the island" style="max-width: 100%; height: auto;">
-    </section>
-
-    <section class="steps">
-        <h2>Sensors</h2>
-        <p>I added two oval-shaped sensing areas designed for the user’s thumbs. These zones serve as biometric and emotional input points, allowing the AI Meditation Stone to read stress levels, heart rate, and spiritual focus through direct contact.</p>
-        <img src="images/1_5.png" alt="Wooden house and tent on the island" style="max-width: 100%; height: auto;">
-    </section>
-
-    <section class="steps">
-        <h2>Material Setup</h2>
-        <p>At the heart of the AI Meditation Stone, I created a liquid-crystal-like surface — something that feels fluid like water yet clear and reflective like crystal.</p>
-        <img src="images/1_6.png" alt="Wooden house and tent on the island" style="max-width: 100%; height: auto;">
-    </section>
-
-    <section class="steps">
-        <h2>Lighting & Environment</h2>
-        <p>I added an HDRI background and adjusted the lighting to make the object more visible in context.
-            The soft reflections help show the surface material more clearly, especially the liquid-like crystal area.
-            This step also helps to better present the overall form and feel of the device.</p>
-        <img src="images/1_7.png" alt="Wooden house and tent on the island" style="max-width: 100%; height: auto;">
-    </section>
-
     <footer>
         <p>© 2025 Iris Xiaomeng Xu</p>
     </footer>
