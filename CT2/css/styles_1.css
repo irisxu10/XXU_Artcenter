@@ -58,6 +58,7 @@ footer {
 }
 
 
+/* TD Project Section */
 .projects {
     display: flex;
     flex-wrap: wrap;
@@ -99,6 +100,8 @@ footer {
 
 
 
+
+/* Intro Video */
   .intro-video {
     display: flex;
     justify-content: center;
@@ -108,4 +111,23 @@ footer {
 .intro-video video {
     max-width: 100%;
     height: auto;
+}
+
+
+/* Back */
+.back-to-index {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.back-to-index a {
+  text-decoration: none;
+  color: #6c63ff; /* 你可以根据你网页的配色调整 */
+  font-weight: 600;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.back-to-index a:hover {
+  color: #483D8B; /* 鼠标悬停时颜色变深一点 */
 }
