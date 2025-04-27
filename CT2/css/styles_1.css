@@ -96,3 +96,16 @@ footer {
     border-radius: 8px; /* 可选 */
   }
   
+
+
+
+  .intro-video {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0; /* 上下留点空间，美观 */
+}
+
+.intro-video video {
+    max-width: 100%;
+    height: auto;
+}
