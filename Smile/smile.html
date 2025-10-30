@@ -213,5 +213,54 @@
       topLabelEl.textContent = top.prob >= 0.5 ? `${top.label} • ${(top.prob*100|0)}%` : "—";
     }
   </script>
+
+  <section id="recognize-reflection" style="max-width:820px;margin:2rem auto;padding:1.25rem 1.5rem;border:1px solid #e8e8e8;border-radius:14px;background:#fff;line-height:1.7;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,'PingFang SC','Hiragino Sans GB','Microsoft Yahei',sans-serif;color:#222;">
+  <header style="margin-bottom:0.75rem;">
+    <h1 style="margin:0 0 .25rem 0;font-size:1.5rem;font-weight:800;letter-spacing:.2px;text-transform:lowercase;">
+      Reflection on Recognize Machine
+    </h1>
+    <p style="margin:.25rem 0 0 0;font-size:.95rem;color:#666;">
+      Investigating what a machine “sees” when it thinks it recognizes a smile
+    </p>
+  </header>
+
+  <blockquote style="margin:1rem 0;padding:.75rem 1rem;background:#fafafa;border-left:4px solid #ddd;border-radius:8px;">
+    <em>Counting Machine wasn’t just about machines counting; it was about how counting is perceived—its selectivity and limitations. Here I extend that inquiry to recognition itself.</em>
+  </blockquote>
+
+  <p>
+    When I first read “Teach a machine to recognize something,” I immediately connected it to our earlier work on machine learning and <em>Counting Machine</em>. Instead of simply making a recognizer, I wanted to examine the
+    <strong>logic behind recognition</strong>: how a model decides, where it hesitates, and why it fails. I’ve said before that the flaws are instructive—they show us how we should work with machine learning, and the fact that
+    machines also make mistakes is, to me, the most revealing part.
+  </p>
+
+  <p>
+    I chose something humans read almost effortlessly from each other—<strong>facial expressions</strong>. Specifically, I asked the model to distinguish three degrees of smiling:
+    <em>Neutral</em>, <em>Subtle Smile</em>, and <em>Big Smile</em>. Smiles are among the expressions machines most often misinterpret, and they naturally invoke questions about surveillance, social media algorithms, and face recognition.
+    My first dataset (about 60 photos across the three classes) was too small and inconsistent. The model struggled, which suggested the material was too varied for the sample size.
+  </p>
+
+  <p>
+    I then recorded myself directly in Teachable Machine, keeping each expression consistent. As I increased the data (eventually around 200 samples per class), the model began to separate the three categories. Interestingly, because I was
+    deliberately controlling my mouth, the model learned to focus on <strong>lip and mouth cues</strong>: whether lips were closed, whether the corners lifted, whether teeth were visible. A strained, awkward grimace with teeth often
+    read as a “big smile.” Even a calm face with a slight head tilt sometimes predicted “subtle smile,” revealing correlations that I didn’t intend to encode.
+  </p>
+
+  <p>
+    This suggests the model is attending to <strong>mouth region pixels</strong> (area, width, brightness/white teeth) and perhaps <strong>geometric relations</strong> (angles between the lip center and mouth corners). In other words,
+    the system recognizes the <em>pixels of an upturned mouth</em>, not the <em>intention</em> or emotional context behind it. That difference—between seeing and understanding—echoes our class question:
+    <strong>machines see the world from their own perspective</strong>.
+  </p>
+
+  <p>
+    By teaching a machine to “recognize” a smile, I ended up studying its <em>mechanical perception</em>: what features it elevates, what shortcuts it takes, and how its mistakes map the boundary between pattern and meaning. The work
+    confirmed that recognition is never purely technical; it’s a negotiation among data, design choices, and human labor on one side, and the model’s statistical habits on the other.
+  </p>
+
+
+</section>
+
+
 </body>
 </html>
+        
