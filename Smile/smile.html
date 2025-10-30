@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smile – Teachable Machine</title>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+  <style>
+    :root{
+      --card-w: 360px;
+      --radius: 14px;
+      --shadow: 0 10px 22px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
+
+      --c-neutral: #E4832C;    
+      --c-neutral-bg: #F5E3D3;
+      --c-subtle: #C7377A; 
+      --c-subtle-bg: #F6D9E7;
+      --c-big: #7E7EEA; 
+      --c-big-bg: #E3E3FF;
+    }
+
+    * { box-sizing: border-box; }
+    body{
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Noto Sans CJK SC", sans-serif;
+      margin: 24px; color:#222; background:#fafafa;
+      display:flex; justify-content:center;
+    }
+
+    .card{
+      width: var(--card-w);
+      background:#fff; border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .media{
+      position: relative; background:#f4f4f5;
+      aspect-ratio: 4 / 5;  /* 让顶部区域固定比例 */
+      display:grid; place-items:center;
+    }
+    .media video, .media canvas{ width:100%; height:100%; object-fit:cover; }
+
+    .header{
+      position:absolute; top:10px; left:10px;
+      display:flex; gap:8px;
+    }
+    .chip{
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(6px);
+      padding: 6px 10px; border-radius: 999px;
+      font-size:12px; color:#333; box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    }
+
+    .body{ padding: 14px 16px 18px; }
+    .title{
+      display:flex; align-items:center; gap:8px;
+      font-weight:700; font-size:14px; color:#5a5a5a; margin-bottom:10px;
+    }
+    .divider{ height:1px; background:#eee; margin:6px 0 10px; }
+
+    .row{ margin: 10px 0; }
+    .name{ font-size:12px; color:#6b7280; margin-bottom:6px; display:flex; justify-content:space-between; }
+    .bar{
+      width:100%; height:18px; border-radius: 9px; overflow:hidden; position:relative;
+      background:#eee;
+    }
+    .fill{
+      position:absolute; left:0; top:0; bottom:0; width:0%;
+      background:#999;
+      transition: width .18s ease;
+    }
+    .pct{
+      position:absolute; right:8px; top:0; bottom:0;
+      display:flex; align-items:center;
+      font-size:11px; color:#222;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+    }
+
+    .btn-wrap{ display:flex; justify-content:center; padding:10px 16px 18px; }
+    button{
+      appearance:none; border:0; background:#111; color:#fff;
+      padding:10px 14px; border-radius:10px; font-weight:600;
+      cursor:pointer;
+    }
+    button:disabled{ opacity:.6; cursor:not-allowed; }
+    .hint{
+      margin-top:8px; text-align:center; font-size:12px; color:#6b7280;
+    }
+
+    .row.netural .bar{ background: var(--c-neutral-bg); }
+    .row.netural .fill{ background: var(--c-neutral); }
+    .row.subtle_smile .bar{ background: var(--c-subtle-bg); }
+    .row.subtle_smile .fill{ background: var(--c-subtle); }
+    .row.big_smile .bar{ background: var(--c-big-bg); }
+    .row.big_smile .fill{ background: var(--c-big); }
+
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- 顶部 -->
+    <div class="media" id="media">
+      <div class="header">
+        <span class="chip">Camera</span>
+        <span class="chip" id="topLabel">—</span>
+      </div>
+      <!-- init() 后会把 webcam.canvas 挂进来 -->
+    </div>
+
+    <!-- 输出 -->
+    <div class="body">
+      <div class="title">Output</div>
+      <div class="divider"></div>
+      <div id="rows"></div>
+    </div>
+
+    <!-- 按钮 -->
+    <div class="btn-wrap">
+      <button id="startBtn" onclick="init()">Start</button>
+    </div>
+  </div>
+
+  <script>
+    const MODEL_DIR = "./tm-my-image-model/"; // 模型文件夹（含 model.json / metadata.json / weights.bin）
+    let model, webcam, maxPredictions, labels = [];
+    let running = false;
+
+    const $ = s => document.querySelector(s);
+    const rowsEl = $("#rows");
+    const mediaEl = $("#media");
+    const topLabelEl = $("#topLabel");
+    const startBtn = $("#startBtn");
+
+    // 归一化 label 为类名（用于着色）
+    const cls = s => String(s).trim().toLowerCase().replace(/\s+/g,'_').replace(/[^\w-]/g,'');
+
+    async function init(){
+      if(running) return;
+      startBtn.disabled = true;
+
+      // 加载模型
+      model = await tmImage.load(MODEL_DIR + "model.json", MODEL_DIR + "metadata.json");
+      maxPredictions = model.getTotalClasses();
+      labels = model.getClassLabels();
+
+      // 构建输出行
+      buildRows(labels);
+
+      // 摄像头
+      const flip = true;
+      webcam = new tmImage.Webcam(360, 360, flip);
+      await webcam.setup();
+      await webcam.play();
+      mediaEl.innerHTML = mediaEl.innerHTML; // 清子节点（保留 header）
+      mediaEl.appendChild(webcam.canvas);
+
+      running = true;
+      requestAnimationFrame(loop);
+    }
+
+    function buildRows(names){
+      rowsEl.innerHTML = "";
+      names.forEach(name=>{
+        const row = document.createElement("div");
+        row.className = "row " + cls(name);
+
+        const nameEl = document.createElement("div");
+        nameEl.className = "name";
+        // 左侧显示原始 label，右侧放百分比数字
+        const left = document.createElement("span"); left.textContent = name;
+        const right = document.createElement("span"); right.className = "num"; right.textContent = "0%";
+        nameEl.appendChild(left); nameEl.appendChild(right);
+
+        const bar = document.createElement("div"); bar.className = "bar";
+        const fill = document.createElement("div"); fill.className = "fill";
+        const pct = document.createElement("div"); pct.className = "pct"; pct.textContent = "0%";
+        bar.appendChild(fill); bar.appendChild(pct);
+
+        row.appendChild(nameEl);
+        row.appendChild(bar);
+        rowsEl.appendChild(row);
+      });
+    }
+
+    async function loop(){
+      if(!running) return;
+      webcam.update();
+      await predict();
+      requestAnimationFrame(loop);
+    }
+
+    async function predict(){
+      const preds = await model.predict(webcam.canvas); // [{className, probability}, ...]
+      let top = {label:"—", prob:0};
+
+      // 更新每一行
+      const rowNodes = rowsEl.querySelectorAll(".row");
+      preds.forEach((p, i)=>{
+        const row = rowNodes[i];
+        const pct = (p.probability * 100);
+        row.querySelector(".fill").style.width = pct.toFixed(1) + "%";
+        row.querySelector(".pct").textContent = Math.round(pct) + "%";
+        row.querySelector(".num").textContent = Math.round(pct) + "%";
+        if(p.probability > top.prob) top = {label: p.className, prob: p.probability};
+      });
+
+      // 顶部 chip 显示最高类别（>= 0.5 才显示，否则 “—”）
+      topLabelEl.textContent = top.prob >= 0.5 ? `${top.label} • ${(top.prob*100|0)}%` : "—";
+    }
+  </script>
+</body>
+</html>
