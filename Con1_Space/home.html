@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>户外记忆 - 营地</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 欢迎页面 -->
+  <div id="welcome-screen">
+    <div class="welcome-container">
+      <!-- 装饰元素 -->
+      <div class="decoration-top">
+        <span class="leaf">🍃</span>
+        <span class="star">✨</span>
+        <span class="leaf">🍃</span>
+      </div>
+      
+      <!-- 主要内容 -->
+      <div class="welcome-box">
+        <div class="campfire-icon">🏕️</div>
+        <h1 class="welcome-title">欢迎来到户外营地</h1>
+        <p class="welcome-text">你准备好回忆</p>
+        <p class="welcome-text">在户外的记忆了吗？</p>
+        
+        <button class="start-button" onclick="enterCampsite()">
+          <span class="button-icon">🌟</span>
+          准备好了！
+          <span class="button-icon">🌟</span>
+        </button>
+      </div>
+      
+      <!-- 底部装饰 -->
+      <div class="decoration-bottom">
+        <span class="tree">🌲</span>
+        <span class="flower">🌸</span>
+        <span class="tree">🌲</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 场景页面（初始隐藏） -->
+  <div id="campsite-screen" style="display: none;">
+    <!-- p5.js 画布会自动插入这里 -->
+  </div>
+  
+  <!-- 音频 -->
+  <audio id="campfireSound" loop>
+    <source src="asset/campfire.mp3" type="audio/mpeg">
+  </audio>
+  
+  <!-- 先加载 p5.js -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.1/lib/p5.js"></script>
+  
+  <!-- 再加载你的代码 -->
+  <script src="campsite.js"></script>
+  
+  <!-- 最后是页面切换脚本 -->
+  <script>
+    function enterCampsite() {
+      console.log('🎯 enterCampsite 被调用');
+      
+      document.getElementById('welcome-screen').style.display = 'none';
+      document.getElementById('campsite-screen').style.display = 'block';
+      
+      console.log('🎯 开始调用 startCampsite');
+      if (window.startCampsite) {
+        window.startCampsite();
+      } else {
+        console.error('❌ startCampsite 函数不存在！');
+      }
+      
+      const audio = document.getElementById('campfireSound');
+      if (audio) {
+        audio.volume = 0.3;
+        audio.play().catch(err => console.log('音频播放:', err));
+      }
+    }
+  </script>
+</body>
+</html>
