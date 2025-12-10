@@ -764,7 +764,6 @@ function drawGroundDetails(fireX, fireY) {
     // 使用 PNG 绘制石头
     push();
     translate(rock.x, rock.y);
-    rotate(rock.rotation);
     
     // 🔥 火光影响：近处亮且暖色，远处暗且冷色
     let darkTint = color(80, 85, 90);        // 远处：暗灰蓝色
@@ -832,7 +831,6 @@ function drawGroundDetails(fireX, fireY) {
     let fireGreen = color(80, 68, 42);
     let baseColor = lerpColor(baseGreen, fireGreen, fireInfluence * fireIntensity * 0.5);
     fill(baseColor);
-    ellipse(0, 1.5, grass.baseWidth, grass.baseWidth * 0.55);
     
     pop();
   }

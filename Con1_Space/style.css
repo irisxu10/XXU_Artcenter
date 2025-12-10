@@ -8,181 +8,183 @@
 }
 
 body {
-  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  font-family: 'Arial', 'Microsoft YaHei', sans-serif;
   overflow: hidden;
+  background: #000;
 }
 
 /* ============================================
-   欢迎页面 - Animal Crossing 风格
+   欢迎页面 - 虚化背景 + 火焰
    ============================================ */
 #welcome-screen {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 50%, #ffd3b6 100%);
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  overflow: hidden;
+  transition: opacity 0.8s ease-out;
 }
 
-/* 飘动的云朵背景 */
-#welcome-screen::before {
-  content: '☁️ ☁️ ☁️';
+/* 虚化暗化的背景 */
+.blurred-background {
   position: absolute;
-  top: 10%;
-  left: -100px;
-  font-size: 60px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at center, 
+      rgba(15, 25, 55, 0.95) 0%,
+      rgba(10, 15, 30, 0.98) 100%
+    ),
+    linear-gradient(to bottom,
+      #0f1937 0%,
+      #1a2a4a 40%,
+      #2d1e2f 70%,
+      #1a1412 100%
+    );
+  filter: blur(3px);
+  z-index: 1;
+}
+
+/* 添加一些星星装饰 */
+.blurred-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(2px 2px at 60% 70%, white, transparent),
+    radial-gradient(1px 1px at 50% 50%, white, transparent),
+    radial-gradient(1px 1px at 80% 10%, white, transparent),
+    radial-gradient(2px 2px at 90% 60%, white, transparent),
+    radial-gradient(1px 1px at 33% 80%, white, transparent),
+    radial-gradient(1px 1px at 15% 90%, white, transparent);
+  background-size: 200% 200%;
   opacity: 0.3;
-  animation: float-clouds 30s linear infinite;
+  animation: twinkle-stars 4s ease-in-out infinite;
 }
 
-@keyframes float-clouds {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(100vw + 200px)); }
+@keyframes twinkle-stars {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
 }
 
-.welcome-container {
-  text-align: center;
-  animation: fade-in 1s ease-out;
+/* ============================================
+   火焰容器
+   ============================================ */
+.fire-container {
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+.fire-container:hover {
+  transform: scale(1.1);
+}
+
+/* 火焰发光效果 */
+.fire-glow {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 140, 0, 0.6) 0%,
+    rgba(255, 69, 0, 0.4) 30%,
+    rgba(255, 0, 0, 0.2) 50%,
+    transparent 70%
+  );
+  filter: blur(30px);
+  animation: fire-pulse 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes fire-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
   }
-  to {
+  50% {
+    transform: scale(1.2);
     opacity: 1;
+  }
+}
+
+/* 火焰 emoji */
+.fire-emoji {
+  font-size: 120px;
+  line-height: 1;
+  animation: fire-flicker 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(255, 100, 0, 0.8));
+  user-select: none;
+}
+
+@keyframes fire-flicker {
+  0%, 100% {
+    transform: scale(1) translateY(0) rotate(-2deg);
+  }
+  25% {
+    transform: scale(1.05) translateY(-5px) rotate(2deg);
+  }
+  50% {
+    transform: scale(0.95) translateY(-2px) rotate(-1deg);
+  }
+  75% {
+    transform: scale(1.02) translateY(-8px) rotate(1deg);
+  }
+}
+
+/* 提示文字 */
+.fire-hint {
+  margin-top: 30px;
+  font-size: 20px;
+  color: rgba(255, 200, 150, 0.9);
+  text-shadow: 
+    0 0 10px rgba(255, 140, 0, 0.8),
+    0 0 20px rgba(255, 100, 0, 0.5);
+  animation: fade-pulse 2s ease-in-out infinite;
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+@keyframes fade-pulse {
+  0%, 100% {
+    opacity: 0.6;
     transform: translateY(0);
   }
+  50% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
 }
 
-/* 装饰元素 */
-.decoration-top, .decoration-bottom {
-  font-size: 40px;
-  margin: 20px 0;
-  animation: bounce 2s ease-in-out infinite;
+/* 点击时的涟漪效果 */
+.fire-container:active .fire-glow {
+  animation: fire-click 0.5s ease-out;
 }
 
-.decoration-top .leaf,
-.decoration-top .star,
-.decoration-bottom .tree,
-.decoration-bottom .flower {
-  display: inline-block;
-  margin: 0 20px;
-  animation: wiggle 3s ease-in-out infinite;
-}
-
-.decoration-top .star {
-  animation: twinkle 1.5s ease-in-out infinite;
-}
-
-@keyframes wiggle {
-  0%, 100% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.9); }
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-/* 主要内容框 */
-.welcome-box {
-  background: white;
-  border-radius: 30px;
-  padding: 50px 60px;
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.1),
-    0 0 0 8px #fff5e6,
-    0 0 0 12px #ffcc99;
-  position: relative;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-}
-
-/* 篝火图标 */
-.campfire-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-/* 标题 */
-.welcome-title {
-  font-size: 36px;
-  color: #ff6b6b;
-  margin-bottom: 30px;
-  text-shadow: 3px 3px 0 #fff, -1px -1px 0 #ffcc99;
-  letter-spacing: 2px;
-}
-
-/* 文字 */
-.welcome-text {
-  font-size: 22px;
-  color: #5a5a5a;
-  margin: 10px 0;
-  font-weight: bold;
-}
-
-/* 开始按钮 */
-.start-button {
-  margin-top: 40px;
-  padding: 18px 50px;
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  box-shadow: 
-    0 8px 0 #d63384,
-    0 12px 20px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s;
-  font-family: 'Comic Sans MS', sans-serif;
-  position: relative;
-  overflow: hidden;
-}
-
-.start-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 
-    0 12px 0 #d63384,
-    0 16px 25px rgba(0, 0, 0, 0.3);
-}
-
-.start-button:active {
-  transform: translateY(4px);
-  box-shadow: 
-    0 4px 0 #d63384,
-    0 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-.button-icon {
-  display: inline-block;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-10deg); }
-  75% { transform: rotate(10deg); }
+@keyframes fire-click {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
 }
 
 /* ============================================
@@ -191,9 +193,44 @@ body {
 #campsite-screen {
   width: 100vw;
   height: 100vh;
+  transition: opacity 1s ease-in;
 }
 
 /* p5.js 画布样式 */
 canvas {
   display: block;
+}
+
+/* ============================================
+   响应式设计
+   ============================================ */
+@media (max-width: 768px) {
+  .fire-emoji {
+    font-size: 80px;
+  }
+  
+  .fire-hint {
+    font-size: 16px;
+  }
+  
+  .fire-glow {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* ============================================
+   加载动画（可选）
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#welcome-screen {
+  animation: fadeIn 1s ease-out;
 }
