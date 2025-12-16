@@ -44,11 +44,11 @@ body {
       #2d1e2f 70%,
       #1a1412 100%
     );
-  filter: blur(3px);
+  filter: blur(1.25px);
   z-index: 1;
 }
 
-/* 添加一些星星装饰 */
+/* 添加更多更清晰的星星装饰 */
 .blurred-background::before {
   content: '';
   position: absolute;
@@ -56,24 +56,84 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    radial-gradient(2px 2px at 20% 30%, white, transparent),
-    radial-gradient(2px 2px at 60% 70%, white, transparent),
-    radial-gradient(1px 1px at 50% 50%, white, transparent),
-    radial-gradient(1px 1px at 80% 10%, white, transparent),
-    radial-gradient(2px 2px at 90% 60%, white, transparent),
-    radial-gradient(1px 1px at 33% 80%, white, transparent),
-    radial-gradient(1px 1px at 15% 90%, white, transparent);
-  background-size: 200% 200%;
-  opacity: 0.3;
-  animation: twinkle-stars 4s ease-in-out infinite;
+  background: 
+    /* 大 */
+    radial-gradient(circle at 15% 20%, white 2px, transparent 3px),
+    radial-gradient(circle at 85% 15%, white 2px, transparent 3px),
+    radial-gradient(circle at 25% 80%, white 2px, transparent 3px),
+    radial-gradient(circle at 75% 75%, white 2px, transparent 3px),
+    radial-gradient(circle at 40% 10%, white 2px, transparent 3px),
+    radial-gradient(circle at 92% 88%, white 2px, transparent 3px),
+    
+    /* 中 */
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.9) 1.5px, transparent 2px),
+    radial-gradient(circle at 65% 40%, rgba(255, 255, 255, 0.9) 1.5px, transparent 2px),
+    radial-gradient(circle at 45% 65%, rgba(255, 255, 255, 0.9) 1.5px, transparent 2px),
+    radial-gradient(circle at 90% 50%, rgba(255, 255, 255, 0.9) 1.5px, transparent 2px),
+    radial-gradient(circle at 20% 55%, rgba(255, 255, 255, 0.9) 1.5px, transparent 2px),
+    radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.9) 1.5px, transparent 2px),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.9) 1.5px, transparent 2px),
+    radial-gradient(circle at 12% 35%, rgba(255, 255, 255, 0.9) 1.5px, transparent 2px),
+    
+    /* 小 */
+    radial-gradient(circle at 10% 60%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 50% 25%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 70% 85%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 30% 45%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 55% 90%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 92% 35%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 18% 50%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 42% 72%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 68% 58%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 88% 22%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 5% 15%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 33% 92%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 78% 12%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 52% 48%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 95% 65%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    radial-gradient(circle at 8% 82%, rgba(252, 246, 214, 0.8) 1px, transparent 1.5px),
+    
+    /* 微小 */
+    radial-gradient(circle at 22% 18%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 48% 38%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 73% 95%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 28% 68%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 82% 42%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 62% 78%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 14% 44%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 97% 28%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 38% 8%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px),
+    radial-gradient(circle at 58% 52%, rgba(255, 250, 240, 0.6) 0.8px, transparent 1px);
+    
+  background-size: 100% 100%;
+  opacity: 0.9;
+  animation: twinkle-stars 2.5s ease-in-out infinite;
+  filter: contrast(1.2) brightness(1.1);
 }
 
+/* 更明显的闪烁动画 */
 @keyframes twinkle-stars {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.5; }
+  0% { 
+    opacity: 0.7; 
+    filter: contrast(1.2) brightness(1);
+  }
+  25% {
+    opacity: 0.9;
+    filter: contrast(1.3) brightness(1.15);
+  }
+  50% { 
+    opacity: 1; 
+    filter: contrast(1.4) brightness(1.3);
+  }
+  75% {
+    opacity: 0.9;
+    filter: contrast(1.3) brightness(1.15);
+  }
+  100% { 
+    opacity: 0.7; 
+    filter: contrast(1.2) brightness(1);
+  }
 }
-
 /* ============================================
    火焰容器
    ============================================ */
@@ -143,18 +203,6 @@ body {
   }
 }
 
-/* 提示文字 */
-.fire-hint {
-  margin-top: 30px;
-  font-size: 20px;
-  color: rgba(255, 200, 150, 0.9);
-  text-shadow: 
-    0 0 10px rgba(255, 140, 0, 0.8),
-    0 0 20px rgba(255, 100, 0, 0.5);
-  animation: fade-pulse 2s ease-in-out infinite;
-  letter-spacing: 2px;
-  font-weight: 300;
-}
 
 @keyframes fade-pulse {
   0%, 100% {
