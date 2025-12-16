@@ -8,9 +8,9 @@
 const CONFIG = {
   maxWidth: 1200,
   skyGradient: {
-    top: { r: 15, g: 25, b: 55 },        // 顶部：深蓝色
-    mid: { r: 45, g: 50, b: 85 },        // 中间：蓝紫色
-    bottom: { r: 95, g: 70, b: 75 }      // 地平线：橙红紫色
+    top: { r: 15, g: 25, b: 55 },      
+    mid: { r: 45, g: 50, b: 85 },     
+    bottom: { r: 95, g: 70, b: 75 }     
 },
   
   groundColor: { r: 15, g: 18, b: 16 },
@@ -38,6 +38,14 @@ let backgroundTrees = [];  //树
 let foregroundBushes = []; //灌木
 let flameOffsetY = 18;     //火焰位置修正
 
+let currentScene = 'RV_LIGHT';
+let rvLightImg;
+let rvDarkImg;
+let imgAspectRatio;
+let glowPhase = 0;
+let campfireSound;
+
+
 // === 背包系统 ===
 let backpackIcon = {
   x: 0,
@@ -53,8 +61,8 @@ let backpackPanel = {
   width: 320,
   height: 450,
   visible: false,
-  scrollOffset: 0,      // 👈 新增：滚动偏移量
-  maxScroll: 0          // 👈 新增：最大滚动量
+  scrollOffset: 0,  
+  maxScroll: 0         
 };
 // === 放置系统（新增） ===
 let placementMode = {
@@ -91,22 +99,20 @@ let detailPanel = {
   x: 0,
   y: 0,
   width: 300,
-  height: 600
+  height: 600  // ← 改大
 };
 
-// 场景启动标志
-let campsiteStarted = false;
 
-// 暴露启动函数给 HTML
-window.startCampsite = function() {
-  campsiteStarted = true;
-};
 
 
 // ============================================
 // Preload&Setup ➕➕➕➕➕➕➕➕➕➕➕➕➕
 // ============================================
 function preload() {
+  
+  rvLightImg = loadImage('asset/RV.JPG');
+  rvDarkImg = loadImage('asset/RV2.JPG');
+  
   rockImages.push(loadImage('asset/rock.png'));
   rockImages.push(loadImage('asset/rock1.png'));
   
@@ -116,10 +122,13 @@ function preload() {
 }
 
 function setup() {
-  // ✅ 只创建一次画布
-  let canvas = createCanvas(windowWidth, windowHeight);
-  canvas.parent('campsite-screen');
+  // === RV 场景初始化 ===
+  imgAspectRatio = rvLightImg.width / rvLightImg.height;
+  let canvasSize = calculateCanvasSize();
+  createCanvas(canvasSize.w, canvasSize.h);
+  imageMode(CENTER);
   
+  // === 篝火场景初始化 ===
   initializeStars();
   initializeMoon();
   initializeMountains();
@@ -128,12 +137,11 @@ function setup() {
   initializeSmoke(18);
   initializeInnerSparks(15);
   initializeAsh(10);
-  initializeBackgroundTrees();  //树
-  initializeForegroundBushes();//灌木
-  initializeBackpack();  // 👈 新增：初始化背包位置
+  initializeBackgroundTrees();
+  initializeForegroundBushes();
+  initializeBackpack();
   
   pixelDensity(1);
-  
 }
 
 
@@ -141,12 +149,90 @@ function setup() {
 // function draw 🖼️🖼️🖼️🖼️🖼️🖼️🖼️🖼️🖼️🖼️🖼️🖼️🖼️
 // ============================================
 function draw() {
-      // 等待场景启动
-  if (!campsiteStarted) {
-    return;
+  background(0);
+  
+  // ============================================
+  // 场景切换逻辑
+  // ============================================
+  
+  if (currentScene === 'RV_LIGHT') {
+    // === RV 亮灯场景 ===
+    drawRVLight();
+  } 
+  else if (currentScene === 'RV_DARK') {
+    // === RV 暗灯场景 ===
+    drawRVDark();
+  }
+  else if (currentScene === 'CAMPFIRE') {
+    // === 篝火场景 ===
+    drawCampfireScene();
   }
   
-    background(135, 206, 235); // ← 这行必须有！
+  // ============================================
+  // 动画更新（所有场景共用）
+  // ============================================
+  fireTime += 0.018;
+  
+  // 火焰强度：主波动 + 细微震颤 + 偶尔"爆发"
+  let mainPulse = sin(fireTime * 0.3) * 0.12;
+  let microFlutter = noise(fireTime * 2) * 0.08;
+  let burst = (noise(fireTime * 0.15) > 0.85) ? 0.15 : 0; 
+  fireIntensity = 0.85 + mainPulse + microFlutter + burst;
+  
+  // 风向变化
+  windOffset = sin(fireTime * 0.35) * 10 + noise(fireTime * 0.18) * 6;
+  
+  // ============================================
+  // 篝火场景的额外UI（只在篝火场景显示）
+  // ============================================
+  if (currentScene === 'CAMPFIRE') {
+    // 绘制选中物品的高亮圈
+    if (selectedItem && !selectedItem.isDropping) {
+      push();
+      noFill();
+      stroke(100, 150, 255);
+      strokeWeight(3);
+      circle(selectedItem.x, selectedItem.y, selectedItem.size + 10);
+      pop();
+    }
+    
+    // 绘制详情面板（最后绘制，保证在最上层）
+    drawDetailPanel();
+  }
+}
+
+// ============================================
+// RV 场景绘制函数
+// ============================================
+function drawRVLight() {
+  image(rvLightImg, width / 2, height / 2, width, height);
+  
+  // 鼠标悬停效果
+  if (isMouseOnLamp()) {
+    cursor(HAND);
+  } else {
+    cursor(ARROW);
+  }
+}
+
+function drawRVDark() {
+  image(rvDarkImg, width / 2, height / 2, width, height);
+  
+  // 绘制窗户光源
+  drawDiffusedWindowLight();
+  
+  // 鼠标悬停效果
+  if (isMouseOnDoor()) {
+    cursor(HAND);
+  } else {
+    cursor(ARROW);
+  }
+}
+
+// ============================================
+// 篝火场景绘制函数（把你原来的 draw 内容放这里）
+// ============================================
+function drawCampfireScene() {
   // == 背景层 ==
   drawNightSky();
   drawMoon();
@@ -167,14 +253,14 @@ function draw() {
   
   // == 前景 ==
   drawGroundDetails(fireX, fireY);  
-
+  
   // == 篝火 ==
   drawCampfire(fireX, fireY);
   
-  // 👇 绘制已放置的物品
+  // 绘制已放置的物品
   drawPlacedItems(fireX, fireY);
   
-  // 👇 绘制放置预览（如果在放置模式）
+  // 绘制放置预览（如果在放置模式）
   if (placementMode.active) {
     drawPlacementPreview();
   }
@@ -188,31 +274,52 @@ function draw() {
   }
   
   updateAndDrawPlacedItems();
+}
+
+// ============================================
+// RV 窗户光源效果
+// ============================================
+function drawDiffusedWindowLight() {
+  glowPhase += 0.012;
+  let flicker = sin(glowPhase) * 0.1 + 0.9;
+  let slowFlicker = sin(glowPhase * 0.4) * 0.08 + 0.92;
+  let glowIntensity = flicker * slowFlicker;
   
-  // == 动画更新 ==
-  fireTime += 0.018;
-  // 火焰强度：主波动 + 细微震颤 + 偶尔"爆发"
-  let mainPulse = sin(fireTime * 0.3) * 0.12;
-  let microFlutter = noise(fireTime * 2) * 0.08;
-  let burst = (noise(fireTime * 0.15) > 0.85) ? 0.15 : 0; 
-  // 偶尔突然变亮
-  fireIntensity = 0.85 + mainPulse + microFlutter + burst;
-  // 风向变化
-  windOffset = sin(fireTime * 0.35) * 10 + noise(fireTime * 0.18) * 6;
+  blendMode(ADD);
   
-  // 绘制选中物品的高亮圈
-  if (selectedItem && !selectedItem.isDropping) {
-    push();
-    noFill();
-    stroke(100, 150, 255);
-    strokeWeight(3);
-    circle(selectedItem.x, selectedItem.y, selectedItem.size + 10);
-    pop();
+  drawDiffusedGlow(width * 0.08, height * 0.40, 240, 380, glowIntensity * 0.5);
+  drawDiffusedGlow(width * 0.15, height * 0.24, 150, 100, glowIntensity * 0.38);
+  drawDiffusedGlow(width * 0.5, height * 0.19, 180, 90, glowIntensity * 0.35);
+  drawDiffusedGlow(width * 0.84, height * 0.24, 150, 100, glowIntensity * 0.38);
+  
+  blendMode(BLEND);
+}
+
+function drawDiffusedGlow(x, y, w, h, intensity) {
+  push();
+  noStroke();
+  
+  let layers = 6;
+  for (let i = layers; i > 0; i--) {
+    let size = i / layers;
+    let alpha = (15 * intensity * (i / layers)) / layers;
+    
+    let r = 255;
+    let g = map(i, 1, layers, 100, 180);
+    let b = map(i, 1, layers, 20, 60);
+    
+    fill(r, g, b, alpha);
+    ellipse(x, y, w * size * 3.5, h * size * 3.5);
   }
   
-  // 绘制详情面板（最后绘制，保证在最上层）
-  drawDetailPanel();
-
+  for (let i = 0; i < 3; i++) {
+    let offset = i * 50;
+    let alpha = 8 * intensity / (i + 1);
+    fill(255, 160, 50, alpha);
+    ellipse(x, y, w * 2 + offset, h * 2 + offset);
+  }
+  
+  pop();
 }
 
 
@@ -744,6 +851,7 @@ function initializeGroundDetails() {
       blades: floor(random(5, 9)),       // 每簇 5～9 根细草
       height: random(5, 10), 
       tuftWidth: random(10, 20),         // 一小撮的宽度
+      baseWidth: random(8, 12),  
       swayPhase: random(TWO_PI),         // 每簇的相位
       swaySpeed: random(0.05, 0.15),     // 摇动速度：很慢
       swayAmp: random(0.01, 0.03)        // 摇动幅度：很小
@@ -764,6 +872,7 @@ function drawGroundDetails(fireX, fireY) {
     // 使用 PNG 绘制石头
     push();
     translate(rock.x, rock.y);
+    // rotate(rock.rotation);
     
     // 🔥 火光影响：近处亮且暖色，远处暗且冷色
     let darkTint = color(80, 85, 90);        // 远处：暗灰蓝色
@@ -831,6 +940,7 @@ function drawGroundDetails(fireX, fireY) {
     let fireGreen = color(80, 68, 42);
     let baseColor = lerpColor(baseGreen, fireGreen, fireInfluence * fireIntensity * 0.5);
     fill(baseColor);
+    ellipse(0, 1.5, grass.baseWidth, grass.baseWidth * 0.55);
     
     pop();
   }
@@ -1624,90 +1734,117 @@ function drawPlacementPreview() {
 // ============================================
 // 鼠标交互事件
 // ============================================
-
 function mousePressed() {
-  // 情况 1：在放置模式下，点击场景放置物品
-  if (placementMode.active) {
-    placeItemInScene();
-    return;
+  // ============================================
+  // 场景切换逻辑（最优先）
+  // ============================================
+  
+  // === 场景 1: RV 亮灯 ===
+  if (currentScene === 'RV_LIGHT') {
+    if (isMouseOnLamp()) {
+      currentScene = 'RV_DARK';
+      console.log('✅ 切换到暗灯场景');
+    }
+    return;  // 亮灯场景只处理台灯点击
   }
   
-  // 情况 2：点击场景中的背包图标
-  if (isMouseOverBackpack() && !backpackPanel.visible) {
-    backpackPanel.visible = true;
-    return;
+  // === 场景 2: RV 暗灯 ===
+  if (currentScene === 'RV_DARK') {
+    if (isMouseOnDoor()) {
+      currentScene = 'CAMPFIRE';
+      console.log('✅ 切换到篝火场景');
+    }
+    return;  // 暗灯场景只处理门点击
   }
   
-  // 情况 3：背包面板打开时的交互
-  if (backpackPanel.visible) {
-    let px = backpackPanel.x;
-    let py = backpackPanel.y;
-    let pw = backpackPanel.width;
-    let ph = backpackPanel.height;
+  // ============================================
+  // 场景 3: 篝火场景交互（你原来的代码）
+  // ============================================
+  if (currentScene === 'CAMPFIRE') {
     
-    // 点击面板外部 → 关闭面板
-    if (mouseX < px || mouseX > px + pw || mouseY < py || mouseY > py + ph) {
-      backpackPanel.visible = false;
+    // 情况 1：在放置模式下，点击场景放置物品
+    if (placementMode.active) {
+      placeItemInScene();
       return;
     }
     
-    // 点击关闭按钮
-    let closeX = px + pw - 30;
-    let closeY = py + 25;
-    if (dist(mouseX, mouseY, closeX, closeY) < 12.5) {
-      backpackPanel.visible = false;
+    // 情况 2：点击场景中的背包图标
+    if (isMouseOverBackpack() && !backpackPanel.visible) {
+      backpackPanel.visible = true;
       return;
     }
     
-    // 点击物品 → 进入放置模式
-    let gridStartX = px + 20;
-    let gridStartY = py + 70;
-    let itemSize = 70;
-    let itemSpacing = 15;
-    let cols = 3;
-    
-    for (let i = 0; i < backpackIcon.items.length; i++) {
-      let col = i % cols;
-      let row = floor(i / cols);
+    // 情况 3：背包面板打开时的交互
+    if (backpackPanel.visible) {
+      let px = backpackPanel.x;
+      let py = backpackPanel.y;
+      let pw = backpackPanel.width;
+      let ph = backpackPanel.height;
       
-      // 原始（未滚动）位置
-      let baseX = gridStartX + col * (itemSize + itemSpacing);
-      let baseY = gridStartY + row * (itemSize + itemSpacing);
-      
-      // 实际屏幕上的位置：Y 轴减去滚动偏移
-      let itemX = baseX;
-      let itemY = baseY - backpackPanel.scrollOffset;
-      
-      if (mouseX > itemX && mouseX < itemX + itemSize &&
-          mouseY > itemY && mouseY < itemY + itemSize) {
-        
-        startPlacementMode(backpackIcon.items[i]);
+      // 点击面板外部 → 关闭面板
+      if (mouseX < px || mouseX > px + pw || mouseY < py || mouseY > py + ph) {
         backpackPanel.visible = false;
         return;
       }
+      
+      // 点击关闭按钮
+      let closeX = px + pw - 30;
+      let closeY = py + 25;
+      if (dist(mouseX, mouseY, closeX, closeY) < 12.5) {
+        backpackPanel.visible = false;
+        return;
+      }
+      
+      // 点击物品 → 进入放置模式
+      let gridStartX = px + 20;
+      let gridStartY = py + 70;
+      let itemSize = 70;
+      let itemSpacing = 15;
+      let cols = 3;
+      
+      for (let i = 0; i < backpackIcon.items.length; i++) {
+        let col = i % cols;
+        let row = floor(i / cols);
+        
+        // 原始（未滚动）位置
+        let baseX = gridStartX + col * (itemSize + itemSpacing);
+        let baseY = gridStartY + row * (itemSize + itemSpacing);
+        
+        // 实际屏幕上的位置：Y 轴减去滚动偏移
+        let itemX = baseX;
+        let itemY = baseY - backpackPanel.scrollOffset;
+        
+        if (mouseX > itemX && mouseX < itemX + itemSize &&
+            mouseY > itemY && mouseY < itemY + itemSize) {
+          
+          startPlacementMode(backpackIcon.items[i]);
+          backpackPanel.visible = false;
+          return;
+        }
+      }
     }
-  }
+    
     // 情况 4：详情面板打开时的交互
     if (detailPanel.visible) {
       if (checkDetailPanelButtons(mouseX, mouseY)) {
         return; // 如果点击了面板按钮，不继续检测
       }
-
+      
       // 点击面板外部 → 关闭面板
       let px = detailPanel.x;
       let py = detailPanel.y;
       let pw = detailPanel.width;
       let ph = detailPanel.height;
-
+      
       if (mouseX < px || mouseX > px + pw || mouseY < py || mouseY > py + ph) {
         detailPanel.visible = false;
         selectedItem = null;
         return;
       }
-
+      
       return; // 面板打开时不检测其他物品
     }
-
+    
     // 情况 5：点击已放置的物品
     for (let item of placedItems) {
       if (isMouseOverPlacedItem(item)) {
@@ -1717,7 +1854,33 @@ function mousePressed() {
         return;
       }
     }
+  }
 }
+
+// ============================================
+// RV 场景交互检测函数
+// ============================================
+function isMouseOnLamp() {
+  let lampX = width * 0.7;
+  let lampY = height * 0.45;
+  let lampRadius = 80;
+  let d = dist(mouseX, mouseY, lampX, lampY);
+  return d < lampRadius;
+}
+
+function isMouseOnDoor() {
+  let doorX = width * 0.2;
+  let doorY = height * 0.5;
+  let doorW = 160;
+  let doorH = 260;
+  return (
+    mouseX > doorX - doorW / 2 &&
+    mouseX < doorX + doorW / 2 &&
+    mouseY > doorY - doorH / 2 &&
+    mouseY < doorY + doorH / 2
+  );
+}
+
 
 function mouseWheel(event) {
   // 只在背包面板打开且鼠标在面板内时响应
@@ -1778,6 +1941,29 @@ function mouseMoved() {
   }
   
   cursor(shouldShowHand ? HAND : ARROW);
+}
+
+
+// RV 场景的交互检测
+function isMouseOnLamp() {
+  let lampX = width * 0.7;
+  let lampY = height * 0.45;
+  let lampRadius = 80;
+  let d = dist(mouseX, mouseY, lampX, lampY);
+  return d < lampRadius;
+}
+
+function isMouseOnDoor() {
+  let doorX = width * 0.2;
+  let doorY = height * 0.5;
+  let doorW = 160;
+  let doorH = 260;
+  return (
+    mouseX > doorX - doorW / 2 &&
+    mouseX < doorX + doorW / 2 &&
+    mouseY > doorY - doorH / 2 &&
+    mouseY < doorY + doorH / 2
+  );
 }
 
 // 进入放置模式
@@ -1871,7 +2057,6 @@ function showDetailPanel(item) {
 }
 
 // 绘制物品详情面板
-// 绘制物品详情面板
 function drawDetailPanel() {
   if (!detailPanel.visible || !selectedItem) return;
   
@@ -1882,7 +2067,7 @@ function drawDetailPanel() {
   
   // 半透明背景遮罩
   push();
-  fill(0, 0, 0, 150);
+  fill(0, 0, 0, 150);  // ← 更深的遮罩
   noStroke();
   rect(0, 0, width, height);
   pop();
@@ -1953,32 +2138,32 @@ function drawDetailPanel() {
   // 分隔线
   stroke(70, 80, 95);
   strokeWeight(1);
-  line(px + 20, py + 215, px + pw - 20, py + 215);  // 👈 调整位置
+  line(px + 20, py + 215, px + pw - 20, py + 215);
   
-  // === 描述区域（增加间距）===
+  // === 描述区域 ===
   noStroke();
   fill(180, 180, 200);
   textSize(12);
   textAlign(LEFT);
   textStyle(BOLD);
-  text('描述:', px + 20, py + 240);  // 👈 从 230 改为 240
+  text('描述:', px + 20, py + 240);
   
   fill(200, 200, 220);
   textSize(13);
   textStyle(NORMAL);
-  text(selectedItem.description || '暂无描述', px + 20, py + 262, pw - 40, 50);  // 👈 调整位置
+  text(selectedItem.description || '暂无描述', px + 20, py + 262, pw - 40, 50);
   
-  // === 记忆笔记区域（增加间距）===
+  // === 记忆笔记区域 ===
   fill(180, 180, 200);
   textSize(12);
   textStyle(BOLD);
-  text('记忆笔记:', px + 20, py + 320);  // 👈 从 295 改为 320
+  text('记忆笔记:', px + 20, py + 320);
   
-  // 笔记输入框（增加高度）
+  // 笔记输入框
   fill(30, 35, 45);
   stroke(70, 80, 95);
   strokeWeight(2);
-  rect(px + 20, py + 340, pw - 40, 80, 5);  // 👈 从 60 高度改为 80，位置从 310 改为 340
+  rect(px + 20, py + 340, pw - 40, 80, 5);
   
   // 笔记文字
   fill(150, 160, 180);
@@ -1986,21 +2171,21 @@ function drawDetailPanel() {
   textSize(12);
   textStyle(NORMAL);
   let noteText = selectedItem.notes || '点击添加笔记...';
-  text(noteText, px + 30, py + 352, pw - 60, 65);  // 👈 调整位置和高度
+  text(noteText, px + 30, py + 352, pw - 60, 65);
   
-  // === 添加日期（向下移动）===
+  // === 添加日期 ===
   fill(120, 130, 150);
   textSize(11);
   textAlign(CENTER);
-  text('添加于: ' + selectedItem.dateAdded, px + pw / 2, py + 438);  // 👈 从 385 改为 438
+  text('添加于: ' + selectedItem.dateAdded, px + pw / 2, py + 438);
   
-  // === 收起按钮（保持在底部）===
-  let buttonY = py + ph - 55;  // 👈 从 50 改为 55，留更多底部边距
+  // === 收起按钮 ===
+  let buttonY = py + ph - 55;
   
   fill(150, 60, 60);
   stroke(180, 80, 80);
   strokeWeight(2);
-  rect(px + 20, buttonY, pw - 40, 38, 8);  // 👈 高度从 35 改为 38
+  rect(px + 20, buttonY, pw - 40, 38, 8);
   
   fill(255);
   noStroke();
@@ -2012,7 +2197,9 @@ function drawDetailPanel() {
   pop();
 }
 
+// ============================================
 // 检测详情面板按钮点击
+// ============================================
 function checkDetailPanelButtons(mx, my) {
   if (!detailPanel.visible || !selectedItem) return false;
   
@@ -2030,21 +2217,26 @@ function checkDetailPanelButtons(mx, my) {
   }
   
   // 检测收起按钮
-  let buttonY = py + ph - 55;  // 👈 和上面保持一致
+  let buttonY = py + ph - 55;
   if (mx > px + 20 && mx < px + pw - 20 &&
-      my > buttonY && my < buttonY + 38) {  // 👈 高度改为 38
+      my > buttonY && my < buttonY + 38) {
     removeItemFromScene(selectedItem);
     return true;
   }
   
   // 检测笔记区域点击
   if (mx > px + 20 && mx < px + pw - 20 &&
-      my > py + 340 && my < py + 420) {  // 👈 调整检测范围
+      my > py + 340 && my < py + 420) {
     editItemNotes(selectedItem);
     return true;
   }
   
   return false;
+}
+
+// 从场景中移除物品
+function removeItemFromScene(item) {
+  // ... 你原来的代码
 }
 
 // 从场景中移除物品
@@ -2070,10 +2262,33 @@ function editItemNotes(item) {
     console.log('笔记已更新');
   }
 }
+
+
+
 // ============================================
 // 响应式画布
 // ============================================
 
+function calculateCanvasSize() {
+  // 1. 计算窗口的宽高比
+  let windowAspectRatio = windowWidth / windowHeight;
+  
+  let w, h;
+  
+  // 2. 比较窗口和图片的宽高比
+  if (windowAspectRatio > imgAspectRatio) {
+    // 窗口更宽 → 以高度为准，宽度按图片比例计算
+    h = windowHeight;
+    w = h * imgAspectRatio;
+  } else {
+    // 窗口更高 → 以宽度为准，高度按图片比例计算
+    w = windowWidth;
+    h = w / imgAspectRatio;
+  }
+  
+  // 3. 返回计算好的尺寸
+  return { w: w, h: h };
+}
 function windowResized() {
   let w = min(windowWidth, CONFIG.maxWidth);
   let h = min(windowHeight, w * 0.65);

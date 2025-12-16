@@ -5,11 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campsite</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    /* 场景容器（和测试版一样） */
+    #campsite-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+    
+    /* 欢迎页面覆盖层 */
+    #welcome-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 0.8s ease-out;
+      pointer-events: auto;
+    }
+    
+    #welcome-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
 
-  <div id="welcome-screen">
+  <!-- 场景容器（底层，和测试版完全一样） -->
+  <div id="campsite-screen"></div>
   
+  <!-- 欢迎页面（上层覆盖） -->
+  <div id="welcome-screen">
     <div class="blurred-background"></div>
     
     <!-- 中央火焰 -->
@@ -19,55 +56,47 @@
     </div>
   </div>
   
-
-  <div id="campsite-screen" style="display: none;">
-  </div>
-  
+  <!-- 音频 -->
   <audio id="campfireSound" loop>
     <source src="asset/campfire.mp3" type="audio/mpeg">
   </audio>
   
-  <!-- p5.js  -->
+  <!-- p5.js 库（和测试版一样） -->
   <script src="https://cdn.jsdelivr.net/npm/p5@1.11.1/lib/p5.js"></script>
   
-  <!-- 场景脚本 -->
+  <!-- 场景脚本（和测试版一样） -->
   <script src="campsite.js"></script>
   
   <!-- 页面切换脚本 -->
   <script>
+    let hasEntered = false;
+    
     function enterCampsite() {
-      // 添加淡出效果
-      const welcomeScreen = document.getElementById('welcome-screen');
-      welcomeScreen.style.opacity = '0';
+      if (hasEntered) return;
+      hasEntered = true;
       
+      console.log('🔥 点击火焰，进入营地...');
+      
+      // 获取欢迎页面
+      const welcomeScreen = document.getElementById('welcome-screen');
+      
+      // 添加隐藏类（触发 CSS 过渡）
+      welcomeScreen.classList.add('hidden');
+      
+      // 800ms 后移除元素
       setTimeout(() => {
-        // 隐藏欢迎页面
-        welcomeScreen.style.display = 'none';
-        
-        // 显示场景
-        const campsiteScreen = document.getElementById('campsite-screen');
-        campsiteScreen.style.display = 'block';
-        campsiteScreen.style.opacity = '0';
-        
-        // 淡入场景
-        setTimeout(() => {
-          campsiteScreen.style.opacity = '1';
-        }, 50);
-        
-        // 启动音频
-        const audio = document.getElementById('campfireSound');
-        if (audio) {
-          audio.volume = 0.3;
-          audio.play().catch(err => {
-            console.log('音频需要用户交互才能播放');
-          });
-        }
-        
-        // 触发 p5.js 开始
-        if (window.startCampsite) {
-          window.startCampsite();
-        }
-      }, 800); // 等待淡出动画完成
+        welcomeScreen.remove();
+        console.log('✅ 欢迎页面已移除');
+      }, 800);
+      
+      // 启动音频
+      const audio = document.getElementById('campfireSound');
+      if (audio) {
+        audio.volume = 0.15;
+        audio.play().catch(err => {
+          console.log('⚠️ 音频播放需要用户交互');
+        });
+      }
     }
   </script>
 </body>
