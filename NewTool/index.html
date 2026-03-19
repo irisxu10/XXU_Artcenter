@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synesthetic Design System</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="top-header">
+    <div class="header-left">
+      <div class="logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="13" stroke="var(--accent-a)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <circle cx="14" cy="14" r="7" fill="none" stroke="var(--accent-b)" stroke-width="1.5"/>
+          <circle cx="14" cy="14" r="2.5" fill="var(--accent-a)"/>
+          <line x1="14" y1="1" x2="14" y2="7" stroke="var(--accent-a)" stroke-width="1"/>
+          <line x1="14" y1="21" x2="14" y2="27" stroke="var(--accent-a)" stroke-width="1"/>
+          <line x1="1" y1="14" x2="7" y2="14" stroke="var(--accent-b)" stroke-width="1"/>
+          <line x1="21" y1="14" x2="27" y2="14" stroke="var(--accent-b)" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="header-title-group">
+        <h1 class="header-title">Synesthetic<span class="title-accent">.</span></h1>
+        <span class="header-sub">Design System &mdash; Collaborative Data to Space Workflow</span>
+      </div>
+    </div>
+
+    <nav class="header-nav">
+      <button class="nav-btn active">Canvas</button>
+      <button class="nav-btn">Assets</button>
+      <button class="nav-btn">Versions</button>
+      <button class="nav-btn">Publish</button>
+    </nav>
+
+    <div class="header-right">
+      <div class="collab-avatars">
+        <div class="avatar av1" title="Mira Osei">MO</div>
+        <div class="avatar av2" title="Jun Tanaka">JT</div>
+        <div class="avatar av3" title="Sadia Hasan">SH</div>
+        <div class="avatar-count">+2</div>
+      </div>
+      <div class="status-dot-wrapper">
+        <span class="status-dot live"></span>
+        <span class="status-label">Live</span>
+      </div>
+      <button class="share-btn">Share Session</button>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="app-body">
+
+    <!-- LEFT SIDEBAR — Workflow Steps -->
+    <aside class="sidebar-left">
+      <div class="sidebar-section-label">WORKFLOW PIPELINE</div>
+
+      <ul class="workflow-steps">
+        <li class="step completed" data-step="01">
+          <div class="step-indicator">
+            <span class="step-num">01</span>
+            <div class="step-icon">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-name">Import Branding Guidance</div>
+            <div class="step-meta">Figma, PDF, tokens — 3 sources</div>
+            <div class="step-progress-bar"><div class="bar-fill" style="width:100%"></div></div>
+          </div>
+        </li>
+
+        <li class="step completed" data-step="02">
+          <div class="step-indicator">
+            <span class="step-num">02</span>
+            <div class="step-icon check">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-name">AI Analysis</div>
+            <div class="step-meta">Palette extraction &amp; tone mapping</div>
+            <div class="step-progress-bar"><div class="bar-fill" style="width:100%"></div></div>
+          </div>
+        </li>
+
+        <li class="step active" data-step="03">
+          <div class="step-indicator">
+            <span class="step-num">03</span>
+            <div class="step-icon pulse">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="3" fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-name">Data Translation</div>
+            <div class="step-meta">Converting design tokens → spatial rules</div>
+            <div class="step-progress-bar"><div class="bar-fill" style="width:62%"></div></div>
+          </div>
+        </li>
+
+        <li class="step pending" data-step="04">
+          <div class="step-indicator">
+            <span class="step-num">04</span>
+            <div class="step-icon">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <rect x="3" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-name">Visual &amp; Object Mapping</div>
+            <div class="step-meta">Awaiting translation output</div>
+            <div class="step-progress-bar"><div class="bar-fill" style="width:0%"></div></div>
+          </div>
+        </li>
+
+        <li class="step pending" data-step="05">
+          <div class="step-indicator">
+            <span class="step-num">05</span>
+            <div class="step-icon">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <polygon points="3,2 11,7 3,12" stroke="currentColor" stroke-width="1.2" fill="none"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-name">Live Simulation</div>
+            <div class="step-meta">Render engine — standby</div>
+            <div class="step-progress-bar"><div class="bar-fill" style="width:0%"></div></div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-section-label">ACTIVE FILE</div>
+      <div class="active-file-card">
+        <div class="file-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 3h8l4 4v10a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="var(--accent-a)" stroke-width="1.2"/>
+            <path d="M12 3v4h4" stroke="var(--accent-a)" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="file-info">
+          <div class="file-name">BrandKit_v3.fig</div>
+          <div class="file-size">Synced · 12.4 MB</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section-label" style="margin-top:20px">TEAM NOTES</div>
+      <div class="team-note">
+        <div class="note-author">Mira — 14m ago</div>
+        <p>"Updated secondary palette. Check the warm neutrals in Step 3 output."</p>
+      </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="workspace">
+      <div class="workspace-toolbar">
+        <div class="toolbar-left">
+          <span class="workspace-title">Translation Canvas</span>
+          <span class="workspace-badge">Step 03 — Active</span>
+        </div>
+        <div class="toolbar-right">
+          <button class="tool-btn" title="Select">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 2l5 11 2-4 4-2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="tool-btn" title="Pan">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/><line x1="7.5" y1="1" x2="7.5" y2="4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="7.5" y1="11" x2="7.5" y2="14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="1" y1="7.5" x2="4" y2="7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="11" y1="7.5" x2="14" y2="7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </button>
+          <button class="tool-btn active-tool" title="Annotate">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 13l2-6 8-8 4 4-8 8z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="tool-divider"></div>
+          <span class="zoom-label">87%</span>
+          <button class="tool-btn">−</button>
+          <button class="tool-btn">+</button>
+        </div>
+      </div>
+
+      <div class="canvas-area" id="canvas">
+        <div id="step-canvas-content" class="step-canvas-content">
+        <!-- Token Grid -->
+        <div class="canvas-section" id="tokenGrid">
+          <div class="section-label-float">INPUT — DESIGN TOKENS</div>
+          <div class="token-grid">
+            <div class="token-card" style="--tc: #C8A97E">
+              <div class="token-swatch"></div>
+              <div class="token-info">
+                <div class="token-name">--color-sand-400</div>
+                <div class="token-val">#C8A97E</div>
+              </div>
+              <div class="token-tag">Primary Warm</div>
+            </div>
+            <div class="token-card" style="--tc: #2D2926">
+              <div class="token-swatch"></div>
+              <div class="token-info">
+                <div class="token-name">--color-espresso</div>
+                <div class="token-val">#2D2926</div>
+              </div>
+              <div class="token-tag">Base Dark</div>
+            </div>
+            <div class="token-card" style="--tc: #6BBFB5">
+              <div class="token-swatch"></div>
+              <div class="token-info">
+                <div class="token-name">--color-teal-300</div>
+                <div class="token-val">#6BBFB5</div>
+              </div>
+              <div class="token-tag">Accent Cool</div>
+            </div>
+            <div class="token-card" style="--tc: #E8E0D5">
+              <div class="token-swatch"></div>
+              <div class="token-info">
+                <div class="token-name">--color-linen</div>
+                <div class="token-val">#E8E0D5</div>
+              </div>
+              <div class="token-tag">Surface Light</div>
+            </div>
+            <div class="token-card" style="--tc: #D95A3C">
+              <div class="token-swatch"></div>
+              <div class="token-info">
+                <div class="token-name">--color-terracotta</div>
+                <div class="token-val">#D95A3C</div>
+              </div>
+              <div class="token-tag">Alert / CTA</div>
+            </div>
+            <div class="token-card" style="--tc: #8C7FA8">
+              <div class="token-swatch"></div>
+              <div class="token-info">
+                <div class="token-name">--color-lavender</div>
+                <div class="token-val">#8C7FA8</div>
+              </div>
+              <div class="token-tag">Secondary</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrow connector visual -->
+        <div class="canvas-arrow">
+          <div class="arrow-line"></div>
+          <div class="arrow-label">AI Translation Engine — 62% complete</div>
+          <div class="arrow-progress">
+            <div class="ap-fill" id="arrowProgress"></div>
+          </div>
+        </div>
+
+        <!-- Spatial Rules Output -->
+        <div class="canvas-section output-section">
+          <div class="section-label-float output">OUTPUT — SPATIAL RULE MAPPING</div>
+          <div class="rule-cards">
+            <div class="rule-card">
+              <div class="rule-header">
+                <span class="rule-icon">◈</span>
+                <span class="rule-title">Material Luminance</span>
+                <span class="rule-status done">Mapped</span>
+              </div>
+              <div class="rule-desc">Sand-400 → Surface emissive at 0.42 intensity. Used for ceiling panels and wayfinding glow strips.</div>
+              <div class="rule-preview lum-preview"></div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-header">
+                <span class="rule-icon">◈</span>
+                <span class="rule-title">Spatial Accent Zones</span>
+                <span class="rule-status done">Mapped</span>
+              </div>
+              <div class="rule-desc">Teal-300 applied to interactive surfaces: door frames, kiosk borders, and floor inlay markers.</div>
+              <div class="rule-preview zone-preview"></div>
+            </div>
+            <div class="rule-card pending-card">
+              <div class="rule-header">
+                <span class="rule-icon">◇</span>
+                <span class="rule-title">Depth Stratification</span>
+                <span class="rule-status pending">Processing</span>
+              </div>
+              <div class="rule-desc">Generating foreground/midground/background layer weights from token hierarchy tree…</div>
+              <div class="rule-processing">
+                <div class="processing-bar"></div>
+              </div>
+            </div>
+            <div class="rule-card pending-card">
+              <div class="rule-header">
+                <span class="rule-icon">◇</span>
+                <span class="rule-title">Typographic Volumetrics</span>
+                <span class="rule-status pending">Queued</span>
+              </div>
+              <div class="rule-desc">Converting font weight hierarchy to signage scale ratios for 3D environment.</div>
+              <div class="rule-processing">
+                <div class="processing-bar" style="animation-delay: 0.4s"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Log terminal strip -->
+        <div class="canvas-terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">Translation Log</span>
+          </div>
+          <div class="terminal-body" id="terminalBody">
+            <div class="log-line"><span class="log-time">14:22:07</span><span class="log-tag ok">OK</span> Loaded 6 color tokens from BrandKit_v3.fig</div>
+            <div class="log-line"><span class="log-time">14:22:09</span><span class="log-tag ok">OK</span> Typography scale extracted — 4 levels detected</div>
+            <div class="log-line"><span class="log-time">14:22:11</span><span class="log-tag ok">OK</span> Luminance mapping complete → 2 spatial rules written</div>
+            <div class="log-line"><span class="log-time">14:22:14</span><span class="log-tag info">··</span> Running depth stratification model (est. 38s remaining)</div>
+            <div class="log-line"><span class="log-time">14:22:15</span><span class="log-tag info">··</span> Typographic volumetrics queued — awaiting depth output</div>
+          </div>
+        </div>
+        </div><!-- /step-canvas-content -->
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="sidebar-right">
+      <div class="right-panel-tabs">
+        <button class="rtab active" data-tab="plugins">Plugins</button>
+        <button class="rtab" data-tab="preview">Preview</button>
+        <button class="rtab" data-tab="history">History</button>
+      </div>
+
+      <!-- Plugins Tab — dynamically populated per step -->
+      <div class="tab-content active" id="tab-plugins">
+        <div id="right-panel-content" class="right-panel-dyn"></div>
+      </div>
+
+      <!-- Preview Tab -->
+      <div class="tab-content" id="tab-preview">
+        <div class="sidebar-section-label">RENDER PREVIEW</div>
+        <div class="preview-placeholder">
+          <div class="pp-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <rect x="4" y="8" width="32" height="24" rx="2" stroke="var(--muted)" stroke-width="1.5"/>
+              <polygon points="16,14 28,20 16,26" stroke="var(--accent-a)" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <p>Complete Step 4 to unlock full 3D render preview.</p>
+        </div>
+      </div>
+
+      <!-- History Tab -->
+      <div class="tab-content" id="tab-history">
+        <div class="sidebar-section-label">CHANGE HISTORY</div>
+        <div class="history-list">
+          <div class="history-item">
+            <div class="h-dot"></div>
+            <div class="h-body">
+              <div class="h-action">Mira updated brand palette</div>
+              <div class="h-time">14 minutes ago</div>
+            </div>
+          </div>
+          <div class="history-item">
+            <div class="h-dot"></div>
+            <div class="h-body">
+              <div class="h-action">AI re-ran luminance mapping</div>
+              <div class="h-time">28 minutes ago</div>
+            </div>
+          </div>
+          <div class="history-item">
+            <div class="h-dot"></div>
+            <div class="h-body">
+              <div class="h-action">Jun imported BrandKit_v3.fig</div>
+              <div class="h-time">1 hour ago</div>
+            </div>
+          </div>
+          <div class="history-item">
+            <div class="h-dot"></div>
+            <div class="h-body">
+              <div class="h-action">Session started — 3 collaborators</div>
+              <div class="h-time">2 hours ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
