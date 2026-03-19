@@ -5861,3 +5861,529 @@ body.pd-body-open { overflow: hidden; }
 }
 .pd-update-all-btn:hover { color: var(--text-primary); border-color: var(--border-hi); }
 .pd-update-all-btn:disabled { opacity: 0.45; cursor: default; }
+
+/* ═══════════════════════════════════════════════
+   VISUAL SYSTEM REFINEMENT — Global polish pass
+   Unifies spacing, hierarchy, type, borders
+═══════════════════════════════════════════════ */
+
+/* ── 1. Refined colour tokens ───────────────────
+   Slightly warmer bg-base, cooler borders,
+   improved text contrast ratio                   */
+:root {
+  --bg-base:      #0B0C0F;
+  --bg-surface:   #111316;
+  --bg-raised:    #181B1F;
+  --bg-hover:     #1E2127;
+  --border:       rgba(255,255,255,0.055);
+  --border-mid:   rgba(255,255,255,0.095);
+  --border-hi:    rgba(255,255,255,0.16);
+  --text-primary: #EDEAE2;
+  --text-sec:     #888A93;
+  --text-muted:   #4A4D56;
+
+  /* Slightly de-saturated accents for elegance */
+  --accent-a:     #C6A876;
+  --accent-b:     #65BAB0;
+  --accent-d:     #8A7CA6;
+  --green:        #48AA78;
+  --yellow:       #D09E1C;
+
+  /* Spacing scale */
+  --sp-xs: 4px;
+  --sp-sm: 8px;
+  --sp-md: 14px;
+  --sp-lg: 20px;
+  --sp-xl: 28px;
+
+  /* Radius unification */
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 20px;
+}
+
+/* ── 2. Base typography ─────────────────────────
+   Tighten line-heights, improve letter-spacing   */
+body { font-size: 12.5px; line-height: 1.45; }
+
+h1,h2,h3,h4,h5 { letter-spacing: -0.025em; }
+
+/* ── 3. Canvas sections — consistent padding ─── */
+.canvas-section {
+  padding: var(--sp-xl) var(--sp-xl) var(--sp-lg);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  border-color: var(--border);
+  gap: var(--sp-md);
+  margin-bottom: 0;
+}
+
+/* Tighten all canvas area padding */
+.canvas-area { padding: 18px 20px; gap: 12px; }
+.canvas-area > * + * { margin-top: 12px; }
+
+/* ── 4. Section label float — more precise ───── */
+.section-label-float {
+  top: -8px; left: 14px;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  padding: 0 7px;
+  border-radius: 3px;
+  line-height: 16px;
+  height: 16px;
+}
+
+/* ── 5. Sidebar left — tighter hierarchy ──────── */
+.sidebar-section-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  padding: 0 14px;
+  margin-bottom: 6px;
+}
+
+.sidebar-divider { margin: 12px 14px; }
+
+/* ── 6. Workflow steps — improved active state ── */
+.step {
+  border-radius: var(--radius-md);
+  padding: 9px 10px;
+}
+.step.active {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-mid);
+  padding: 9px 10px;
+}
+.step.active::before {
+  width: 2px;
+  top: 8px; bottom: 8px;
+  background: var(--accent-a);
+  box-shadow: 0 0 6px rgba(200,169,126,0.3);
+}
+.step-name { font-size: 11.5px; font-weight: 600; }
+.step-meta { font-size: 9px; }
+.step-progress-bar { height: 2px; margin-top: 5px; }
+.bar-fill {
+  background: linear-gradient(90deg, var(--accent-a), var(--accent-b));
+}
+.step.completed .bar-fill { background: var(--green); }
+
+/* Step icon sizing */
+.step-icon {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+}
+
+/* ── 7. Workspace toolbar — cleaner ──────────── */
+.workspace-toolbar { height: 38px; }
+.workspace-title   { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; }
+.workspace-badge {
+  font-size: 8.5px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.02em;
+}
+
+/* ── 8. Button system — unified hierarchy ─────
+   Primary, secondary, ghost, danger            */
+
+/* Primary accent button (CTA) */
+.ibg-run-btn,
+.s2-translate-btn,
+.dt-open-btn,
+.vom-sim-btn,
+.dtd-apply-btn,
+.vom-sp-apply,
+.ls-btn-play {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 9px 20px;
+  border-radius: var(--radius-md);
+  transition: opacity 0.15s, transform 0.12s, box-shadow 0.15s;
+}
+.ibg-run-btn:hover:not(:disabled),
+.s2-translate-btn:hover:not(:disabled),
+.dt-open-btn:hover:not(:disabled),
+.vom-sim-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+/* Secondary / outline buttons */
+.ibg-btn-outline,
+.ibg-btn-sm,
+.ls-ctrl-btn,
+.vom-layout-btn,
+.pd-pill,
+.psb-export-btn,
+.psb-manage-plugins-btn {
+  font-size: 10.5px;
+  border-radius: var(--radius-sm);
+  transition: all 0.13s;
+}
+
+/* Icon tool buttons */
+.tool-btn {
+  width: 26px; height: 26px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── 9. Status badges — unified sizing ────────── */
+.dt-type-badge,
+.dt-status-badge,
+.vom-n-status-badge,
+.s2-ic-badge,
+.rule-status,
+.vom-sp-type-pill,
+.pd-status-badge,
+.pd-update-badge {
+  font-size: 7.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  line-height: 1.4;
+}
+
+/* ── 10. Panel cards — consistent depth ──────── */
+.s2-insight-card,
+.dt-block,
+.vom-node,
+.ibg-plugin-card,
+.ibg-collab-card,
+.dt-rp-plugin-card,
+.dt-rp-collab-card,
+.ls-obj-status,
+.ls-rp-state-card,
+.vom-settings-panel,
+.plugin-drawer {
+  border-radius: var(--radius-md);
+}
+
+/* Surface texture: very subtle inner highlight */
+.canvas-section,
+.ibg-plugin-card,
+.s2-rp-plugin-card,
+.dt-rp-summary-card,
+.vom-rp-collab {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.025);
+}
+
+/* ── 11. Right sidebar — consistent padding ───── */
+.sidebar-right .tab-content { padding: 14px 0; }
+
+/* All right-panel section labels */
+.sidebar-right .sidebar-section-label {
+  padding: 0 10px;
+  margin-bottom: 7px;
+}
+
+/* ── 12. Token/data value typography ─────────── */
+.token-val, .dt-num-val, .metric-val, .s2-metric-val {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.token-name, .dt-b-source, .vom-n-sub, .step-meta,
+.psb-label, .psb-val, .psb-stat-label {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+/* ── 13. Connection lines (VOM) — thinner ─────── */
+.vom-conn-line { stroke-width: 1px !important; }
+
+/* ── 14. Overlay inner — tighter gap ─────────── */
+.ao-inner { gap: 20px; }
+.ao-label { font-size: 13px; }
+.ao-pct { font-size: 10px; }
+
+/* ── 15. Plugin drawer — refined ─────────────── */
+.plugin-drawer {
+  width: 400px;
+  border-left-color: var(--border-mid);
+}
+.pd-card-name { font-size: 11.5px; }
+.pd-card-desc { font-size: 10px; line-height: 1.55; color: var(--text-sec); }
+.pd-card-main { padding: 11px 14px; }
+
+/* ── 16. Section gaps in canvas ───────────────── */
+.dt-blocks-grid  { gap: 9px; }
+.vom-canvas      { gap: 8px; }
+.ls-obj-status-grid { gap: 8px; }
+
+/* ── 17. Scrollbar refinement ─────────────────── */
+::-webkit-scrollbar      { width: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
+
+/* ── 18. Focus ring — accessible + on-brand ───── */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 1.5px solid var(--accent-b);
+  outline-offset: 2px;
+}
+
+/* ── 19. Sidebar active-file card ─────────────── */
+.active-file-card {
+  border-radius: var(--radius-md);
+  padding: 9px 12px;
+}
+.file-name { font-size: 11.5px; font-weight: 600; }
+
+/* ── 20. PSB (project summary bar) text sizing ── */
+.psb-version-badge,
+.psb-saved,
+.psb-label,
+.psb-val,
+.psb-stat-label,
+.psb-stat-val,
+.psb-group-label { font-size: 8px; }
+
+.psb-collab-tag,
+.psb-plugin-tag { font-size: 8px; padding: 1.5px 7px; }
+
+.psb-ct-name { font-size: 7px; }
+
+/* ═══════════════════════════════════════════════
+   OPENING SPLASH SCREEN
+═══════════════════════════════════════════════ */
+
+/* Hide dashboard until splash dismissed */
+body.splash-active .top-header,
+body.splash-active .app-body {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Splash fullscreen */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--bg-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Exit transition */
+.splash.splash-exiting {
+  animation: splash-exit 0.7s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+@keyframes splash-exit {
+  0%   { opacity: 1;  transform: scale(1); }
+  40%  { opacity: 1;  transform: scale(1.015); }
+  100% { opacity: 0;  transform: scale(0.97); }
+}
+
+/* ── Background grid ── */
+.splash-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(107,191,181,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(107,191,181,0.055) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 80%);
+  animation: splash-grid-drift 12s ease-in-out infinite alternate;
+}
+@keyframes splash-grid-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(6px, 4px); }
+}
+
+/* ── Floating ring decorations ── */
+.splash-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid;
+  pointer-events: none;
+}
+.splash-ring-1 {
+  width: 480px; height: 480px;
+  border-color: rgba(200,169,126,0.06);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: splash-ring-pulse 6s ease-in-out infinite;
+}
+.splash-ring-2 {
+  width: 680px; height: 680px;
+  border-color: rgba(107,191,181,0.04);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: splash-ring-pulse 6s ease-in-out 1.5s infinite;
+}
+.splash-ring-3 {
+  width: 900px; height: 900px;
+  border-color: rgba(140,127,168,0.03);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: splash-ring-pulse 6s ease-in-out 3s infinite;
+}
+@keyframes splash-ring-pulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.015); }
+}
+
+/* ── Inner content ── */
+.splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 480px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+  animation: splash-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes splash-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Logo SVG ── */
+.splash-logo {
+  animation: splash-logo-appear 0.6s ease 0.2s both;
+}
+@keyframes splash-logo-appear {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.splash-logo-ring {
+  animation: splash-ring-spin 24s linear infinite;
+  transform-origin: 26px 26px;
+}
+@keyframes splash-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Wordmark ── */
+.splash-wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  animation: splash-fade-up 0.6s ease 0.35s both;
+}
+@keyframes splash-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.splash-title {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.splash-dot { color: var(--accent-a); }
+.splash-system-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* ── Divider ── */
+.splash-divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-a), transparent);
+  opacity: 0.5;
+  animation: splash-fade-up 0.6s ease 0.45s both;
+}
+
+/* ── Subtitle ── */
+.splash-subtitle {
+  font-size: 13px;
+  color: var(--text-sec);
+  line-height: 1.7;
+  text-align: center;
+  max-width: 380px;
+  animation: splash-fade-up 0.6s ease 0.55s both;
+}
+
+/* ── Chips ── */
+.splash-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: splash-fade-up 0.6s ease 0.65s both;
+}
+.splash-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-sec);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  padding: 4px 11px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.04em;
+}
+.splash-chip-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+/* ── Enter Workspace button ── */
+.splash-enter-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent-a);
+  color: #1A0F04;
+  border: none;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 12px 32px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  animation: splash-fade-up 0.6s ease 0.75s both;
+}
+.splash-enter-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 55%);
+  pointer-events: none;
+}
+.splash-enter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(200,169,126,0.35);
+  opacity: 0.92;
+}
+.splash-enter-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ── Version label ── */
+.splash-version {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  animation: splash-fade-up 0.6s ease 0.85s both;
+}

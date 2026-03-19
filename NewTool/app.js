@@ -3,7 +3,11 @@
    Step-switching with dynamic canvas + right panel
 ============================================ */
 
+// Add splash-active class immediately so dashboard is hidden on load
+document.documentElement.style.visibility = 'hidden';
 document.addEventListener('DOMContentLoaded', () => {
+  document.documentElement.style.visibility = '';
+  document.body.classList.add('splash-active');
 
   let currentStep = 1;
 
@@ -4541,8 +4545,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // ── Splash screen ────────────────────────────
+  initSplashScreen();
+
   // Boot plugin drawer
   initPluginDrawer();
+
+
+  // ── SPLASH SCREEN ────────────────────────────
+  function initSplashScreen() {
+    const splash  = document.getElementById('splashScreen');
+    const enterBtn = document.getElementById('splashEnterBtn');
+    if (!splash || !enterBtn) return;
+
+    enterBtn.addEventListener('click', () => {
+      // Disable button immediately
+      enterBtn.disabled = true;
+      enterBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin-icon">
+          <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="10 8"/>
+        </svg>
+        <span>Loading…</span>`;
+
+      // Short delay then exit
+      setTimeout(() => {
+        splash.classList.add('splash-exiting');
+
+        // Once animation ends, remove splash & reveal dashboard
+        splash.addEventListener('animationend', () => {
+          splash.style.display = 'none';
+          document.body.classList.remove('splash-active');
+
+          // Fade dashboard in
+          const header   = document.querySelector('.top-header');
+          const appBody  = document.querySelector('.app-body');
+          [header, appBody].forEach(el => {
+            if (!el) return;
+            el.style.opacity = '0';
+            el.style.transition = 'opacity 0.45s ease';
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              el.style.opacity = '1';
+            }));
+          });
+        }, { once: true });
+      }, 320);
+    });
+  }
 
 
 });

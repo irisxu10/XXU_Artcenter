@@ -11,6 +11,82 @@
 </head>
 <body>
 
+  <!-- ══ OPENING SPLASH SCREEN ══ -->
+  <div id="splashScreen" class="splash" aria-modal="true" role="dialog">
+
+    <!-- animated grid background -->
+    <div class="splash-grid"></div>
+
+    <!-- floating ring marks -->
+    <div class="splash-ring splash-ring-1"></div>
+    <div class="splash-ring splash-ring-2"></div>
+    <div class="splash-ring splash-ring-3"></div>
+
+    <div class="splash-inner">
+
+      <!-- Logo mark -->
+      <div class="splash-logo">
+        <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+          <circle cx="26" cy="26" r="24" stroke="var(--accent-a)" stroke-width="1.5"
+            stroke-dasharray="5 4" class="splash-logo-ring"/>
+          <circle cx="26" cy="26" r="13" fill="none" stroke="var(--accent-b)" stroke-width="1.5"/>
+          <circle cx="26" cy="26" r="4.5" fill="var(--accent-a)"/>
+          <line x1="26" y1="2"  x2="26" y2="13" stroke="var(--accent-a)" stroke-width="1.2"/>
+          <line x1="26" y1="39" x2="26" y2="50" stroke="var(--accent-a)" stroke-width="1.2"/>
+          <line x1="2"  y1="26" x2="13" y2="26" stroke="var(--accent-b)" stroke-width="1.2"/>
+          <line x1="39" y1="26" x2="50" y2="26" stroke="var(--accent-b)" stroke-width="1.2"/>
+        </svg>
+      </div>
+
+      <!-- Wordmark -->
+      <div class="splash-wordmark">
+        <div class="splash-title">Synesthetic<span class="splash-dot">.</span></div>
+        <div class="splash-system-label">Design System</div>
+      </div>
+
+      <!-- Divider -->
+      <div class="splash-divider"></div>
+
+      <!-- Subtitle -->
+      <p class="splash-subtitle">
+        A collaborative speculative design platform that translates branding guidance
+        into spatial visual and physical outputs — through AI analysis, data translation,
+        and live simulation.
+      </p>
+
+      <!-- Meta chips -->
+      <div class="splash-chips">
+        <span class="splash-chip">
+          <span class="splash-chip-dot" style="background:var(--accent-b)"></span>
+          Brand → Data → Space
+        </span>
+        <span class="splash-chip">
+          <span class="splash-chip-dot" style="background:var(--accent-a)"></span>
+          5-Step Workflow
+        </span>
+        <span class="splash-chip">
+          <span class="splash-chip-dot" style="background:var(--accent-d)"></span>
+          Collaborative
+        </span>
+      </div>
+
+      <!-- CTA -->
+      <button class="splash-enter-btn" id="splashEnterBtn">
+        <span>Enter Workspace</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <!-- Version label -->
+      <div class="splash-version">v0.4.1-alpha · Prototype</div>
+
+    </div>
+
+  </div>
+  <!-- /SPLASH -->
+
   <!-- TOP HEADER — two-row layout -->
   <header class="top-header">
 
