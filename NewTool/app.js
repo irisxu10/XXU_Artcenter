@@ -953,152 +953,614 @@ document.addEventListener('DOMContentLoaded', () => {
     },
 
     4: {
-      title: 'Mapping Canvas',
+      title: 'Visual & Object Mapping',
       badge: 'Step 04 — Visual & Object Mapping',
+
       canvasHTML: () => `
-        <div class="canvas-section" style="animation-delay:0s">
-          <div class="section-label-float">OBJECT LIBRARY — MATCHED</div>
-          <div class="object-map-grid">
-            ${[
-              ['Reception Desk','Sand-400 surface · Espresso base','#C8A97E44','#C8A97E'],
-              ['Wayfinding Pylon','Teal-300 edge glow · Espresso body','#6BBFB544','#6BBFB5'],
-              ['Feature Wall Panel','Linen face · Sand-400 reveal','#E8E0D544','#E8E0D5'],
-              ['Kiosk Terminal','Terracotta CTA strip · Linen field','#D95A3C44','#D95A3C'],
-            ].map(([name,desc,bg,border])=>`
-              <div class="obj-card">
-                <div class="obj-card-preview" style="background:${bg};border-bottom:1px solid ${border}40">
-                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
-                    <div style="width:48px;height:32px;border:1.5px solid ${border};border-radius:4px;opacity:0.8"></div>
+
+        <!-- HEADER -->
+        <div class="canvas-section vom-header-section" style="animation-delay:0s">
+          <div class="section-label-float">VISUAL & OBJECT MAPPING CANVAS</div>
+          <div class="vom-header-row">
+            <div class="vom-header-left">
+              <span class="vom-origin-chip">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="var(--accent-d)" stroke-width="1"/></svg>
+                6 data blocks loaded
+              </span>
+              <span class="vom-origin-chip">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="var(--accent-a)" stroke-width="1"/></svg>
+                Object library: 12 assets
+              </span>
+              <span class="vom-origin-chip vom-chip-live">
+                <span class="vom-live-dot"></span>
+                2 collaborators active
+              </span>
+            </div>
+            <div class="vom-header-right">
+              <button class="vom-layout-btn" id="vomAutoLayout">Auto-layout</button>
+              <button class="vom-layout-btn" id="vomClearLinks">Clear links</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- THREE-COLUMN MAPPING CANVAS -->
+        <div class="vom-canvas" id="vomCanvas">
+
+          <!-- SVG connection lines layer (drawn by JS) -->
+          <svg class="vom-connections-svg" id="vomSvg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible">
+            <defs>
+              <marker id="vom-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0 0L6 3L0 6" fill="none" stroke="rgba(107,191,181,0.5)" stroke-width="0.8"/>
+              </marker>
+            </defs>
+          </svg>
+
+          <!-- COLUMN A — Data Blocks -->
+          <div class="vom-col vom-col-a">
+            <div class="vom-col-header">
+              <span class="vom-col-label">Data Blocks</span>
+              <span class="vom-col-count">6 available</span>
+            </div>
+            <div class="vom-col-items" id="vomColA">
+
+              <div class="vom-node vom-node-data vom-n-tone" data-node="tone" data-col="a">
+                <div class="vom-n-port vom-n-port-out" data-from="tone"></div>
+                <div class="vom-n-body">
+                  <div class="vom-n-icon vom-icon-tone"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Tone Intensity</div>
+                    <div class="vom-n-sub">Numeric · 0.72</div>
                   </div>
                 </div>
-                <div class="obj-card-body">
-                  <div class="obj-card-name">${name}</div>
-                  <div class="obj-card-meta">${desc}</div>
-                </div>
-              </div>`).join('')}
-          </div>
-        </div>
-        <div class="canvas-section output-section" style="margin-top:16px;animation:fadeUp 0.4s ease 0.15s both">
-          <div class="section-label-float output">TOKEN → OBJECT MAPPING TABLE</div>
-          <div class="mapping-table">
-            <div class="map-row"><span style="color:var(--text-muted)">DESIGN TOKEN</span><span></span><span style="color:var(--text-muted)">SPATIAL OBJECT PROPERTY</span></div>
-            ${[
-              ['--color-sand-400','Material: emissive surface'],
-              ['--color-espresso','Material: base / shadow'],
-              ['--color-teal-300','Edge lighting / active indicator'],
-              ['--color-terracotta','CTA strip / alert surface'],
-              ['--color-linen','Primary face material'],
-              ['--font-weight-hero','Signage scale 1:1 (hero)'],
-              ['--font-weight-body','Signage scale 0.6 (secondary)'],
-            ].map(([src,tgt])=>`
-              <div class="map-row">
-                <span class="map-source">${src}</span>
-                <span class="map-arrow">→</span>
-                <span class="map-target">${tgt}</span>
-              </div>`).join('')}
-          </div>
-        </div>`,
-      rightHTML: () => `
-        <div class="sidebar-section-label">MAPPING STATUS</div>
-        <div class="rp-stat-row">
-          <div class="rp-stat-item"><span class="rp-stat-label">Objects mapped</span><span class="rp-stat-val ok">4 / 6</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">Token rules applied</span><span class="rp-stat-val">7</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">Unresolved objects</span><span class="rp-stat-val warn">2</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">Unreal assets ready</span><span class="rp-stat-val ok">Yes</span></div>
-        </div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">OBJECT PREVIEW</div>
-        <div class="rp-mini-preview">
-          <div style="width:80%;height:75%;position:relative">
-            <div style="position:absolute;bottom:0;left:0;right:0;height:30%;background:rgba(200,169,126,0.15);border:1px solid rgba(200,169,126,0.3);border-radius:3px"></div>
-            <div style="position:absolute;bottom:30%;left:10px;width:20px;height:55%;background:rgba(107,191,181,0.12);border:1px solid rgba(107,191,181,0.35);border-radius:2px"></div>
-            <div style="position:absolute;bottom:30%;right:10px;width:20px;height:40%;background:rgba(107,191,181,0.12);border:1px solid rgba(107,191,181,0.35);border-radius:2px"></div>
-          </div>
-          <div class="rp-mini-label">Lobby layout — object pass</div>
-        </div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">MAPPING CHECKLIST</div>
-        <div class="rp-checklist">
-          <div class="rp-check-item done"><div class="rp-chk checked">✓</div>Reception Desk</div>
-          <div class="rp-check-item done"><div class="rp-chk checked">✓</div>Wayfinding Pylon</div>
-          <div class="rp-check-item done"><div class="rp-chk checked">✓</div>Feature Wall</div>
-          <div class="rp-check-item done"><div class="rp-chk checked">✓</div>Kiosk Terminal</div>
-          <div class="rp-check-item pending-item"><div class="rp-chk unchecked">○</div>Ceiling Rig</div>
-          <div class="rp-check-item pending-item"><div class="rp-chk unchecked">○</div>Floor Inlay</div>
-        </div>`,
-    },
+              </div>
 
-    5: {
-      title: 'Simulation Canvas',
-      badge: 'Step 05 — Live Simulation',
-      canvasHTML: () => `
-        <div class="canvas-section" style="animation-delay:0s">
-          <div class="section-label-float">REAL-TIME RENDER — LOBBY SCENE</div>
-          <div class="sim-viewport">
-            <div class="sim-grid"></div>
-            <div class="sim-room">
-              <div class="sim-obj sim-obj-a"></div>
-              <div class="sim-obj sim-obj-b"></div>
-              <div class="sim-obj sim-obj-c"></div>
+              <div class="vom-node vom-node-data vom-n-reflect" data-node="reflect" data-col="a">
+                <div class="vom-n-port vom-n-port-out" data-from="reflect"></div>
+                <div class="vom-n-body">
+                  <div class="vom-n-icon vom-icon-reflect"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Reflective Behaviour</div>
+                    <div class="vom-n-sub">Spatial · 0.85 reflect</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vom-node vom-node-data vom-n-rhythm" data-node="rhythm" data-col="a">
+                <div class="vom-n-port vom-n-port-out" data-from="rhythm"></div>
+                <div class="vom-n-body">
+                  <div class="vom-n-icon vom-icon-rhythm"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Light Rhythm</div>
+                    <div class="vom-n-sub">Temporal · 8.4s sine</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vom-node vom-node-data vom-n-temp" data-node="temp" data-col="a">
+                <div class="vom-n-port vom-n-port-out" data-from="temp"></div>
+                <div class="vom-n-body">
+                  <div class="vom-n-icon vom-icon-temp"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Colour Temperature</div>
+                    <div class="vom-n-sub">Visual · 2700–6000K</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vom-node vom-node-data vom-n-surface" data-node="surface" data-col="a">
+                <div class="vom-n-port vom-n-port-out" data-from="surface"></div>
+                <div class="vom-n-body">
+                  <div class="vom-n-icon vom-icon-surface"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Surface Response</div>
+                    <div class="vom-n-sub">Spatial · tactility 0.84</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vom-node vom-node-data vom-n-depth" data-node="depth" data-col="a">
+                <div class="vom-n-port vom-n-port-out" data-from="depth"></div>
+                <div class="vom-n-body">
+                  <div class="vom-n-icon vom-icon-depth"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Spatial Depth Index</div>
+                    <div class="vom-n-sub">Numeric · FG 0.85</div>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <div class="sim-label-overlay">SCENE_01 · Lobby · Material Pass v4</div>
-            <div class="sim-fps" id="simFps">60 fps</div>
           </div>
-          <div class="sim-controls-row">
-            <button class="sim-ctrl-btn primary">▶ Play</button>
-            <button class="sim-ctrl-btn">⏸ Pause</button>
-            <button class="sim-ctrl-btn">↺ Reset Camera</button>
-            <button class="sim-ctrl-btn">⊞ Toggle Grid</button>
+
+          <!-- COLUMN B — Visual Output Modules -->
+          <div class="vom-col vom-col-b">
+            <div class="vom-col-header">
+              <span class="vom-col-label">Visual Outputs</span>
+              <span class="vom-col-count">3 modules</span>
+            </div>
+            <div class="vom-col-items" id="vomColB">
+
+              <div class="vom-node vom-node-visual vom-nv-gradient" data-node="gradient" data-col="b">
+                <div class="vom-n-port vom-n-port-in"  data-to="gradient"></div>
+                <div class="vom-n-port vom-n-port-out" data-from="gradient"></div>
+                <div class="vom-n-body">
+                  <div class="vom-nv-preview vom-prev-gradient"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Light Gradient Animation</div>
+                    <div class="vom-n-sub">Warm ↔ cool wash · 8.4s cycle</div>
+                  </div>
+                  <div class="vom-n-status-badge vom-status-mapped">Mapped</div>
+                </div>
+              </div>
+
+              <div class="vom-node vom-node-visual vom-nv-particles" data-node="particles" data-col="b">
+                <div class="vom-n-port vom-n-port-in"  data-to="particles"></div>
+                <div class="vom-n-port vom-n-port-out" data-from="particles"></div>
+                <div class="vom-n-body">
+                  <div class="vom-nv-preview vom-prev-particles" id="vomParticlePreview"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Reflective Particle Field</div>
+                    <div class="vom-n-sub">Scatter density 0.85 · sand palette</div>
+                  </div>
+                  <div class="vom-n-status-badge vom-status-mapped">Mapped</div>
+                </div>
+              </div>
+
+              <div class="vom-node vom-node-visual vom-nv-screen" data-node="screen" data-col="b">
+                <div class="vom-n-port vom-n-port-in"  data-to="screen"></div>
+                <div class="vom-n-port vom-n-port-out" data-from="screen"></div>
+                <div class="vom-n-body">
+                  <div class="vom-nv-preview vom-prev-screen" id="vomScreenPreview"></div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Screen Motion Rhythm</div>
+                    <div class="vom-n-sub">Sine oscillation · minimal content</div>
+                  </div>
+                  <div class="vom-n-status-badge vom-status-review">Review</div>
+                </div>
+              </div>
+
+            </div>
           </div>
+
+          <!-- COLUMN C — Physical Object Modules -->
+          <div class="vom-col vom-col-c">
+            <div class="vom-col-header">
+              <span class="vom-col-label">Physical Objects</span>
+              <span class="vom-col-count">3 modules</span>
+            </div>
+            <div class="vom-col-items" id="vomColC">
+
+              <div class="vom-node vom-node-physical vom-np-spotlight" data-node="spotlight" data-col="c">
+                <div class="vom-n-port vom-n-port-in" data-to="spotlight"></div>
+                <div class="vom-n-body">
+                  <div class="vom-np-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2v3M10 15v3M4.2 4.2l2.1 2.1M13.7 13.7l2.1 2.1M2 10h3M15 10h3M4.2 15.8l2.1-2.1M13.7 6.3l2.1-2.1" stroke="var(--accent-a)" stroke-width="1.2" stroke-linecap="round"/><circle cx="10" cy="10" r="3" stroke="var(--accent-a)" stroke-width="1.2"/></svg>
+                  </div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Adjustable Spotlight</div>
+                    <div class="vom-n-sub">DMX · warm · ceiling rig</div>
+                  </div>
+                  <div class="vom-n-status-badge vom-status-mapped">Mapped</div>
+                </div>
+              </div>
+
+              <div class="vom-node vom-node-physical vom-np-mirror" data-node="mirror" data-col="c">
+                <div class="vom-n-port vom-n-port-in" data-to="mirror"></div>
+                <div class="vom-n-body">
+                  <div class="vom-np-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="1.5" stroke="var(--accent-b)" stroke-width="1.2"/><path d="M8 10h4M10 8v4" stroke="var(--accent-b)" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/><path d="M3 10h14" stroke="var(--accent-b)" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.4"/></svg>
+                  </div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Kinetic Mirror Panel</div>
+                    <div class="vom-n-sub">Servo-actuated · 180° arc</div>
+                  </div>
+                  <div class="vom-n-status-badge vom-status-mapped">Mapped</div>
+                </div>
+              </div>
+
+              <div class="vom-node vom-node-physical vom-np-projection" data-node="projection" data-col="c">
+                <div class="vom-n-port vom-n-port-in" data-to="projection"></div>
+                <div class="vom-n-body">
+                  <div class="vom-np-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="10" rx="1" stroke="var(--accent-d)" stroke-width="1.2"/><path d="M6 9h8M6 12h5" stroke="var(--accent-d)" stroke-width="1" stroke-linecap="round" opacity="0.6"/><path d="M10 15v3M7 18h6" stroke="var(--accent-d)" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/></svg>
+                  </div>
+                  <div class="vom-n-text">
+                    <div class="vom-n-title">Projection Wall</div>
+                    <div class="vom-n-sub">4K surface · tone-responsive</div>
+                  </div>
+                  <div class="vom-n-status-badge vom-status-review">Review</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /vom-canvas -->
+
+        <!-- CTA ROW -->
+        <div class="vom-cta-row" style="animation:fadeUp 0.4s ease 0.35s both">
+          <div class="vom-cta-summary">
+            <div class="vom-cta-dots">
+              <span class="vom-dot-mapped"></span>
+              <span class="vom-dot-mapped"></span>
+              <span class="vom-dot-review"></span>
+              <span class="vom-dot-mapped"></span>
+              <span class="vom-dot-mapped"></span>
+              <span class="vom-dot-review"></span>
+            </div>
+            <div class="vom-cta-text">
+              <div class="vom-cta-title">4 mappings confirmed · 2 under review</div>
+              <div class="vom-cta-sub">Visual and physical outputs ready for spatial simulation</div>
+            </div>
+          </div>
+          <button class="vom-sim-btn" id="vomSimBtn">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <polygon points="3,2 13,7.5 3,13" fill="currentColor" opacity="0.9"/>
+            </svg>
+            Send to Simulation
+          </button>
         </div>
-        <div class="canvas-section output-section" style="margin-top:0;animation:fadeUp 0.4s ease 0.15s both">
-          <div class="section-label-float output">RENDER PASSES</div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-            ${[
-              ['Material','#C8A97E','Complete'],
-              ['Lighting','#6BBFB5','Complete'],
-              ['Shadow','#8C7FA8','Running'],
-              ['Reflection','#D95A3C','Queued'],
-              ['Ambient Occ.','#E8E0D5','Queued'],
-              ['Final Comp.','#2D2926','Queued'],
-            ].map(([name,col,status])=>`
-              <div style="background:var(--bg-raised);border:1px solid var(--border);border-radius:8px;overflow:hidden">
-                <div style="height:36px;background:${col}22;border-bottom:1px solid ${col}30;display:flex;align-items:center;justify-content:center">
-                  <div style="width:20px;height:20px;border:1.5px solid ${col};border-radius:3px;opacity:0.7"></div>
-                </div>
-                <div style="padding:8px 10px">
-                  <div style="font-size:11px;font-weight:600">${name}</div>
-                  <div style="font-family:var(--font-mono);font-size:9px;color:${status==='Complete'?'var(--green)':status==='Running'?'var(--yellow)':'var(--text-muted)'};margin-top:2px">${status}</div>
-                </div>
-              </div>`).join('')}
-          </div>
-        </div>`,
+      `,
+
       rightHTML: () => `
-        <div class="sidebar-section-label">RENDER ENGINE</div>
-        <div class="rp-stat-row">
-          <div class="rp-stat-item"><span class="rp-stat-label">Engine</span><span class="rp-stat-val ok">Unreal 5.3</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">Frame rate</span><span class="rp-stat-val ok">60 fps</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">GPU utilisation</span><span class="rp-stat-val warn">78%</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">Scene objects</span><span class="rp-stat-val">24</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">Material passes</span><span class="rp-stat-val">2 / 6</span></div>
-        </div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">LIVE PREVIEW</div>
-        <div class="rp-mini-preview" style="background:#070809">
-          <div style="width:90%;height:80%;position:relative">
-            <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(107,191,181,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(107,191,181,0.05) 1px,transparent 1px);background-size:14px 14px"></div>
-            <div style="position:absolute;bottom:10%;left:15%;right:15%;height:40%;border:1px solid rgba(200,169,126,0.25);border-radius:2px"></div>
+        <!-- Active collaborators -->
+        <div class="sidebar-section-label">ACTIVE COLLABORATORS</div>
+
+        <div class="vom-rp-collab-list">
+
+          <div class="vom-rp-collab">
+            <div class="vom-rp-avatar" style="background:#1E2A3A;border-color:rgba(107,191,181,0.35);color:var(--accent-b)">JT</div>
+            <div class="vom-rp-collab-info">
+              <div class="vom-rp-collab-name">Jun Tanaka</div>
+              <div class="vom-rp-collab-role">Media Designer</div>
+              <div class="vom-rp-collab-task">Mapping visual output modules</div>
+            </div>
+            <div class="vom-rp-collab-live">
+              <span class="status-dot live" style="width:6px;height:6px"></span>
+            </div>
           </div>
-          <div class="rp-mini-label">Lobby — live render feed</div>
+
+          <div class="vom-rp-collab">
+            <div class="vom-rp-avatar" style="background:#1C2A20;border-color:rgba(76,175,125,0.35);color:var(--green)">SH</div>
+            <div class="vom-rp-collab-info">
+              <div class="vom-rp-collab-name">Sadia Hasan</div>
+              <div class="vom-rp-collab-role">Space Designer</div>
+              <div class="vom-rp-collab-task">Reviewing physical object specs</div>
+            </div>
+            <div class="vom-rp-collab-live">
+              <span class="status-dot live" style="width:6px;height:6px"></span>
+            </div>
+          </div>
+
         </div>
+
         <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">EXPORT TARGETS</div>
-        <div class="rp-checklist">
-          <div class="rp-check-item done"><div class="rp-chk checked">✓</div>Unreal Package (.uasset)</div>
-          <div class="rp-check-item pending-item"><div class="rp-chk unchecked">○</div>glTF Export</div>
-          <div class="rp-check-item pending-item"><div class="rp-chk unchecked">○</div>XR Preview Bundle</div>
-          <div class="rp-check-item pending-item"><div class="rp-chk unchecked">○</div>PDF Report</div>
-        </div>`,
+
+        <!-- Installed plugins -->
+        <div class="sidebar-section-label">INSTALLED PLUGINS</div>
+
+        <div class="vom-rp-plugin-list">
+
+          <div class="vom-rp-plugin active-plugin">
+            <div class="vom-rpp-icon" style="background:rgba(140,127,168,0.1);border-color:rgba(140,127,168,0.25)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h4l2-4 2 8 2-4 2 1" stroke="var(--accent-d)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="vom-rpp-text">
+              <div class="vom-rpp-name">Visual Mapping Pack</div>
+              <div class="vom-rpp-status">v2.3 · Active</div>
+            </div>
+            <span class="vom-rpp-dot green"></span>
+          </div>
+
+          <div class="vom-rp-plugin active-plugin">
+            <div class="vom-rpp-icon" style="background:rgba(200,169,126,0.1);border-color:rgba(200,169,126,0.25)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2" stroke="var(--accent-a)" stroke-width="1.2"/><path d="M5 7h4M7 5v4" stroke="var(--accent-a)" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/></svg>
+            </div>
+            <div class="vom-rpp-text">
+              <div class="vom-rpp-name">Spatial Output Pack</div>
+              <div class="vom-rpp-status">v1.9 · Active</div>
+            </div>
+            <span class="vom-rpp-dot green"></span>
+          </div>
+
+          <div class="vom-rp-plugin">
+            <div class="vom-rpp-icon" style="background:rgba(107,191,181,0.08);border-color:rgba(107,191,181,0.2)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="var(--accent-b)" stroke-width="1.2"/><path d="M5 7l2 2 3-3" stroke="var(--accent-b)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></svg>
+            </div>
+            <div class="vom-rpp-text">
+              <div class="vom-rpp-name">Simulation Bridge</div>
+              <div class="vom-rpp-status">v3.0 · Ready</div>
+            </div>
+            <span class="vom-rpp-dot green"></span>
+          </div>
+
+          <div class="vom-rp-plugin">
+            <div class="vom-rpp-icon" style="background:rgba(212,165,32,0.08);border-color:rgba(212,165,32,0.2)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v2M7 10v2M2 7h2M10 7h2" stroke="var(--yellow)" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/><circle cx="7" cy="7" r="2.5" stroke="var(--yellow)" stroke-width="1.2"/></svg>
+            </div>
+            <div class="vom-rpp-text">
+              <div class="vom-rpp-name">DMX Controller</div>
+              <div class="vom-rpp-status">v1.2 · Standby</div>
+            </div>
+            <span class="vom-rpp-dot yellow"></span>
+          </div>
+
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Mapping stats -->
+        <div class="sidebar-section-label">MAPPING PROGRESS</div>
+        <div class="vom-rp-progress">
+          <div class="vom-rpp-row">
+            <span class="vom-rpp-label">Visual → Physical</span>
+            <div class="vom-rpp-track"><div class="vom-rpp-fill vom-rpf-confirm" id="vomRpFill1"></div></div>
+            <span class="vom-rpp-val">4/6</span>
+          </div>
+          <div class="vom-rpp-row">
+            <span class="vom-rpp-label">Connections active</span>
+            <div class="vom-rpp-track"><div class="vom-rpp-fill vom-rpf-connect" id="vomRpFill2"></div></div>
+            <span class="vom-rpp-val">7</span>
+          </div>
+          <div class="vom-rpp-row">
+            <span class="vom-rpp-label">Review queue</span>
+            <div class="vom-rpp-track"><div class="vom-rpp-fill vom-rpf-review" id="vomRpFill3"></div></div>
+            <span class="vom-rpp-val">2</span>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">SESSION</div>
+        <div class="rp-stat-row" style="margin-bottom:0">
+          <div class="rp-stat-item"><span class="rp-stat-label">Blocks used</span><span class="rp-stat-val ok">6</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Modules</span><span class="rp-stat-val">6</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Connections</span><span class="rp-stat-val ok">7</span></div>
+        </div>
+      `,
+    },
+    5: {
+      title: 'Live Simulation',
+      badge: 'Step 05 — Live Simulation',
+
+      canvasHTML: () => `
+
+        <!-- ① SCENE VIEWPORT -->
+        <div class="canvas-section ls-viewport-section" style="animation-delay:0s">
+          <div class="section-label-float">LIVE SIMULATION — SCENE_01 · Lobby</div>
+
+          <div class="ls-scene" id="lsScene">
+
+            <!-- Background layer: grid floor + walls -->
+            <div class="ls-bg">
+              <div class="ls-grid-floor"></div>
+              <div class="ls-wall-back"></div>
+              <div class="ls-wall-left"></div>
+              <div class="ls-wall-right"></div>
+            </div>
+
+            <!-- PROJECTION WALL — back wall, animated content -->
+            <div class="ls-obj ls-projection-wall" id="lsProjectionWall">
+              <div class="ls-pw-content" id="lsPwContent"></div>
+              <div class="ls-pw-label">Projection Wall</div>
+              <div class="ls-obj-badge ls-badge-purple">Visual Output</div>
+            </div>
+
+            <!-- KINETIC MIRROR PANEL — right side -->
+            <div class="ls-obj ls-mirror-panel" id="lsMirrorPanel">
+              <div class="ls-mp-surface" id="lsMpSurface">
+                <div class="ls-mp-reflection" id="lsMpReflection"></div>
+              </div>
+              <div class="ls-mp-base"></div>
+              <div class="ls-obj-badge ls-badge-teal">Kinetic Mirror</div>
+            </div>
+
+            <!-- ADJUSTABLE SPOTLIGHT — ceiling rig -->
+            <div class="ls-obj ls-spotlight-rig" id="lsSpotlightRig">
+              <div class="ls-sp-track"></div>
+              <div class="ls-sp-head" id="lsSpHead">
+                <div class="ls-sp-body"></div>
+                <div class="ls-sp-beam" id="lsSpBeam"></div>
+              </div>
+              <div class="ls-obj-badge ls-badge-warm">Spotlight</div>
+            </div>
+
+            <!-- Data overlay readouts -->
+            <div class="ls-readout ls-ro-tone" id="lsRoTone">
+              <span class="ls-ro-label">Tone Intensity</span>
+              <span class="ls-ro-val" id="lsRoToneVal">0.72</span>
+            </div>
+            <div class="ls-readout ls-ro-rhythm" id="lsRoRhythm">
+              <span class="ls-ro-label">Light Rhythm</span>
+              <span class="ls-ro-val" id="lsRoRhythmVal">8.4s</span>
+            </div>
+            <div class="ls-readout ls-ro-reflect" id="lsRoReflect">
+              <span class="ls-ro-label">Reflection</span>
+              <span class="ls-ro-val" id="lsRoReflectVal">0.85</span>
+            </div>
+
+            <!-- FPS counter -->
+            <div class="ls-fps-badge" id="lsFps">
+              <span class="ls-fps-dot"></span>
+              <span id="lsFpsVal">60</span> fps
+            </div>
+
+          </div>
+
+          <!-- CONTROL BAR -->
+          <div class="ls-controls" id="lsControls">
+            <div class="ls-ctrl-left">
+              <button class="ls-ctrl-btn ls-btn-play" id="lsPlayBtn">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><polygon points="2,1 10,5.5 2,10" fill="currentColor"/></svg>
+                Play Simulation
+              </button>
+              <button class="ls-ctrl-btn" id="lsPauseBtn">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="1.5" y="1" width="3" height="9" rx="1" fill="currentColor"/><rect x="6.5" y="1" width="3" height="9" rx="1" fill="currentColor"/></svg>
+                Pause
+              </button>
+              <button class="ls-ctrl-btn" id="lsReplayBtn">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M9 5.5A4 4 0 112 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M9 2.5v3h-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Replay Flow
+              </button>
+            </div>
+            <div class="ls-ctrl-right">
+              <span class="ls-time-badge" id="lsTimeBadge">00:00</span>
+              <button class="ls-ctrl-btn ls-btn-icon" id="lsGridBtn" title="Toggle grid">⊞</button>
+              <button class="ls-ctrl-btn ls-btn-icon" id="lsFullBtn" title="Fullscreen">⛶</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ② OBJECT STATUS STRIP -->
+        <div class="ls-status-strip canvas-section" style="animation-delay:0.1s">
+          <div class="section-label-float output">ACTIVE OBJECT STATES</div>
+          <div class="ls-obj-status-grid">
+
+            <div class="ls-obj-status ls-os-spotlight">
+              <div class="ls-os-preview">
+                <div class="ls-os-sp-vis" id="lsOsSpVis"></div>
+              </div>
+              <div class="ls-os-info">
+                <div class="ls-os-name">Adjustable Spotlight</div>
+                <div class="ls-os-params">
+                  <span>Intensity <b id="lsOsSpInt">72%</b></span>
+                  <span>Angle <b id="lsOsSpAngle">24°</b></span>
+                  <span>Temp <b>2900K</b></span>
+                </div>
+              </div>
+              <div class="ls-os-live-dot"></div>
+            </div>
+
+            <div class="ls-obj-status ls-os-mirror">
+              <div class="ls-os-preview">
+                <div class="ls-os-mp-vis" id="lsOsMpVis"></div>
+              </div>
+              <div class="ls-os-info">
+                <div class="ls-os-name">Kinetic Mirror Panel</div>
+                <div class="ls-os-params">
+                  <span>Angle <b id="lsOsMpAngle">45°</b></span>
+                  <span>Speed <b>0.28</b></span>
+                  <span>Arc <b>72%</b></span>
+                </div>
+              </div>
+              <div class="ls-os-live-dot"></div>
+            </div>
+
+            <div class="ls-obj-status ls-os-projection">
+              <div class="ls-os-preview">
+                <canvas class="ls-os-pw-canvas" id="lsOsPwCanvas" width="60" height="40"></canvas>
+              </div>
+              <div class="ls-os-info">
+                <div class="ls-os-name">Projection Wall</div>
+                <div class="ls-os-params">
+                  <span>Brightness <b>78%</b></span>
+                  <span>Mode <b>Tone-Resp.</b></span>
+                  <span>Temp <b id="lsOsPwTemp">2.9K</b></span>
+                </div>
+              </div>
+              <div class="ls-os-live-dot"></div>
+            </div>
+
+          </div>
+        </div>
+
+      `,
+
+      rightHTML: () => `
+
+        <!-- Simulation state -->
+        <div class="sidebar-section-label">SIMULATION STATE</div>
+        <div class="ls-rp-state-card" id="lsRpStateCard">
+          <div class="ls-rp-state-top">
+            <div class="ls-rp-state-icon" id="lsRpStateIcon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--text-muted)" stroke-width="1.2"/><polygon points="6,5 12,8 6,11" fill="var(--text-muted)"/></svg>
+            </div>
+            <div class="ls-rp-state-info">
+              <div class="ls-rp-state-label" id="lsRpStateLabel">Standby</div>
+              <div class="ls-rp-state-sub" id="lsRpStateSub">Press Play to begin</div>
+            </div>
+            <div class="ls-rp-state-dot" id="lsRpStateDot"></div>
+          </div>
+          <div class="ls-rp-timecode">
+            <span class="ls-rp-tc-label">Timecode</span>
+            <span class="ls-rp-tc-val" id="lsRpTc">00:00:00</span>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Active outputs -->
+        <div class="sidebar-section-label">ACTIVE OUTPUTS</div>
+        <div class="ls-rp-outputs">
+          <div class="ls-rpo-item">
+            <div class="ls-rpo-dot" style="background:var(--accent-a)"></div>
+            <div class="ls-rpo-info">
+              <div class="ls-rpo-name">Adjustable Spotlight</div>
+              <div class="ls-rpo-sub">DMX ch.1–4 · 2900K · <span id="lsRpoDmxVal">72%</span></div>
+            </div>
+            <div class="ls-rpo-live"></div>
+          </div>
+          <div class="ls-rpo-item">
+            <div class="ls-rpo-dot" style="background:var(--accent-b)"></div>
+            <div class="ls-rpo-info">
+              <div class="ls-rpo-name">Kinetic Mirror Panel</div>
+              <div class="ls-rpo-sub">Servo · <span id="lsRpoMirrorAngle">45°</span> · flow mode</div>
+            </div>
+            <div class="ls-rpo-live"></div>
+          </div>
+          <div class="ls-rpo-item">
+            <div class="ls-rpo-dot" style="background:var(--accent-d)"></div>
+            <div class="ls-rpo-info">
+              <div class="ls-rpo-name">Projection Wall</div>
+              <div class="ls-rpo-sub">4K · tone-responsive · 78%</div>
+            </div>
+            <div class="ls-rpo-live"></div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Plugins -->
+        <div class="sidebar-section-label">CONNECTED PLUGINS</div>
+        <div class="ls-rp-plugins">
+          ${[
+            ['Simulation Bridge',  'v3.0',  'green', 'Streaming'],
+            ['Visual Mapping Pack','v2.3',  'green', 'Active'],
+            ['DMX Controller',     'v1.2',  'green', 'Broadcasting'],
+            ['XR Viewer',          'v0.9',  'yellow','Standby'],
+          ].map(([name, ver, dot, status]) => `
+            <div class="ls-rp-plugin">
+              <div class="ls-rpp-dot ${dot}"></div>
+              <div class="ls-rpp-text">
+                <div class="ls-rpp-name">${name}</div>
+                <div class="ls-rpp-status">${ver} · ${status}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Collaborators -->
+        <div class="sidebar-section-label">COLLABORATION SUMMARY</div>
+        <div class="ls-rp-collabs">
+          <div class="ls-rp-collab">
+            <div class="ls-rp-ca" style="background:#1E2A3A;border-color:rgba(107,191,181,0.3);color:var(--accent-b)">JT</div>
+            <div class="ls-rp-ci"><div class="ls-rp-cn">Jun Tanaka</div><div class="ls-rp-cr">Media Designer · Observing</div></div>
+            <span class="status-dot live" style="width:6px;height:6px"></span>
+          </div>
+          <div class="ls-rp-collab">
+            <div class="ls-rp-ca" style="background:#1C2A20;border-color:rgba(76,175,125,0.3);color:var(--green)">SH</div>
+            <div class="ls-rp-ci"><div class="ls-rp-cn">Sadia Hasan</div><div class="ls-rp-cr">Space Designer · Reviewing</div></div>
+            <span class="status-dot live" style="width:6px;height:6px"></span>
+          </div>
+          <div class="ls-rp-collab">
+            <div class="ls-rp-ca" style="background:#2A1E1C;border-color:rgba(200,169,126,0.3);color:var(--accent-a)">MO</div>
+            <div class="ls-rp-ci"><div class="ls-rp-cn">Mira Osei</div><div class="ls-rp-cr">Branding Designer · Away</div></div>
+            <span class="status-dot" style="width:6px;height:6px;background:var(--text-muted)"></span>
+          </div>
+        </div>
+
+      `,
     },
   };
 
@@ -1218,6 +1680,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
         // 4. Render step 2 content
         currentStep = 2;
+        updatePsbStep(2);
         const data = STEPS[2];
         if (!data) return;
         const badge   = document.querySelector('.workspace-badge');
@@ -1366,6 +1829,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
 
         currentStep = 3;
+        updatePsbStep(3);
         const data = STEPS[3];
         if (!data) return;
 
@@ -1387,6 +1851,508 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, 480);
     }, 380);
+  }
+
+  // ── GUIDED TRANSITION: Step 3 → Step 4 ─────
+  function showVisualWorkspaceOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'visualWorkspaceOverlay';
+    overlay.innerHTML = `
+      <div class="ao-inner">
+        <div class="vwo-grid-wrap">
+          <svg class="vwo-svg" id="vwoSvg" width="200" height="120" viewBox="0 0 200 120">
+            <!-- Connection lines drawn by JS -->
+            <g id="vwoLines"></g>
+            <!-- Nodes -->
+            <g id="vwoNodes"></g>
+          </svg>
+        </div>
+        <div class="ao-label" id="vwoLabel">Initialising Visual Workspace…</div>
+        <div class="ao-progress-wrap">
+          <div class="ao-progress-bar"><div class="ao-progress-fill" id="vwoFill"></div></div>
+          <span class="ao-pct" id="vwoPct">0%</span>
+        </div>
+        <div class="ao-steps-list" id="vwoList"></div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('ao-visible')));
+
+    const fill  = document.getElementById('vwoFill');
+    const label = document.getElementById('vwoLabel');
+    const pctEl = document.getElementById('vwoPct');
+    const list  = document.getElementById('vwoList');
+
+    // Node positions and colours (3 left data blocks → 3 right object targets)
+    const nodes = [
+      // Source: data blocks (left column)
+      { id:'n0', x:28,  y:20,  label:'Tone',      color:'rgba(107,191,181,0.9)', side:'src' },
+      { id:'n1', x:28,  y:60,  label:'Colour',    color:'rgba(200,169,126,0.9)', side:'src' },
+      { id:'n2', x:28,  y:100, label:'Surface',   color:'rgba(76,175,125,0.8)',  side:'src' },
+      // Bridge: translation nodes (centre column)
+      { id:'n3', x:100, y:30,  label:'Spatial',   color:'rgba(140,127,168,0.8)', side:'mid' },
+      { id:'n4', x:100, y:90,  label:'Material',  color:'rgba(200,169,126,0.7)', side:'mid' },
+      // Target: object outputs (right column)
+      { id:'n5', x:172, y:20,  label:'Lighting',  color:'rgba(200,169,126,0.9)', side:'dst' },
+      { id:'n6', x:172, y:60,  label:'Objects',   color:'rgba(107,191,181,0.8)', side:'dst' },
+      { id:'n7', x:172, y:100, label:'Surfaces',  color:'rgba(76,175,125,0.75)', side:'dst' },
+    ];
+    const edges = [
+      ['n0','n3'],['n1','n3'],['n2','n4'],
+      ['n3','n5'],['n3','n6'],['n4','n6'],['n4','n7'],
+    ];
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const nodesG = document.getElementById('vwoNodes');
+    const linesG = document.getElementById('vwoLines');
+
+    // Draw all nodes hidden initially
+    nodes.forEach(n => {
+      const g = document.createElementNS(svgNS, 'g');
+      g.setAttribute('id', n.id);
+      g.style.opacity = '0';
+      g.style.transition = 'opacity 0.3s ease';
+
+      const circle = document.createElementNS(svgNS, 'circle');
+      circle.setAttribute('cx', n.x);
+      circle.setAttribute('cy', n.y);
+      circle.setAttribute('r', '7');
+      circle.setAttribute('fill', n.color.replace('0.9','0.18').replace('0.8','0.15').replace('0.7','0.12'));
+      circle.setAttribute('stroke', n.color);
+      circle.setAttribute('stroke-width', '1.2');
+
+      const dot = document.createElementNS(svgNS, 'circle');
+      dot.setAttribute('cx', n.x);
+      dot.setAttribute('cy', n.y);
+      dot.setAttribute('r', '2.5');
+      dot.setAttribute('fill', n.color);
+
+      const txt = document.createElementNS(svgNS, 'text');
+      txt.setAttribute('x', n.x);
+      txt.setAttribute('y', n.y + (n.side === 'dst' ? -12 : 18));
+      txt.setAttribute('text-anchor', 'middle');
+      txt.setAttribute('font-family', 'DM Mono, monospace');
+      txt.setAttribute('font-size', '7');
+      txt.setAttribute('fill', 'rgba(255,255,255,0.4)');
+      txt.textContent = n.label;
+
+      g.appendChild(circle);
+      g.appendChild(dot);
+      g.appendChild(txt);
+      nodesG.appendChild(g);
+    });
+
+    // Draw all edges hidden initially
+    edges.forEach(([a, b], i) => {
+      const na = nodes.find(n => n.id === a);
+      const nb = nodes.find(n => n.id === b);
+      const line = document.createElementNS(svgNS, 'line');
+      line.setAttribute('x1', na.x);
+      line.setAttribute('y1', na.y);
+      line.setAttribute('x2', nb.x);
+      line.setAttribute('y2', nb.y);
+      line.setAttribute('stroke', 'rgba(255,255,255,0.08)');
+      line.setAttribute('stroke-width', '1');
+      line.setAttribute('id', 'edge_' + i);
+      line.style.opacity = '0';
+      line.style.transition = 'opacity 0.35s ease, stroke 0.35s ease';
+      linesG.appendChild(line);
+    });
+
+    // Sequence
+    const sequence = [
+      { pct: 14, label: 'Loading 6 data blocks into workspace…',   delay: 0    },
+      { pct: 28, label: 'Resolving object library dependencies…',  delay: 500  },
+      { pct: 44, label: 'Building spatial node graph…',            delay: 1000 },
+      { pct: 62, label: 'Assigning material relationships…',       delay: 1500 },
+      { pct: 78, label: 'Generating object mapping schema…',       delay: 2000 },
+      { pct: 92, label: 'Preparing visual output canvas…',         delay: 2500 },
+      { pct: 100,label: 'Visual Workspace ready',                  delay: 2980 },
+    ];
+
+    sequence.forEach((step, i) => {
+      setTimeout(() => {
+        if (!document.getElementById('visualWorkspaceOverlay')) return;
+        if (fill)  fill.style.width  = step.pct + '%';
+        if (pctEl) pctEl.textContent = step.pct + '%';
+        if (label) {
+          label.style.opacity = '0';
+          setTimeout(() => {
+            if (label) { label.textContent = step.label; label.style.opacity = '1'; }
+          }, 100);
+        }
+        // Reveal nodes + edges progressively
+        const nodeRevealOrder = [
+          [0],          // step 0: src nodes appear
+          [1, 2],       // step 1
+          [3],          // step 2: mid nodes
+          [4,'e0','e1'],
+          [5,'e2','e3'],
+          [6, 7,'e4','e5','e6'],
+          [],
+        ];
+        nodeRevealOrder[i].forEach(id => {
+          if (typeof id === 'string' && id.startsWith('e')) {
+            const el = document.getElementById(id.replace('e','edge_'));
+            if (el) { el.style.opacity = '1'; el.setAttribute('stroke', 'rgba(107,191,181,0.3)'); }
+          } else {
+            const el = document.getElementById('n' + id);
+            if (el) el.style.opacity = '1';
+          }
+        });
+        // Log
+        if (i > 0 && list) {
+          const prev = sequence[i-1];
+          const item = document.createElement('div');
+          item.className = 'ao-step-item';
+          item.innerHTML = `<span class="ao-step-check">✓</span><span>${prev.label}</span>`;
+          item.style.cssText = 'opacity:0;transform:translateX(-8px);transition:opacity 0.25s,transform 0.25s';
+          list.appendChild(item);
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            item.style.opacity = '1'; item.style.transform = 'translateX(0)';
+          }));
+          const all = list.querySelectorAll('.ao-step-item');
+          if (all.length > 3) all[0].remove();
+        }
+      }, step.delay);
+    });
+
+    setTimeout(() => dismissVisualWorkspaceOverlay(overlay), 3700);
+  }
+
+  function dismissVisualWorkspaceOverlay(overlay) {
+    const checkSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    // 1. Sidebar: mark 01-03 completed, activate 04
+    const allSteps = document.querySelectorAll('.workflow-steps .step');
+    allSteps.forEach(s => s.classList.remove('active'));
+
+    ['.step[data-step="01"]', '.step[data-step="02"]', '.step[data-step="03"]'].forEach(sel => {
+      const s = document.querySelector(sel);
+      if (!s) return;
+      s.classList.remove('active', 'pending');
+      s.classList.add('completed');
+      const icon = s.querySelector('.step-icon');
+      if (icon) { icon.innerHTML = checkSVG; icon.classList.remove('pulse'); }
+      const bar = s.querySelector('.bar-fill');
+      if (bar)  bar.style.width = '100%';
+    });
+
+    const s4el = document.querySelector('.step[data-step="04"]');
+    if (s4el) {
+      s4el.classList.remove('pending');
+      s4el.classList.add('active');
+    }
+
+    // 2. Fade workspace
+    const canvasEl = document.getElementById('step-canvas-content');
+    const rightEl  = document.getElementById('right-panel-content');
+    if (canvasEl) canvasEl.classList.add('fade-out');
+    if (rightEl)  rightEl.classList.add('fade-out');
+
+    // 3. Dismiss + render step 4
+    setTimeout(() => {
+      if (overlay) overlay.classList.add('ao-exit');
+      setTimeout(() => {
+        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+
+        currentStep = 4;
+        updatePsbStep(4);
+        const data = STEPS[4];
+        if (!data) return;
+
+        const badge   = document.querySelector('.workspace-badge');
+        const titleEl = document.querySelector('.workspace-title');
+        if (canvasEl) canvasEl.innerHTML = data.canvasHTML();
+        if (rightEl)  rightEl.innerHTML  = data.rightHTML();
+        if (badge)    badge.textContent  = data.badge;
+        if (titleEl)  titleEl.textContent = data.title;
+
+        if (canvasEl) {
+          canvasEl.classList.remove('fade-out');
+          canvasEl.classList.add('fade-in');
+          if (rightEl) rightEl.classList.remove('fade-out');
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            canvasEl.classList.remove('fade-in');
+            postRender(4);
+          }));
+        }
+      }, 480);
+    }, 360);
+  }
+
+  // ── GUIDED TRANSITION: Step 4 → Step 5 ─────
+  function showSimulationOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'simulationOverlay';
+    overlay.innerHTML = `
+      <div class="ao-inner simo-inner">
+
+        <!-- Wireframe scene canvas -->
+        <div class="simo-scene-wrap">
+          <canvas id="simoCanvas" class="simo-canvas" width="280" height="140"></canvas>
+          <div class="simo-scene-label" id="simoSceneLabel">Compiling geometry…</div>
+        </div>
+
+        <div class="ao-label simo-label" id="simoLabel">Sending to render engine…</div>
+
+        <div class="ao-progress-wrap">
+          <div class="ao-progress-bar">
+            <div class="ao-progress-fill" id="simoFill"></div>
+          </div>
+          <span class="ao-pct" id="simoPct">0%</span>
+        </div>
+
+        <div class="ao-steps-list" id="simoList"></div>
+
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('ao-visible')));
+
+    // Start wireframe scene animation
+    setTimeout(() => startSimoWireframe(), 200);
+
+    const fill   = document.getElementById('simoFill');
+    const label  = document.getElementById('simoLabel');
+    const pctEl  = document.getElementById('simoPct');
+    const list   = document.getElementById('simoList');
+
+    const sequence = [
+      { pct: 10, label: 'Exporting object mapping schema…',     delay: 0    },
+      { pct: 22, label: 'Compiling spatial geometry mesh…',     delay: 480  },
+      { pct: 38, label: 'Applying material assignments…',       delay: 960  },
+      { pct: 54, label: 'Baking lighting parameters…',          delay: 1440 },
+      { pct: 68, label: 'Loading DMX control bridge…',          delay: 1900 },
+      { pct: 82, label: 'Initialising render engine (UE 5.3)…', delay: 2360 },
+      { pct: 94, label: 'Streaming to simulation viewport…',    delay: 2820 },
+      { pct: 100,label: 'Live Simulation ready',                delay: 3240 },
+    ];
+
+    sequence.forEach((step, i) => {
+      setTimeout(() => {
+        if (!document.getElementById('simulationOverlay')) return;
+        if (fill)  fill.style.width  = step.pct + '%';
+        if (pctEl) pctEl.textContent = step.pct + '%';
+        if (label) {
+          label.style.opacity = '0';
+          setTimeout(() => {
+            if (label) { label.textContent = step.label; label.style.opacity = '1'; }
+          }, 100);
+        }
+        if (i > 0 && list) {
+          const item = document.createElement('div');
+          item.className = 'ao-step-item';
+          item.innerHTML = `<span class="ao-step-check">✓</span><span>${sequence[i-1].label}</span>`;
+          item.style.cssText = 'opacity:0;transform:translateX(-8px);transition:opacity 0.25s,transform 0.25s';
+          list.appendChild(item);
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            item.style.opacity = '1'; item.style.transform = 'translateX(0)';
+          }));
+          const all = list.querySelectorAll('.ao-step-item');
+          if (all.length > 3) all[0].remove();
+        }
+      }, step.delay);
+    });
+
+    setTimeout(() => dismissSimulationOverlay(overlay), 3900);
+  }
+
+  function startSimoWireframe() {
+    const canvas = document.getElementById('simoCanvas');
+    const sceneLabel = document.getElementById('simoSceneLabel');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    // Scene geometry: a simplified lobby space with floor, back wall, two columns
+    // All points in 3D projected with simple perspective
+    const CAM = { z: -320, fov: 200 };
+    const project = (x, y, z) => {
+      const scale = CAM.fov / (CAM.fov + z - CAM.z);
+      return { x: W/2 + x * scale, y: H/2 + y * scale, scale };
+    };
+
+    // Room vertices
+    const roomW = 120, roomH = 70, roomD = 160;
+    const hW = roomW/2;
+
+    const verts = {
+      // Floor quad
+      fl:  project(-hW, roomH/2,   0),
+      fr:  project( hW, roomH/2,   0),
+      fbr: project( hW, roomH/2, roomD),
+      fbl: project(-hW, roomH/2, roomD),
+      // Ceiling
+      cl:  project(-hW, -roomH/2,  0),
+      cr:  project( hW, -roomH/2,  0),
+      cbr: project( hW, -roomH/2, roomD),
+      cbl: project(-hW, -roomH/2, roomD),
+      // Objects: spotlight at top
+      sp1: project(-30, -roomH/2 + 6, roomD * 0.5),
+      sp2: project(-30, -roomH/2 + 22, roomD * 0.5 + 10),
+      // Mirror panel (right wall)
+      m1: project(hW, -10, roomD * 0.4),
+      m2: project(hW, 20, roomD * 0.4),
+      m3: project(hW, 20, roomD * 0.6),
+      m4: project(hW, -10, roomD * 0.6),
+      // Projection wall (back)
+      pw1: project(-40, -20, roomD),
+      pw2: project( 40, -20, roomD),
+      pw3: project( 40,  15, roomD),
+      pw4: project(-40,  15, roomD),
+    };
+
+    const edges = [
+      // Floor
+      ['fl','fr'],['fr','fbr'],['fbr','fbl'],['fbl','fl'],
+      // Ceiling
+      ['cl','cr'],['cr','cbr'],['cbr','cbl'],['cbl','cl'],
+      // Verticals
+      ['fl','cl'],['fr','cr'],['fbr','cbr'],['fbl','cbl'],
+      // Spotlight
+      ['sp1','sp2'],
+      // Mirror panel
+      ['m1','m2'],['m2','m3'],['m3','m4'],['m4','m1'],
+      // Projection wall
+      ['pw1','pw2'],['pw2','pw3'],['pw3','pw4'],['pw4','pw1'],
+    ];
+
+    // Colour map for special edges
+    const edgeColor = {
+      12: 'rgba(200,169,126,0.7)',  // spotlight
+      13: 'rgba(107,191,181,0.6)',  // mirror
+      14: 'rgba(107,191,181,0.6)',
+      15: 'rgba(107,191,181,0.6)',
+      16: 'rgba(107,191,181,0.6)',
+      17: 'rgba(140,127,168,0.6)',  // projection
+      18: 'rgba(140,127,168,0.6)',
+      19: 'rgba(140,127,168,0.6)',
+      20: 'rgba(140,127,168,0.6)',
+    };
+
+    let revealedEdges = 0;
+    const sceneLabels = [
+      'Compiling geometry…', 'Placing objects…', 'Assigning materials…', 'Scene ready'
+    ];
+
+    // Animate edge reveal
+    const revealInterval = setInterval(() => {
+      if (!document.getElementById('simoCanvas')) { clearInterval(revealInterval); return; }
+      revealedEdges = Math.min(revealedEdges + 2, edges.length);
+      if (revealedEdges >= edges.length) {
+        clearInterval(revealInterval);
+        if (sceneLabel) sceneLabel.textContent = sceneLabels[3];
+      } else if (revealedEdges < 8  && sceneLabel) sceneLabel.textContent = sceneLabels[0];
+      else if (revealedEdges < 14  && sceneLabel) sceneLabel.textContent = sceneLabels[1];
+      else if (sceneLabel) sceneLabel.textContent = sceneLabels[2];
+      drawScene();
+    }, 130);
+
+    // Subtle scan line
+    let scanY = 0;
+    let rafId;
+
+    function drawScene() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Grid floor
+      ctx.strokeStyle = 'rgba(107,191,181,0.05)';
+      ctx.lineWidth = 0.5;
+      for (let gx = -hW; gx <= hW; gx += 30) {
+        const a = project(gx, roomH/2, 0);
+        const b = project(gx, roomH/2, roomD);
+        if (a && b) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+      }
+      for (let gz = 0; gz <= roomD; gz += 40) {
+        const a = project(-hW, roomH/2, gz);
+        const b = project( hW, roomH/2, gz);
+        if (a && b) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+      }
+
+      // Edges
+      edges.slice(0, revealedEdges).forEach((e, i) => {
+        const a = verts[e[0]], b = verts[e[1]];
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = edgeColor[i] || 'rgba(200,169,126,0.2)';
+        ctx.lineWidth = edgeColor[i] ? 1.2 : 0.7;
+        ctx.stroke();
+      });
+
+      // Scan beam
+      ctx.fillStyle = `rgba(107,191,181,0.04)`;
+      ctx.fillRect(0, scanY - 2, W, 4);
+      ctx.fillStyle = `rgba(107,191,181,0.15)`;
+      ctx.fillRect(0, scanY, W, 1);
+      scanY = (scanY + 1.2) % H;
+    }
+
+    (function animLoop() {
+      if (!document.getElementById('simoCanvas')) return;
+      drawScene();
+      rafId = requestAnimationFrame(animLoop);
+    })();
+  }
+
+  function dismissSimulationOverlay(overlay) {
+    const checkSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    // 1. Mark all steps 01–04 completed, activate 05
+    const allSteps = document.querySelectorAll('.workflow-steps .step');
+    allSteps.forEach(s => s.classList.remove('active'));
+
+    ['.step[data-step="01"]','.step[data-step="02"]','.step[data-step="03"]','.step[data-step="04"]']
+      .forEach(sel => {
+        const s = document.querySelector(sel);
+        if (!s) return;
+        s.classList.remove('active','pending');
+        s.classList.add('completed');
+        const icon = s.querySelector('.step-icon');
+        if (icon) { icon.innerHTML = checkSVG; icon.classList.remove('pulse'); }
+        const bar = s.querySelector('.bar-fill');
+        if (bar) bar.style.width = '100%';
+      });
+
+    const s5el = document.querySelector('.step[data-step="05"]');
+    if (s5el) { s5el.classList.remove('pending'); s5el.classList.add('active'); }
+
+    // 2. Fade workspace
+    const canvasEl = document.getElementById('step-canvas-content');
+    const rightEl  = document.getElementById('right-panel-content');
+    if (canvasEl) canvasEl.classList.add('fade-out');
+    if (rightEl)  rightEl.classList.add('fade-out');
+
+    // 3. Dismiss overlay, render step 5
+    setTimeout(() => {
+      if (overlay) overlay.classList.add('ao-exit');
+      setTimeout(() => {
+        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+
+        currentStep = 5;
+        updatePsbStep(5);
+        const data = STEPS[5];
+        if (!data) return;
+
+        const badge   = document.querySelector('.workspace-badge');
+        const titleEl = document.querySelector('.workspace-title');
+        if (canvasEl) canvasEl.innerHTML = data.canvasHTML();
+        if (rightEl)  rightEl.innerHTML  = data.rightHTML();
+        if (badge)    badge.textContent  = data.badge;
+        if (titleEl)  titleEl.textContent = data.title;
+
+        if (canvasEl) {
+          canvasEl.classList.remove('fade-out');
+          canvasEl.classList.add('fade-in');
+          if (rightEl) rightEl.classList.remove('fade-out');
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            canvasEl.classList.remove('fade-in');
+            postRender(5);
+          }));
+        }
+      }, 480);
+    }, 360);
   }
 
   // ── RENDER ───────────────────────────────────
@@ -1865,11 +2831,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (openBtn) {
       openBtn.addEventListener('click', () => {
         openBtn.disabled = true;
-        openBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin-icon"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="10 8"/></svg> Opening…`;
-        setTimeout(() => {
-          const s4 = document.querySelector('.step[data-step="04"]');
-          if (s4) s4.click();
-        }, 1400);
+        openBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin-icon"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="10 8"/></svg> Launching workspace…`;
+        setTimeout(() => showVisualWorkspaceOverlay(), 480);
       });
     }
   }
@@ -2065,6 +3028,963 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
+  // ── STEP 4 — Mapping canvas orchestration ───
+  function runStep4MappingCanvas() {
+
+    // Stagger node entrance
+    const nodes = document.querySelectorAll('.vom-node');
+    nodes.forEach((n, i) => {
+      n.style.cssText += ';opacity:0;transform:translateY(10px)';
+      setTimeout(() => {
+        n.style.transition = 'opacity 0.32s cubic-bezier(0.22,1,0.36,1), transform 0.32s cubic-bezier(0.22,1,0.36,1), border-color 0.2s, box-shadow 0.2s';
+        n.style.opacity   = '1';
+        n.style.transform = 'translateY(0)';
+      }, 80 + i * 70);
+    });
+
+    // Draw SVG connection lines after nodes appear
+    setTimeout(() => drawVomConnections(), 800);
+
+    // Animate right-panel progress bars
+    setTimeout(() => {
+      animVomBar('vomRpFill1', 66);
+      animVomBar('vomRpFill2', 100);
+      animVomBar('vomRpFill3', 33);
+    }, 400);
+
+    // Particle preview canvas (Col B node 2)
+    setTimeout(() => drawVomParticles(), 900);
+
+    // Screen rhythm canvas (Col B node 3)
+    setTimeout(() => drawVomScreenRhythm(), 900);
+
+    // Node hover: highlight connected lines
+    document.querySelectorAll('.vom-node').forEach(node => {
+      node.addEventListener('mouseenter', () => {
+        if (!document.querySelector('.vom-settings-panel')) {
+          highlightNodeConnections(node.dataset.node, true);
+        }
+      });
+      node.addEventListener('mouseleave', () => {
+        if (!document.querySelector('.vom-settings-panel')) {
+          highlightNodeConnections(node.dataset.node, false);
+        }
+      });
+      node.addEventListener('click', (e) => {
+        // Don't fire on port clicks
+        if (e.target.closest('.vom-n-port')) return;
+
+        const nodeId  = node.dataset.node;
+        const col     = node.dataset.col;
+        const isVisual   = node.classList.contains('vom-node-visual');
+        const isPhysical = node.classList.contains('vom-node-physical');
+
+        // Only B and C columns get the settings panel
+        if (!isVisual && !isPhysical) return;
+
+        const wasActive = node.classList.contains('vom-node-active');
+        document.querySelectorAll('.vom-node').forEach(n => n.classList.remove('vom-node-active'));
+        closeVomSettings();
+
+        if (!wasActive) {
+          node.classList.add('vom-node-active');
+          openVomSettings(nodeId, node);
+        }
+      });
+    });
+
+    // Auto-layout btn
+    const autoBtn = document.getElementById('vomAutoLayout');
+    if (autoBtn) {
+      autoBtn.addEventListener('click', () => {
+        autoBtn.textContent = '✓ Laid out';
+        autoBtn.style.color = 'var(--green)';
+        setTimeout(() => { autoBtn.textContent = 'Auto-layout'; autoBtn.style.color = ''; }, 1800);
+      });
+    }
+
+    // Clear links btn
+    const clearBtn = document.getElementById('vomClearLinks');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        const svg = document.getElementById('vomSvg');
+        if (svg) {
+          const paths = svg.querySelectorAll('.vom-conn-line');
+          paths.forEach(p => { p.style.opacity = '0'; });
+          setTimeout(() => paths.forEach(p => svg.removeChild(p)), 300);
+        }
+      });
+    }
+
+    // Send to Simulation button
+    const simBtn = document.getElementById('vomSimBtn');
+    if (simBtn) {
+      simBtn.addEventListener('click', () => {
+        simBtn.disabled = true;
+        simBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin-icon"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="10 8"/></svg> Compiling scene…`;
+        setTimeout(() => showSimulationOverlay(), 500);
+      });
+    }
+  }
+
+  // Connection data: [fromNode, toNode, label]
+  const VOM_CONNECTIONS = [
+    ['tone',    'gradient',  'Tone Intensity → Light Gradient'],
+    ['rhythm',  'gradient',  'Light Rhythm → Gradient Timing'],
+    ['reflect', 'particles', 'Reflective Behaviour → Particles'],
+    ['temp',    'particles', 'Colour Temperature → Particle Hue'],
+    ['rhythm',  'screen',    'Light Rhythm → Screen Motion'],
+    ['gradient','spotlight', 'Light Gradient → Spotlight DMX'],
+    ['particles','mirror',   'Particle Field → Mirror Angle'],
+    ['screen',  'projection','Screen Rhythm → Projection Wall'],
+    ['depth',   'spotlight', 'Spatial Depth → Spotlight Z'],
+    ['surface', 'projection','Surface Response → Wall Texture'],
+  ];
+
+  function drawVomConnections() {
+    const svg     = document.getElementById('vomSvg');
+    const canvas  = document.getElementById('vomCanvas');
+    if (!svg || !canvas) return;
+    const cvRect = canvas.getBoundingClientRect();
+
+    const getPortPos = (nodeId, side) => {
+      const port = document.querySelector(`.vom-n-port-${side}[data-${side === 'out' ? 'from' : 'to'}="${nodeId}"]`);
+      if (!port) return null;
+      const r = port.getBoundingClientRect();
+      return {
+        x: r.left + r.width / 2 - cvRect.left,
+        y: r.top  + r.height / 2 - cvRect.top,
+      };
+    };
+
+    VOM_CONNECTIONS.forEach(([from, to, label], idx) => {
+      const p1 = getPortPos(from, 'out');
+      const p2 = getPortPos(to,   'in');
+      if (!p1 || !p2) return;
+
+      const dx = (p2.x - p1.x) * 0.45;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const d = `M ${p1.x} ${p1.y} C ${p1.x + dx} ${p1.y}, ${p2.x - dx} ${p2.y}, ${p2.x} ${p2.y}`;
+      path.setAttribute('d', d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', 'rgba(107,191,181,0.28)');
+      path.setAttribute('stroke-width', '1.2');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('marker-end', 'url(#vom-arrow)');
+      path.setAttribute('class', 'vom-conn-line');
+      path.setAttribute('data-from', from);
+      path.setAttribute('data-to',   to);
+      path.style.opacity = '0';
+      path.style.transition = 'opacity 0.4s ease, stroke 0.25s ease, stroke-width 0.25s ease';
+      svg.appendChild(path);
+
+      // Stagger line appearance
+      setTimeout(() => { path.style.opacity = '1'; }, idx * 80);
+    });
+  }
+
+  function highlightNodeConnections(nodeId, on) {
+    document.querySelectorAll('.vom-conn-line').forEach(line => {
+      const fromMatch = line.dataset.from === nodeId;
+      const toMatch   = line.dataset.to   === nodeId;
+      if (fromMatch || toMatch) {
+        line.setAttribute('stroke', on ? 'rgba(200,169,126,0.75)' : 'rgba(107,191,181,0.28)');
+        line.setAttribute('stroke-width', on ? '2' : '1.2');
+      } else {
+        line.style.opacity = on ? '0.2' : '1';
+      }
+    });
+  }
+
+  function animVomBar(id, pct) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.width = '0';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.transition = 'width 0.7s cubic-bezier(0.4,0,0.2,1)';
+      el.style.width = pct + '%';
+    }));
+  }
+
+  function drawVomParticles() {
+    const wrap = document.getElementById('vomParticlePreview');
+    if (!wrap) return;
+    const canvas = document.createElement('canvas');
+    canvas.width  = wrap.offsetWidth  || 80;
+    canvas.height = wrap.offsetHeight || 48;
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%';
+    wrap.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const pts = Array.from({length:18}, () => ({
+      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+      vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+      r: .6 + Math.random() * 1.2,
+    }));
+    (function tick() {
+      if (!canvas.parentNode) return;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(200,169,126,0.7)'; ctx.fill();
+      });
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  function drawVomScreenRhythm() {
+    const wrap = document.getElementById('vomScreenPreview');
+    if (!wrap) return;
+    const canvas = document.createElement('canvas');
+    canvas.width  = wrap.offsetWidth  || 80;
+    canvas.height = wrap.offsetHeight || 48;
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%';
+    wrap.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    let phase = 0;
+    (function tick() {
+      if (!canvas.parentNode) return;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.beginPath();
+      for (let x=0; x<=canvas.width; x++) {
+        const y = canvas.height/2 + Math.sin((x/canvas.width)*Math.PI*2 + phase) * (canvas.height*.32);
+        x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle = 'rgba(140,127,168,0.65)';
+      ctx.lineWidth = 1.2; ctx.stroke();
+      phase += 0.018;
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  // ── STEP 4 — Module settings panel ─────────
+
+  // Module configuration schemas
+  const VOM_MODULE_CONFIG = {
+    gradient: {
+      label:  'Light Gradient Animation',
+      type:   'Visual Output',
+      color:  'var(--accent-d)',
+      source: 'Tone Intensity + Light Rhythm',
+      fields: [
+        { id:'grd-intensity', label:'Intensity',       kind:'slider',   value:72, min:0, max:100, unit:'%',   hint:'Overall luminance output' },
+        { id:'grd-speed',     label:'Cycle Speed',     kind:'slider',   value:58, min:0, max:100, unit:'%',   hint:'Maps to Light Rhythm 8.4s' },
+        { id:'grd-warmcool',  label:'Warm / Cool Mix', kind:'slider',   value:68, min:0, max:100, unit:'%',   hint:'68% warm from Colour Mood' },
+        { id:'grd-blend',     label:'Blend Mode',      kind:'dropdown', value:'Additive', options:['Additive','Screen','Overlay','Soft Light'], hint:'Composite blend operation' },
+        { id:'grd-response',  label:'Response Mode',   kind:'dropdown', value:'Ambient', options:['Ambient','Reactive','Pulsed','Static'], hint:'How output responds to input' },
+        { id:'grd-smooth',    label:'Smoothing',       kind:'toggle',   value:true,  hint:'Anti-flicker smoothing' },
+        { id:'grd-loop',      label:'Loop',            kind:'toggle',   value:true,  hint:'Continuous animation loop' },
+      ],
+    },
+    particles: {
+      label:  'Reflective Particle Field',
+      type:   'Visual Output',
+      color:  'var(--accent-a)',
+      source: 'Reflective Behaviour + Colour Temperature',
+      fields: [
+        { id:'prt-density',   label:'Scatter Density',  kind:'slider',   value:85, min:0, max:100, unit:'%',   hint:'Particle count per m²' },
+        { id:'prt-drift',     label:'Drift Speed',      kind:'slider',   value:34, min:0, max:100, unit:'%',   hint:'Ambient float velocity' },
+        { id:'prt-size',      label:'Particle Size',    kind:'slider',   value:48, min:0, max:100, unit:'%',   hint:'Mean radius' },
+        { id:'prt-reflect',   label:'Reflectivity',     kind:'slider',   value:82, min:0, max:100, unit:'%',   hint:'Mirror-like quality 0.82' },
+        { id:'prt-response',  label:'Response Mode',    kind:'dropdown', value:'Presence', options:['Presence','Wind','Music','Static'], hint:'What drives particle motion' },
+        { id:'prt-hue',       label:'Hue Lock',         kind:'dropdown', value:'Warm Sand', options:['Warm Sand','Cool Teal','Neutral','Multi'], hint:'Colour palette constraint' },
+        { id:'prt-fade',      label:'Edge Fade',        kind:'toggle',   value:true,  hint:'Soft boundary falloff' },
+        { id:'prt-depth',     label:'Z-Depth',          kind:'toggle',   value:false, hint:'3D particle depth sorting' },
+      ],
+    },
+    screen: {
+      label:  'Screen Motion Rhythm',
+      type:   'Visual Output',
+      color:  'var(--accent-d)',
+      source: 'Light Rhythm',
+      fields: [
+        { id:'scr-intensity', label:'Motion Intensity',  kind:'slider',   value:42, min:0, max:100, unit:'%',   hint:'Amplitude of oscillation' },
+        { id:'scr-period',    label:'Period',            kind:'slider',   value:63, min:0, max:100, unit:'%',   hint:'8.4s sine mapped to 63%' },
+        { id:'scr-opacity',   label:'Content Opacity',   kind:'slider',   value:55, min:0, max:100, unit:'%',   hint:'UI element transparency' },
+        { id:'scr-curve',     label:'Easing Curve',      kind:'dropdown', value:'Sine', options:['Sine','Ease In Out','Linear','Bounce'], hint:'Rhythm interpolation type' },
+        { id:'scr-response',  label:'Response Mode',     kind:'dropdown', value:'Continuous', options:['Continuous','Trigger','Idle','Beat'], hint:'Motion playback mode' },
+        { id:'scr-pause',     label:'Pause on Presence', kind:'toggle',   value:true,  hint:'Occupancy sensor integration' },
+        { id:'scr-invert',    label:'Invert Phase',      kind:'toggle',   value:false, hint:'Mirror rhythm waveform' },
+      ],
+    },
+    spotlight: {
+      label:  'Adjustable Spotlight',
+      type:   'Physical Object',
+      color:  'var(--accent-a)',
+      source: 'Light Gradient Animation + Spatial Depth Index',
+      fields: [
+        { id:'spl-intensity', label:'Intensity',         kind:'slider',   value:72, min:0, max:100, unit:'%',   hint:'DMX channel 1 output' },
+        { id:'spl-angle',     label:'Beam Angle',        kind:'slider',   value:38, min:0, max:100, unit:'°',   hint:'Spread: 5°–40° motorised' },
+        { id:'spl-tilt',      label:'Tilt',              kind:'slider',   value:60, min:0, max:100, unit:'°',   hint:'Vertical aim 0°–90°' },
+        { id:'spl-pan',       label:'Pan',               kind:'slider',   value:50, min:0, max:100, unit:'°',   hint:'Horizontal aim 0°–360°' },
+        { id:'spl-kelvin',    label:'Colour Temperature',kind:'dropdown', value:'2900K', options:['2700K','2900K','3200K','4000K','5600K'], hint:'Warm kelvin from Colour Mood' },
+        { id:'spl-response',  label:'Response Mode',     kind:'dropdown', value:'Reactive', options:['Static','Reactive','Follow','Ambient'], hint:'Occupancy-linked behaviour' },
+        { id:'spl-flicker',   label:'Anti-Flicker',      kind:'toggle',   value:true,  hint:'DALI HF driver mode' },
+        { id:'spl-track',     label:'Object Tracking',   kind:'toggle',   value:false, hint:'Vision-AI position tracking' },
+      ],
+    },
+    mirror: {
+      label:  'Kinetic Mirror Panel',
+      type:   'Physical Object',
+      color:  'var(--accent-b)',
+      source: 'Reflective Particle Field + Reflective Behaviour',
+      fields: [
+        { id:'mir-angle',     label:'Panel Angle',       kind:'slider',   value:45, min:0, max:100, unit:'°',   hint:'Current servo position' },
+        { id:'mir-speed',     label:'Movement Speed',    kind:'slider',   value:28, min:0, max:100, unit:'%',   hint:'Servo travel rate' },
+        { id:'mir-range',     label:'Arc Range',         kind:'slider',   value:72, min:0, max:100, unit:'%',   hint:'Total sweep: 0–180°' },
+        { id:'mir-damp',      label:'Damping',           kind:'slider',   value:60, min:0, max:100, unit:'%',   hint:'Inertia simulation' },
+        { id:'mir-response',  label:'Response Mode',     kind:'dropdown', value:'Flow', options:['Flow','Presence','Rhythm','Fixed'], hint:'What drives the motion' },
+        { id:'mir-coat',      label:'Mirror Coating',    kind:'dropdown', value:'Low-Iron', options:['Standard','Low-Iron','Bronze','Smoked'], hint:'Reflective surface type' },
+        { id:'mir-power',     label:'Servo Enable',      kind:'toggle',   value:true,  hint:'Actuator power state' },
+        { id:'mir-reset',     label:'Auto-Home',         kind:'toggle',   value:true,  hint:'Return to 0° on idle' },
+      ],
+    },
+    projection: {
+      label:  'Projection Wall',
+      type:   'Physical Object',
+      color:  'var(--accent-d)',
+      source: 'Screen Motion Rhythm + Surface Response',
+      fields: [
+        { id:'prj-brightness',label:'Brightness',        kind:'slider',   value:78, min:0, max:100, unit:'%',   hint:'Projector lumen output' },
+        { id:'prj-contrast',  label:'Contrast',          kind:'slider',   value:65, min:0, max:100, unit:'%',   hint:'Dynamic range setting' },
+        { id:'prj-tone',      label:'Tone Shift',        kind:'slider',   value:55, min:0, max:100, unit:'%',   hint:'Warm–cool colour shift' },
+        { id:'prj-scale',     label:'Content Scale',     kind:'slider',   value:82, min:0, max:100, unit:'%',   hint:'Fill vs. letterbox' },
+        { id:'prj-response',  label:'Response Mode',     kind:'dropdown', value:'Tone-Responsive', options:['Tone-Responsive','Static','Ambient','Beat-Sync'], hint:'Content adaptation logic' },
+        { id:'prj-surface',   label:'Surface Material',  kind:'dropdown', value:'Matte White', options:['Matte White','Brushed Concrete','Linen','Textured Stone'], hint:'Projection surface treatment' },
+        { id:'prj-daylight',  label:'Daylight Adjust',   kind:'toggle',   value:true,  hint:'Auto-compensate ambient light' },
+        { id:'prj-blend',     label:'Edge Blend',        kind:'toggle',   value:false, hint:'Multi-projector overlap zone' },
+      ],
+    },
+  };
+
+  let activeVomPanel = null;
+
+  function openVomSettings(nodeId, nodeEl) {
+    const cfg = VOM_MODULE_CONFIG[nodeId];
+    if (!cfg) return;
+
+    activeVomPanel = nodeId;
+    highlightNodeConnections(nodeId, true);
+
+    // Build panel
+    const panel = document.createElement('div');
+    panel.id        = 'vomSettingsPanel';
+    panel.className = 'vom-settings-panel';
+    panel.innerHTML = buildSettingsPanelHTML(cfg, nodeId);
+
+    // Insert after vom-canvas
+    const canvas = document.getElementById('vomCanvas');
+    if (canvas && canvas.parentNode) {
+      canvas.parentNode.insertBefore(panel, canvas.nextSibling);
+    }
+
+    // Animate in
+    requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('vom-sp-visible')));
+
+    // Wire close button
+    panel.querySelector('#vomSpClose').addEventListener('click', () => {
+      document.querySelectorAll('.vom-node').forEach(n => n.classList.remove('vom-node-active'));
+      closeVomSettings();
+      highlightNodeConnections(nodeId, false);
+    });
+
+    // Wire all sliders for live feedback
+    panel.querySelectorAll('.vom-sp-slider').forEach(slider => {
+      const valueEl = panel.querySelector('[data-for="' + slider.id + '"]');
+      slider.addEventListener('input', () => {
+        if (valueEl) valueEl.textContent = slider.value + slider.dataset.unit;
+      });
+    });
+
+    // Wire all toggles
+    panel.querySelectorAll('.vom-sp-toggle-track').forEach(track => {
+      track.addEventListener('click', () => {
+        const input = track.previousElementSibling;
+        if (input && input.type === 'checkbox') {
+          input.checked = !input.checked;
+          track.classList.toggle('vom-toggle-on', input.checked);
+          track.querySelector('.vom-sp-toggle-thumb').style.transform =
+            input.checked ? 'translateX(14px)' : 'translateX(0)';
+        }
+      });
+    });
+
+    // Wire apply
+    panel.querySelector('#vomSpApply').addEventListener('click', () => {
+      const btn = panel.querySelector('#vomSpApply');
+      btn.textContent = '✓ Settings applied';
+      btn.style.background = 'rgba(76,175,125,0.15)';
+      btn.style.borderColor = 'rgba(76,175,125,0.4)';
+      btn.style.color = 'var(--green)';
+      btn.disabled = true;
+    });
+
+    // Wire reset
+    const resetBtn = panel.querySelector('#vomSpReset');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        // Re-render panel with original values
+        const applyBtn = panel.querySelector('#vomSpApply');
+        if (applyBtn) { applyBtn.textContent = 'Apply settings'; applyBtn.style = ''; applyBtn.disabled = false; }
+        cfg.fields.forEach(f => {
+          if (f.kind === 'slider') {
+            const el = panel.querySelector('#' + f.id);
+            const valEl = panel.querySelector('[data-for="' + f.id + '"]');
+            if (el) el.value = f.value;
+            if (valEl) valEl.textContent = f.value + f.unit;
+          }
+          if (f.kind === 'toggle') {
+            const track = panel.querySelector('#' + f.id + ' + .vom-sp-toggle-track') ||
+                          panel.querySelector('[id="' + f.id + '"]')?.nextElementSibling;
+            if (track) {
+              track.classList.toggle('vom-toggle-on', f.value);
+              const thumb = track.querySelector('.vom-sp-toggle-thumb');
+              if (thumb) thumb.style.transform = f.value ? 'translateX(14px)' : 'translateX(0)';
+            }
+          }
+        });
+        resetBtn.textContent = '↺ Reset';
+        setTimeout(() => { resetBtn.textContent = 'Reset to defaults'; }, 1200);
+      });
+    }
+  }
+
+  function closeVomSettings() {
+    const panel = document.getElementById('vomSettingsPanel');
+    if (!panel) return;
+    panel.classList.remove('vom-sp-visible');
+    panel.classList.add('vom-sp-exit');
+    setTimeout(() => { if (panel.parentNode) panel.parentNode.removeChild(panel); }, 280);
+    activeVomPanel = null;
+  }
+
+  function buildSettingsPanelHTML(cfg, nodeId) {
+    const typeColor = cfg.color;
+
+    const fieldsHTML = cfg.fields.map(f => {
+      if (f.kind === 'slider') {
+        return `
+          <div class="vom-sp-field">
+            <div class="vom-sp-field-header">
+              <label class="vom-sp-label">${f.label}</label>
+              <span class="vom-sp-value" data-for="${f.id}">${f.value}${f.unit}</span>
+            </div>
+            <input
+              type="range" id="${f.id}"
+              class="vom-sp-slider"
+              min="${f.min}" max="${f.max}" value="${f.value}"
+              data-unit="${f.unit}"
+            />
+            <div class="vom-sp-hint">${f.hint}</div>
+          </div>`;
+      }
+      if (f.kind === 'dropdown') {
+        const opts = f.options.map(o =>
+          `<option value="${o}"${o === f.value ? ' selected' : ''}>${o}</option>`
+        ).join('');
+        return `
+          <div class="vom-sp-field">
+            <label class="vom-sp-label">${f.label}</label>
+            <select class="vom-sp-select" id="${f.id}">${opts}</select>
+            <div class="vom-sp-hint">${f.hint}</div>
+          </div>`;
+      }
+      if (f.kind === 'toggle') {
+        return `
+          <div class="vom-sp-field vom-sp-field-toggle">
+            <div class="vom-sp-toggle-wrap">
+              <label class="vom-sp-label">${f.label}</label>
+              <div class="vom-sp-hint vom-hint-inline">${f.hint}</div>
+            </div>
+            <div class="vom-sp-toggle-control">
+              <input type="checkbox" id="${f.id}" ${f.value ? 'checked' : ''} style="display:none"/>
+              <div class="vom-sp-toggle-track ${f.value ? 'vom-toggle-on' : ''}">
+                <div class="vom-sp-toggle-thumb" style="transform:translateX(${f.value ? '14' : '0'}px)"></div>
+              </div>
+            </div>
+          </div>`;
+      }
+      return '';
+    }).join('');
+
+    return `
+      <div class="vom-sp-inner">
+        <div class="vom-sp-header">
+          <div class="vom-sp-header-left">
+            <div class="vom-sp-type-pill" style="color:${typeColor};border-color:${typeColor}30;background:${typeColor}12">${cfg.type}</div>
+            <div class="vom-sp-title">${cfg.label}</div>
+          </div>
+          <button class="vom-sp-close" id="vomSpClose" title="Close settings">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+              <path d="M1 1l9 9M10 1L1 10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="vom-sp-source">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="var(--text-muted)" stroke-width="1"/></svg>
+          <span>Linked source: <b>${cfg.source}</b></span>
+        </div>
+        <div class="vom-sp-fields-grid" id="vomSpFields">
+          ${fieldsHTML}
+        </div>
+        <div class="vom-sp-footer">
+          <button class="vom-sp-reset" id="vomSpReset">Reset to defaults</button>
+          <button class="vom-sp-apply" id="vomSpApply">Apply settings</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // ── STEP 5 — Live Simulation Engine ────────
+  let simState = 'stopped'; // stopped | playing | paused
+  let simRafId = null;
+  let simTimerInterval = null;
+  let simElapsed = 0;
+
+  function runStep5Simulation() {
+    // FPS counter
+    let fps = 60;
+    const fpsEl = document.getElementById('lsFpsVal');
+    setInterval(() => {
+      if (!document.getElementById('lsFpsVal')) return;
+      fps = 58 + Math.floor(Math.random() * 4);
+      if (fpsEl) fpsEl.textContent = fps;
+    }, 1200);
+
+    // Projection wall miniature canvas
+    drawLsProjectionMini();
+
+    // Control bar wiring
+    const playBtn   = document.getElementById('lsPlayBtn');
+    const pauseBtn  = document.getElementById('lsPauseBtn');
+    const replayBtn = document.getElementById('lsReplayBtn');
+    const gridBtn   = document.getElementById('lsGridBtn');
+    const scene     = document.getElementById('lsScene');
+
+    if (playBtn) {
+      playBtn.addEventListener('click', () => {
+        if (simState === 'playing') {
+          pauseSim();
+        } else {
+          startSim();
+        }
+      });
+    }
+    if (pauseBtn) {
+      pauseBtn.addEventListener('click', () => {
+        if (simState === 'playing') pauseSim();
+        else if (simState === 'paused') startSim();
+      });
+    }
+    if (replayBtn) {
+      replayBtn.addEventListener('click', () => {
+        stopSim();
+        showReplayOverlay();
+      });
+    }
+    if (gridBtn) {
+      gridBtn.addEventListener('click', () => {
+        const floor = document.querySelector('.ls-grid-floor');
+        if (floor) floor.classList.toggle('ls-grid-hidden');
+        gridBtn.classList.toggle('ls-btn-active');
+      });
+    }
+  }
+
+  function startSim() {
+    if (simState === 'playing') return;
+    simState = 'playing';
+
+    // Update state panel
+    updateSimStatePanel('playing');
+    updateCtrlBtns('playing');
+
+    // Spotlight animation
+    animateSpotlight();
+
+    // Mirror panel animation
+    animateMirror();
+
+    // Projection wall animation
+    animateProjection();
+
+    // Timer
+    simTimerInterval = setInterval(() => {
+      simElapsed++;
+      updateTimecode(simElapsed);
+    }, 1000);
+
+    // Live readout updates
+    startLiveReadouts();
+    // Remove paused indicator if resuming
+    const scene = document.getElementById('lsScene');
+    if (scene) scene.classList.remove('ls-scene-paused');
+  }
+
+  function pauseSim() {
+    if (simState !== 'playing') return;
+    simState = 'paused';
+    updateSimStatePanel('paused');
+    updateCtrlBtns('paused');
+    if (simTimerInterval) clearInterval(simTimerInterval);
+    // Visual paused indicator on scene
+    const scene = document.getElementById('lsScene');
+    if (scene) scene.classList.add('ls-scene-paused');
+  }
+
+  function stopSim() {
+    simState = 'stopped';
+    simElapsed = 0;
+    updateTimecode(0);
+    updateSimStatePanel('stopped');
+    updateCtrlBtns('stopped');
+    if (simTimerInterval) clearInterval(simTimerInterval);
+    // Reset spotlight
+    const head = document.getElementById('lsSpHead');
+    if (head) head.style.cssText = '';
+  }
+
+  function updateCtrlBtns(state) {
+    const playBtn  = document.getElementById('lsPlayBtn');
+    const pauseBtn = document.getElementById('lsPauseBtn');
+    if (!playBtn) return;
+
+    if (state === 'playing') {
+      // Play btn becomes a Pause indicator
+      playBtn.classList.remove('ls-btn-play', 'ls-btn-stopped');
+      playBtn.classList.add('ls-btn-playing');
+      playBtn.innerHTML = `
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+          <rect x="1.5" y="1" width="3" height="9" rx="1" fill="currentColor"/>
+          <rect x="6.5" y="1" width="3" height="9" rx="1" fill="currentColor"/>
+        </svg> Pause`;
+      if (pauseBtn) {
+        pauseBtn.classList.add('ls-btn-pause-active');
+        pauseBtn.textContent = '⏸ Pause';
+      }
+    } else if (state === 'paused') {
+      // Play btn resumes
+      playBtn.classList.remove('ls-btn-playing', 'ls-btn-stopped');
+      playBtn.classList.add('ls-btn-play');
+      playBtn.innerHTML = `
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+          <polygon points="2,1 10,5.5 2,10" fill="currentColor"/>
+        </svg> Resume`;
+      if (pauseBtn) pauseBtn.classList.remove('ls-btn-pause-active');
+    } else {
+      // Stopped — restore original Play label
+      playBtn.classList.add('ls-btn-play');
+      playBtn.classList.remove('ls-btn-playing', 'ls-btn-stopped');
+      playBtn.innerHTML = `
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+          <polygon points="2,1 10,5.5 2,10" fill="currentColor"/>
+        </svg> Play Simulation`;
+      if (pauseBtn) pauseBtn.classList.remove('ls-btn-pause-active');
+    }
+  }
+
+  function updateSimStatePanel(state) {
+    const label = document.getElementById('lsRpStateLabel');
+    const sub   = document.getElementById('lsRpStateSub');
+    const dot   = document.getElementById('lsRpStateDot');
+    const icon  = document.getElementById('lsRpStateIcon');
+    const tc    = document.getElementById('lsRpTc');
+
+    const stateMap = {
+      playing: { label:'Live — Running', sub:'Simulation active · all outputs streaming', dotClass:'ls-dot-live' },
+      paused:  { label:'Paused',         sub:'Outputs frozen · resume when ready',         dotClass:'ls-dot-pause' },
+      stopped: { label:'Standby',        sub:'Press Play to begin',                         dotClass:'' },
+    };
+    const s = stateMap[state];
+    if (label) label.textContent = s.label;
+    if (sub)   sub.textContent   = s.sub;
+    if (dot) {
+      dot.className = 'ls-rp-state-dot';
+      if (s.dotClass) dot.classList.add(s.dotClass);
+    }
+  }
+
+  function updateTimecode(secs) {
+    const h = String(Math.floor(secs / 3600)).padStart(2,'0');
+    const m = String(Math.floor((secs % 3600) / 60)).padStart(2,'0');
+    const s = String(secs % 60).padStart(2,'0');
+    const tc = `${h}:${m}:${s}`;
+    const rpTc   = document.getElementById('lsRpTc');
+    const badge  = document.getElementById('lsTimeBadge');
+    const mStr   = String(Math.floor(secs / 60)).padStart(2,'0');
+    const sStr   = String(secs % 60).padStart(2,'0');
+    if (rpTc)  rpTc.textContent  = tc;
+    if (badge) badge.textContent = mStr + ':' + sStr;
+  }
+
+  // ── Spotlight animation ──
+  function animateSpotlight() {
+    const head  = document.getElementById('lsSpHead');
+    const beam  = document.getElementById('lsSpBeam');
+    const scene = document.getElementById('lsScene');
+    const angleEl = document.getElementById('lsOsSpAngle');
+    const intEl   = document.getElementById('lsOsSpInt');
+    const rpoEl   = document.getElementById('lsRpoDmxVal');
+    if (!head) return;
+
+    let t = 0;
+    const period = 8400; // 8.4s in ms
+
+    function tick() {
+      if (simState !== 'playing') return;
+      if (!document.getElementById('lsSpHead')) return;
+      t = (t + 16) % period;
+      const phase = t / period; // 0–1
+      const angle = Math.sin(phase * Math.PI * 2) * 28; // ±28 deg swing
+      const intensity = 0.55 + Math.sin(phase * Math.PI * 2 + 0.5) * 0.22;
+
+      // Pan the head
+      head.style.transform = `rotate(${angle}deg)`;
+      head.style.transition = 'transform 0.1s linear';
+
+      // Beam opacity
+      if (beam) beam.style.opacity = intensity.toFixed(2);
+
+      // Update readouts
+      if (angleEl) angleEl.textContent = Math.abs(Math.round(angle)) + '°';
+      const intPct = Math.round(intensity * 100);
+      if (intEl)  intEl.textContent  = intPct + '%';
+      if (rpoEl)  rpoEl.textContent  = intPct + '%';
+
+      // Update tone readout
+      const toneEl = document.getElementById('lsRoToneVal');
+      if (toneEl) toneEl.textContent = intensity.toFixed(2);
+
+      // Apply warm/cool scene tint via CSS variable
+      const warmPct = Math.round(60 + Math.sin(phase * Math.PI * 2) * 20);
+      if (scene) scene.style.setProperty('--ls-warm-pct', warmPct + '%');
+
+      simRafId = requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // ── Mirror animation ──
+  function animateMirror() {
+    const panel    = document.getElementById('lsMirrorPanel');
+    const surface  = document.getElementById('lsMpSurface');
+    const reflect  = document.getElementById('lsMpReflection');
+    const angleEl  = document.getElementById('lsOsMpAngle');
+    const rpoAngle = document.getElementById('lsRpoMirrorAngle');
+    if (!panel) return;
+
+    let t2 = 0;
+    function tick() {
+      if (simState !== 'playing') return;
+      if (!document.getElementById('lsMirrorPanel')) return;
+      t2 = (t2 + 14) % 8400;
+      const phase = t2 / 8400;
+      const tilt  = Math.sin(phase * Math.PI * 2 + 1.0) * 18; // ±18 deg
+
+      if (surface) surface.style.transform = `rotateY(${tilt}deg)`;
+      // Update reflection brightness based on tilt
+      if (reflect) reflect.style.opacity = (0.3 + Math.abs(tilt / 18) * 0.5).toFixed(2);
+
+      const deg = Math.round(45 + tilt);
+      if (angleEl)  angleEl.textContent  = deg + '°';
+      if (rpoAngle) rpoAngle.textContent = deg + '°';
+
+      const reflectEl = document.getElementById('lsRoReflectVal');
+      if (reflectEl) reflectEl.textContent = (0.5 + Math.abs(tilt/18) * 0.45).toFixed(2);
+
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // ── Projection animation ──
+  function animateProjection() {
+    const wall = document.getElementById('lsProjectionWall');
+    const content = document.getElementById('lsPwContent');
+    if (!content) return;
+
+    let t3 = 0;
+    function tick() {
+      if (simState !== 'playing') return;
+      if (!document.getElementById('lsProjectionWall')) return;
+      t3 = (t3 + 18) % 8400;
+      const phase = t3 / 8400;
+      const warm  = Math.round(68 + Math.sin(phase * Math.PI * 2) * 18);
+      const cool  = 100 - warm;
+
+      content.style.background = `linear-gradient(
+        ${130 + Math.sin(phase * Math.PI) * 30}deg,
+        rgba(200,169,126,${(warm/100 * 0.25).toFixed(2)}) ${warm - 20}%,
+        rgba(107,191,181,${(cool/100 * 0.2).toFixed(2)}) ${warm + 20}%
+      )`;
+
+      const tempEl = document.getElementById('lsOsPwTemp');
+      if (tempEl) tempEl.textContent = (2.7 + (warm/100) * 0.8).toFixed(1) + 'K';
+
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // ── Live readout fluctuation ──
+  function startLiveReadouts() {
+    const rhythmEl = document.getElementById('lsRoRhythmVal');
+    let rhythmPhase = 0;
+    const rhythmInterval = setInterval(() => {
+      if (simState !== 'playing') { clearInterval(rhythmInterval); return; }
+      if (!document.getElementById('lsRoRhythmVal')) { clearInterval(rhythmInterval); return; }
+      rhythmPhase = (rhythmPhase + 0.05) % (Math.PI * 2);
+      const bpm = (8.4 + Math.sin(rhythmPhase) * 0.6).toFixed(1);
+      if (rhythmEl) rhythmEl.textContent = bpm + 's';
+    }, 200);
+  }
+
+  // ── Projection mini canvas ──
+  function drawLsProjectionMini() {
+    const canvas = document.getElementById('lsOsPwCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let p = 0;
+    (function tick() {
+      if (!document.getElementById('lsOsPwCanvas')) return;
+      ctx.clearRect(0,0,60,40);
+      // Animated gradient wash
+      const grd = ctx.createLinearGradient(0,0,60,40);
+      grd.addColorStop(0, `rgba(200,169,126,${0.15 + Math.sin(p)*0.1})`);
+      grd.addColorStop(1, `rgba(107,191,181,${0.1 + Math.cos(p)*0.08})`);
+      ctx.fillStyle = grd;
+      ctx.fillRect(0,0,60,40);
+      // Sine wave
+      ctx.beginPath();
+      for (let x=0; x<=60; x++) {
+        const y = 20 + Math.sin((x/60)*Math.PI*2 + p) * 10;
+        x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle = 'rgba(140,127,168,0.55)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      p += 0.022;
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  // ── REPLAY FLOW OVERLAY — Step 5 → Step 1 ──
+  function showReplayOverlay() {
+    // Dim the entire workspace briefly, then navigate to step 1
+    const overlay = document.createElement('div');
+    overlay.id = 'replayOverlay';
+    overlay.innerHTML = `
+      <div class="rpo-inner">
+        <div class="rpo-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="var(--accent-a)" stroke-width="1.5" opacity="0.4"/>
+            <path d="M21 10A9 9 0 1 1 11 25" stroke="var(--accent-a)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M21 6v5h-5" stroke="var(--accent-a)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="rpo-label">Returning to start</div>
+        <div class="rpo-sub">Resetting to Import Branding Guidance</div>
+        <div class="rpo-bar"><div class="rpo-bar-fill" id="rpoBarFill"></div></div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      overlay.classList.add('rpo-visible');
+      // Animate the bar
+      const fill = document.getElementById('rpoBarFill');
+      setTimeout(() => { if (fill) fill.style.width = '100%'; }, 60);
+    }));
+
+    setTimeout(() => {
+      overlay.classList.add('rpo-exit');
+      setTimeout(() => {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }, 400);
+    }, 1100);
+
+    // Navigate after the bar completes
+    setTimeout(() => navigateToStep1(), 900);
+  }
+
+  function navigateToStep1() {
+    const checkSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    // Reset all sidebar steps to original visual state
+    const allSteps = document.querySelectorAll('.workflow-steps .step');
+    allSteps.forEach(s => {
+      s.classList.remove('active', 'completed');
+      s.classList.add('pending');
+      const icon = s.querySelector('.step-icon');
+      if (icon) {
+        icon.classList.remove('pulse');
+        // Restore original icons per step
+        const stepNum = s.dataset.step;
+        const icons = {
+          '01': `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v8M3 6l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+          '02': `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 7h4M7 5v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`,
+          '03': `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/></svg>`,
+          '04': `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/></svg>`,
+          '05': `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="3,2 11,7 3,12" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>`,
+        };
+        icon.innerHTML = icons[stepNum] || '';
+      }
+      const bar = s.querySelector('.bar-fill');
+      if (bar) bar.style.width = '0%';
+    });
+
+    // Activate step 1
+    const s1 = document.querySelector('.step[data-step="01"]');
+    if (s1) {
+      s1.classList.remove('pending', 'completed');
+      s1.classList.add('active');
+      const bar = s1.querySelector('.bar-fill');
+      if (bar) bar.style.width = '0%';
+    }
+
+    // Fade panels and render step 1
+    const canvasEl = document.getElementById('step-canvas-content');
+    const rightEl  = document.getElementById('right-panel-content');
+    if (canvasEl) canvasEl.classList.add('fade-out');
+    if (rightEl)  rightEl.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentStep = 1;
+      updatePsbStep(1);
+      const data = STEPS[1];
+      if (!data) return;
+
+      const badge   = document.querySelector('.workspace-badge');
+      const titleEl = document.querySelector('.workspace-title');
+      if (canvasEl) canvasEl.innerHTML = data.canvasHTML();
+      if (rightEl)  rightEl.innerHTML  = data.rightHTML();
+      if (badge)    badge.textContent  = data.badge;
+      if (titleEl)  titleEl.textContent = data.title;
+
+      canvasEl.classList.remove('fade-out');
+      canvasEl.classList.add('fade-in');
+      if (rightEl) rightEl.classList.remove('fade-out');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        canvasEl.classList.remove('fade-in');
+        postRender(1);
+      }));
+    }, 250);
+  }
+
+  // ── PSB step indicator sync ──────────────────
+  function updatePsbStep(num) {
+    const el = document.getElementById('psbStepIndicator');
+    if (!el) return;
+    el.textContent = String(num).padStart(2,'0') + ' / 05';
+    // Accent colour per step
+    const colors = { 1:'var(--accent-a)', 2:'var(--accent-b)', 3:'var(--accent-d)', 4:'var(--accent-a)', 5:'var(--green)' };
+    el.style.color = colors[num] || 'var(--text-sec)';
+  }
+
   function postRender(num) {
     // Step 1 — file parse progress bar + Run AI button
     if (num === 1) {
@@ -2104,6 +4024,16 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => showAnalysisOverlay(), 600);
         });
       }
+    }
+
+    // ── Step 5 — Live simulation ─────────────────
+    if (num === 5) {
+      runStep5Simulation();
+    }
+
+    // ── Step 4 — Mapping canvas ──────────────────
+    if (num === 4) {
+      runStep4MappingCanvas();
     }
 
     // ── Step 3 — Data blocks reveal ─────────────
@@ -2256,5 +4186,363 @@ document.addEventListener('DOMContentLoaded', () => {
     initStep.classList.add('active');
   }
   renderStep(1, true);
+
+  // ═══════════════════════════════════════════════
+  // PLUGIN DRAWER
+  // ═══════════════════════════════════════════════
+
+  const PLUGINS = [
+    {
+      id: 'branding-analysis',
+      name: 'Branding Analysis Plugin',
+      author: 'Synesthetic Labs',
+      version: '1.8.2',
+      latestVersion: '1.9.0',
+      category: 'Analysis',
+      color: 'var(--accent-b)',
+      status: 'installed',
+      hasUpdate: true,
+      desc: 'Deep-parses brand identity documents using NLP to extract tone vectors, keyword clusters, and spatial intent signals. Powers the AI Analysis workflow step.',
+      capabilities: ['PDF deep-parse', 'Keyword extraction (NLP)', 'Tone vector mapping', 'Spatial intent scoring'],
+      size: '4.2 MB',
+      lastUpdated: '3 days ago',
+    },
+    {
+      id: 'visual-mapping',
+      name: 'Visual Mapping Pack',
+      author: 'Synesthetic Labs',
+      version: '2.3.1',
+      latestVersion: '2.3.1',
+      category: 'Mapping',
+      color: 'var(--accent-d)',
+      status: 'installed',
+      hasUpdate: false,
+      desc: 'Provides the visual output module library for the mapping canvas — including light gradient animation, particle field, and screen motion rhythm generators.',
+      capabilities: ['Light gradient animation', 'Reflective particle field', 'Screen motion rhythm', 'Visual output preview'],
+      size: '8.7 MB',
+      lastUpdated: '1 week ago',
+    },
+    {
+      id: 'spatial-output',
+      name: 'Spatial Output Pack',
+      author: 'Synesthetic Labs',
+      version: '1.9.4',
+      latestVersion: '1.9.4',
+      category: 'Output',
+      color: 'var(--accent-a)',
+      status: 'installed',
+      hasUpdate: false,
+      desc: 'Connects physical object modules to real-world control systems: DMX lighting controllers, servo actuators for kinetic surfaces, and projection mapping engines.',
+      capabilities: ['DMX controller bridge', 'Servo actuator protocol', 'Projection mapping output', 'Spatial rule export'],
+      size: '11.3 MB',
+      lastUpdated: '2 weeks ago',
+    },
+    {
+      id: 'ai-insight-branding',
+      name: 'AI Insight Pack for Branding',
+      author: 'Pattern Intelligence Co.',
+      version: '0.7.1',
+      latestVersion: '0.7.1',
+      category: 'AI',
+      color: '#E8A740',
+      status: 'available',
+      hasUpdate: false,
+      desc: 'Extends brand analysis with generative insight — suggests spatial material pairings, colour temperature zones, and experiential narratives based on brand archetype detection.',
+      capabilities: ['Brand archetype detection', 'Material suggestion engine', 'Narrative generation', 'Archetype scoring'],
+      size: '6.1 MB',
+      lastUpdated: null,
+    },
+    {
+      id: 'env-behaviour',
+      name: 'Environmental Behaviour Pack',
+      author: 'Atelier Spatial',
+      version: '1.2.0',
+      latestVersion: '1.2.0',
+      category: 'Simulation',
+      color: 'var(--green)',
+      status: 'available',
+      hasUpdate: false,
+      desc: 'Adds occupancy-responsive behaviour rules to the simulation — visitors influence light levels, mirror angles, and projection content in real-time based on position and dwell time.',
+      capabilities: ['Occupancy detection rules', 'Visitor tracking input', 'Dwell time analysis', 'Real-time spatial response'],
+      size: '9.4 MB',
+      lastUpdated: null,
+    },
+    {
+      id: 'temporal-mapper',
+      name: 'Temporal Mapper',
+      author: 'Synesthetic Labs',
+      version: '1.4.2',
+      latestVersion: '1.4.2',
+      category: 'Mapping',
+      color: 'var(--accent-d)',
+      status: 'installed',
+      hasUpdate: false,
+      desc: 'Handles time-based data block translation — converts brand rhythm parameters into temporal keyframe curves for lighting, projection, and servo control.',
+      capabilities: ['Keyframe curve generation', 'Sine/ease rhythm export', 'DMX scene timing', 'Loop control'],
+      size: '3.8 MB',
+      lastUpdated: '5 days ago',
+    },
+    {
+      id: 'xr-viewer',
+      name: 'XR Preview Viewer',
+      author: 'Immersive Tools GmbH',
+      version: '0.9.3',
+      latestVersion: '0.9.3',
+      category: 'Preview',
+      color: '#D95A3C',
+      status: 'available',
+      hasUpdate: false,
+      desc: 'Stream the live simulation to a headset or spatial display device for in-situ spatial review. Supports Quest 3, Vision Pro, and HoloLens 2.',
+      capabilities: ['Headset streaming', 'Spatial anchoring', 'Collaborative viewing', 'Export to XR bundle'],
+      size: '22.1 MB',
+      lastUpdated: null,
+    },
+  ];
+
+  let pdActiveTab    = 'browse';
+  let pdActiveFilter = 'all';
+  let pdSearchQuery  = '';
+  let pdInstallingId = null;
+
+  function initPluginDrawer() {
+    const openBtn  = document.getElementById('openPluginDrawer');
+    const closeBtn = document.getElementById('closePluginDrawer');
+    const backdrop = document.getElementById('pluginDrawerBackdrop');
+
+    if (openBtn)  openBtn.addEventListener('click',  openPluginDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closePluginDrawer);
+    if (backdrop) backdrop.addEventListener('click', closePluginDrawer);
+
+    // Also wire plugin tags in the summary bar
+    document.querySelectorAll('.psb-plugin-tag').forEach(tag => {
+      tag.addEventListener('click', openPluginDrawer);
+      tag.style.cursor = 'pointer';
+    });
+
+    // Tabs
+    document.querySelectorAll('.pd-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.pd-tab').forEach(t => t.classList.remove('pd-tab-active'));
+        tab.classList.add('pd-tab-active');
+        pdActiveTab = tab.dataset.tab;
+        renderPluginList();
+      });
+    });
+
+    // Filter pills
+    document.querySelectorAll('.pd-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.pd-pill').forEach(p => p.classList.remove('pd-pill-active'));
+        pill.classList.add('pd-pill-active');
+        pdActiveFilter = pill.dataset.filter;
+        renderPluginList();
+      });
+    });
+
+    // Search
+    const searchEl = document.getElementById('pdSearch');
+    if (searchEl) {
+      searchEl.addEventListener('input', () => {
+        pdSearchQuery = searchEl.value.trim().toLowerCase();
+        renderPluginList();
+      });
+    }
+
+    // Update all button
+    const updateAllBtn = document.getElementById('pdUpdateAll');
+    if (updateAllBtn) {
+      updateAllBtn.addEventListener('click', () => {
+        updateAllBtn.textContent = '✓ Up to date';
+        updateAllBtn.disabled = true;
+        const plugin = PLUGINS.find(p => p.hasUpdate);
+        if (plugin) {
+          plugin.version = plugin.latestVersion;
+          plugin.hasUpdate = false;
+        }
+        setTimeout(renderPluginList, 200);
+      });
+    }
+
+    renderPluginList();
+  }
+
+  function openPluginDrawer() {
+    const drawer   = document.getElementById('pluginDrawer');
+    const backdrop = document.getElementById('pluginDrawerBackdrop');
+    if (drawer)   { drawer.classList.add('pd-open');   drawer.setAttribute('aria-hidden', 'false'); }
+    if (backdrop) backdrop.classList.add('pd-open');
+    document.body.classList.add('pd-body-open');
+  }
+
+  function closePluginDrawer() {
+    const drawer   = document.getElementById('pluginDrawer');
+    const backdrop = document.getElementById('pluginDrawerBackdrop');
+    if (drawer)   { drawer.classList.remove('pd-open'); drawer.setAttribute('aria-hidden', 'true'); }
+    if (backdrop) backdrop.classList.remove('pd-open');
+    document.body.classList.remove('pd-body-open');
+  }
+
+  function renderPluginList() {
+    const body = document.getElementById('pdBody');
+    if (!body) return;
+
+    let filtered = PLUGINS.filter(p => {
+      if (pdActiveTab === 'installed' && p.status !== 'installed') return false;
+      if (pdActiveTab === 'updates'   && !p.hasUpdate)             return false;
+      if (pdActiveFilter === 'installed' && p.status !== 'installed') return false;
+      if (pdActiveFilter === 'available' && p.status !== 'available') return false;
+      if (pdSearchQuery && !p.name.toLowerCase().includes(pdSearchQuery) &&
+          !p.desc.toLowerCase().includes(pdSearchQuery) &&
+          !p.category.toLowerCase().includes(pdSearchQuery)) return false;
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      body.innerHTML = `<div class="pd-empty"><div class="pd-empty-icon">⊘</div><div class="pd-empty-text">No plugins found</div></div>`;
+      return;
+    }
+
+    // Group by category
+    const groups = {};
+    filtered.forEach(p => {
+      if (!groups[p.category]) groups[p.category] = [];
+      groups[p.category].push(p);
+    });
+
+    body.innerHTML = Object.entries(groups).map(([cat, plugins]) => `
+      <div class="pd-group">
+        <div class="pd-group-label">${cat.toUpperCase()}</div>
+        ${plugins.map(p => buildPluginCard(p)).join('')}
+      </div>
+    `).join('');
+
+    // Wire card buttons
+    body.querySelectorAll('.pd-card-action-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const id     = btn.dataset.id;
+        const action = btn.dataset.action;
+        handlePluginAction(id, action);
+      });
+    });
+
+    // Wire card expand
+    body.querySelectorAll('.pd-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const wasOpen = card.classList.contains('pd-card-open');
+        body.querySelectorAll('.pd-card').forEach(c => c.classList.remove('pd-card-open'));
+        if (!wasOpen) card.classList.add('pd-card-open');
+      });
+    });
+  }
+
+  function buildPluginCard(p) {
+    const statusLabel = p.status === 'installed' ? 'Installed' : 'Available';
+    const statusClass = p.status === 'installed' ? 'pd-status-installed' : 'pd-status-available';
+    const actionLabel = p.status === 'installed'
+      ? (p.hasUpdate ? 'Update' : 'Configure')
+      : 'Install';
+    const actionClass = p.status === 'installed'
+      ? (p.hasUpdate ? 'pd-act-update' : 'pd-act-config')
+      : 'pd-act-install';
+
+    const caps = p.capabilities.slice(0,3).map(c =>
+      `<span class="pd-cap">${c}</span>`
+    ).join('');
+
+    return `
+      <div class="pd-card" data-plugin-id="${p.id}">
+        <div class="pd-card-main">
+          <div class="pd-card-icon" style="border-color:${p.color}30;background:${p.color}12">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="1" width="12" height="12" rx="2" stroke="${p.color}" stroke-width="1.2"/>
+              <path d="M4 7h6M7 4v6" stroke="${p.color}" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="pd-card-info">
+            <div class="pd-card-name-row">
+              <div class="pd-card-name">${p.name}</div>
+              ${p.hasUpdate ? `<span class="pd-update-badge">Update</span>` : ''}
+              <span class="pd-status-badge ${statusClass}">${statusLabel}</span>
+            </div>
+            <div class="pd-card-meta">
+              <span>${p.author}</span>
+              <span class="pd-meta-sep">·</span>
+              <span>v${p.version}</span>
+              <span class="pd-meta-sep">·</span>
+              <span class="pd-cat-tag" style="color:${p.color}">${p.category}</span>
+            </div>
+            <div class="pd-card-desc">${p.desc}</div>
+          </div>
+          <button class="pd-card-action-btn ${actionClass}" data-id="${p.id}" data-action="${p.status === 'installed' ? (p.hasUpdate ? 'update' : 'configure') : 'install'}">
+            ${actionLabel}
+          </button>
+        </div>
+        <div class="pd-card-expanded">
+          <div class="pd-exp-section">
+            <div class="pd-exp-label">Capabilities</div>
+            <div class="pd-caps-row">${caps}</div>
+          </div>
+          <div class="pd-exp-section">
+            <div class="pd-exp-label">Details</div>
+            <div class="pd-exp-details">
+              <span>Size: <b>${p.size}</b></span>
+              ${p.lastUpdated ? `<span>Updated: <b>${p.lastUpdated}</b></span>` : ''}
+              ${p.hasUpdate ? `<span class="pd-exp-new-ver">New version: <b>v${p.latestVersion}</b></span>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function handlePluginAction(id, action) {
+    const plugin = PLUGINS.find(p => p.id === id);
+    if (!plugin) return;
+
+    const btn = document.querySelector(`.pd-card-action-btn[data-id="${id}"]`);
+    if (!btn) return;
+
+    if (action === 'install') {
+      btn.textContent = 'Installing…';
+      btn.disabled = true;
+      btn.classList.add('pd-act-busy');
+      setTimeout(() => {
+        plugin.status = 'installed';
+        plugin.lastUpdated = 'just now';
+        const countEl = document.getElementById('pdInstalledCount');
+        if (countEl) countEl.textContent = PLUGINS.filter(p => p.status === 'installed').length;
+        renderPluginList();
+        // Flash the footer stat
+        const footerStat = document.querySelector('.pd-footer-left');
+        if (footerStat) {
+          const installed = PLUGINS.filter(p => p.status === 'installed').length;
+          const available = PLUGINS.filter(p => p.status === 'available').length;
+          footerStat.children[0].textContent = installed + ' installed';
+          footerStat.children[2].textContent = available + ' available';
+        }
+      }, 1800);
+    } else if (action === 'update') {
+      btn.textContent = 'Updating…';
+      btn.disabled = true;
+      btn.classList.add('pd-act-busy');
+      setTimeout(() => {
+        plugin.version = plugin.latestVersion;
+        plugin.hasUpdate = false;
+        renderPluginList();
+      }, 1600);
+    } else if (action === 'configure') {
+      btn.textContent = '✓ Configured';
+      btn.style.color = 'var(--green)';
+      setTimeout(() => {
+        btn.textContent = 'Configure';
+        btn.style.color = '';
+      }, 1800);
+    }
+  }
+
+  // Boot plugin drawer
+  initPluginDrawer();
+
 
 });

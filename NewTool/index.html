@@ -11,46 +11,154 @@
 </head>
 <body>
 
-  <!-- TOP HEADER -->
+  <!-- TOP HEADER — two-row layout -->
   <header class="top-header">
-    <div class="header-left">
-      <div class="logo-mark">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <circle cx="14" cy="14" r="13" stroke="var(--accent-a)" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <circle cx="14" cy="14" r="7" fill="none" stroke="var(--accent-b)" stroke-width="1.5"/>
-          <circle cx="14" cy="14" r="2.5" fill="var(--accent-a)"/>
-          <line x1="14" y1="1" x2="14" y2="7" stroke="var(--accent-a)" stroke-width="1"/>
-          <line x1="14" y1="21" x2="14" y2="27" stroke="var(--accent-a)" stroke-width="1"/>
-          <line x1="1" y1="14" x2="7" y2="14" stroke="var(--accent-b)" stroke-width="1"/>
-          <line x1="21" y1="14" x2="27" y2="14" stroke="var(--accent-b)" stroke-width="1"/>
-        </svg>
+
+    <!-- ROW 1: Brand + Nav + Session -->
+    <div class="header-row header-row-1">
+      <div class="header-left">
+        <div class="logo-mark">
+          <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="13" stroke="var(--accent-a)" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <circle cx="14" cy="14" r="7" fill="none" stroke="var(--accent-b)" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="2.5" fill="var(--accent-a)"/>
+            <line x1="14" y1="1" x2="14" y2="7" stroke="var(--accent-a)" stroke-width="1"/>
+            <line x1="14" y1="21" x2="14" y2="27" stroke="var(--accent-a)" stroke-width="1"/>
+            <line x1="1" y1="14" x2="7" y2="14" stroke="var(--accent-b)" stroke-width="1"/>
+            <line x1="21" y1="14" x2="27" y2="14" stroke="var(--accent-b)" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="header-title-group">
+          <h1 class="header-title">Synesthetic<span class="title-accent">.</span></h1>
+        </div>
+        <!-- Divider -->
+        <div class="header-divider-v"></div>
+        <!-- Project name in row 1 -->
+        <div class="header-project-name">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+            <rect x="0.5" y="0.5" width="10" height="10" rx="1.5" stroke="var(--text-muted)" stroke-width="1"/>
+            <path d="M2.5 5.5h6M5.5 2.5v6" stroke="var(--text-muted)" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+          </svg>
+          <span>Immersive Reflective Space Prototype</span>
+        </div>
       </div>
-      <div class="header-title-group">
-        <h1 class="header-title">Synesthetic<span class="title-accent">.</span></h1>
-        <span class="header-sub">Design System &mdash; Collaborative Data to Space Workflow</span>
+
+      <nav class="header-nav">
+        <button class="nav-btn active">Canvas</button>
+        <button class="nav-btn">Assets</button>
+        <button class="nav-btn">Versions</button>
+        <button class="nav-btn">Publish</button>
+      </nav>
+
+      <div class="header-right">
+        <div class="collab-avatars">
+          <div class="avatar av1" title="Mira Osei">MO</div>
+          <div class="avatar av2" title="Jun Tanaka">JT</div>
+          <div class="avatar av3" title="Sadia Hasan">SH</div>
+          <div class="avatar-count">+2</div>
+        </div>
+        <div class="status-dot-wrapper">
+          <span class="status-dot live"></span>
+          <span class="status-label">Live</span>
+        </div>
+        <button class="share-btn">Share</button>
       </div>
     </div>
 
-    <nav class="header-nav">
-      <button class="nav-btn active">Canvas</button>
-      <button class="nav-btn">Assets</button>
-      <button class="nav-btn">Versions</button>
-      <button class="nav-btn">Publish</button>
-    </nav>
+    <!-- ROW 2: Project summary bar -->
+    <div class="header-row header-row-2">
 
-    <div class="header-right">
-      <div class="collab-avatars">
-        <div class="avatar av1" title="Mira Osei">MO</div>
-        <div class="avatar av2" title="Jun Tanaka">JT</div>
-        <div class="avatar av3" title="Sadia Hasan">SH</div>
-        <div class="avatar-count">+2</div>
+      <!-- Left: project meta -->
+      <div class="psb-left">
+        <div class="psb-version-badge">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="var(--accent-a)" stroke-width="1"/></svg>
+          v0.4.1-alpha
+        </div>
+        <div class="psb-separator"></div>
+        <div class="psb-saved">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 5-5" stroke="var(--green)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Autosaved 2m ago</span>
+        </div>
+        <div class="psb-separator"></div>
+        <span class="psb-label">SCENE</span>
+        <span class="psb-val">Lobby · Scene_01</span>
       </div>
-      <div class="status-dot-wrapper">
-        <span class="status-dot live"></span>
-        <span class="status-label">Live</span>
+
+      <!-- Centre: collaborators + plugins -->
+      <div class="psb-centre">
+
+        <!-- Collaborators -->
+        <div class="psb-group">
+          <span class="psb-group-label">Collaborators</span>
+          <div class="psb-tags">
+            <div class="psb-collab-tag psb-ct-a">
+              <div class="psb-ct-dot av1-bg"></div>
+              <span>Branding Designer</span>
+              <span class="psb-ct-name">Mira O.</span>
+            </div>
+            <div class="psb-collab-tag psb-ct-b">
+              <div class="psb-ct-dot av2-bg"></div>
+              <span>Media Designer</span>
+              <span class="psb-ct-name">Jun T.</span>
+            </div>
+            <div class="psb-collab-tag psb-ct-c">
+              <div class="psb-ct-dot av3-bg"></div>
+              <span>Space Designer</span>
+              <span class="psb-ct-name">Sadia H.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="psb-separator psb-sep-tall"></div>
+
+        <!-- Plugins -->
+        <div class="psb-group">
+          <span class="psb-group-label">Plugins</span>
+          <div class="psb-tags">
+            <div class="psb-plugin-tag">
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><rect x="0.5" y="0.5" width="7" height="7" rx="1" stroke="var(--accent-b)" stroke-width="1"/></svg>
+              Branding Analysis Plugin
+            </div>
+            <div class="psb-plugin-tag">
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><rect x="0.5" y="0.5" width="7" height="7" rx="1" stroke="var(--accent-d)" stroke-width="1"/></svg>
+              Visual Mapping Pack
+            </div>
+            <div class="psb-plugin-tag">
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><rect x="0.5" y="0.5" width="7" height="7" rx="1" stroke="var(--accent-a)" stroke-width="1"/></svg>
+              Spatial Output Pack
+            </div>
+          </div>
+        </div>
+
       </div>
-      <button class="share-btn">Share Session</button>
+
+      <!-- Right: session meta -->
+      <div class="psb-right">
+        <div class="psb-stat">
+          <span class="psb-stat-label">Step</span>
+          <span class="psb-stat-val" id="psbStepIndicator">01 / 05</span>
+        </div>
+        <div class="psb-separator"></div>
+        <div class="psb-stat">
+          <span class="psb-stat-label">Engine</span>
+          <span class="psb-stat-val psb-val-ok">Unreal 5.3</span>
+        </div>
+        <div class="psb-separator"></div>
+        <button class="psb-export-btn">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1v6M2 5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 8.5h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Export
+        </button>
+        <button class="psb-manage-plugins-btn" id="openPluginDrawer">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1"/>
+            <path d="M3.5 5h3M5 3.5v3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+          Plugins
+        </button>
+      </div>
+
     </div>
+
   </header>
 
   <!-- MAIN LAYOUT -->
@@ -386,6 +494,73 @@
     </aside>
 
   </div>
+
+  <!-- PLUGIN DRAWER -->
+  <div class="plugin-drawer-backdrop" id="pluginDrawerBackdrop"></div>
+
+  <aside class="plugin-drawer" id="pluginDrawer" aria-hidden="true">
+
+    <div class="pd-header">
+      <div class="pd-header-left">
+        <div class="pd-logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="1" width="14" height="14" rx="2.5" stroke="var(--accent-b)" stroke-width="1.3"/>
+            <path d="M5 8h6M8 5v6" stroke="var(--accent-b)" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="pd-title">Plugin Manager</div>
+          <div class="pd-sub">Synesthetic Ecosystem · v0.4.1</div>
+        </div>
+      </div>
+      <button class="pd-close" id="closePluginDrawer" title="Close">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Search -->
+    <div class="pd-search-row">
+      <div class="pd-search-wrap">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="pd-search-icon">
+          <circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M8 8l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <input class="pd-search" id="pdSearch" type="text" placeholder="Search plugins…" autocomplete="off"/>
+      </div>
+      <div class="pd-filter-pills">
+        <button class="pd-pill pd-pill-active" data-filter="all">All</button>
+        <button class="pd-pill" data-filter="installed">Installed</button>
+        <button class="pd-pill" data-filter="available">Available</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="pd-tab-bar">
+      <button class="pd-tab pd-tab-active" data-tab="browse">Browse</button>
+      <button class="pd-tab" data-tab="installed">Installed <span class="pd-tab-count" id="pdInstalledCount">3</span></button>
+      <button class="pd-tab" data-tab="updates">Updates <span class="pd-tab-count pd-count-warn">1</span></button>
+    </div>
+
+    <!-- Plugin list -->
+    <div class="pd-body" id="pdBody">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Footer -->
+    <div class="pd-footer">
+      <div class="pd-footer-left">
+        <span class="pd-footer-stat">3 installed</span>
+        <span class="pd-footer-sep">·</span>
+        <span class="pd-footer-stat">2 available</span>
+        <span class="pd-footer-sep">·</span>
+        <span class="pd-footer-stat pd-stat-update">1 update</span>
+      </div>
+      <button class="pd-update-all-btn" id="pdUpdateAll">Update all</button>
+    </div>
+
+  </aside>
 
   <script src="app.js"></script>
 </body>
