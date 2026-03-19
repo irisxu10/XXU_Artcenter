@@ -964,6 +964,155 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 400);
   }
 
+  // ── GUIDED TRANSITION: Step 2 → Step 3 ─────
+  function showTranslationOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'translationOverlay';
+    overlay.innerHTML = `
+      <div class="ao-inner">
+        <div class="tro-blocks-wrap" id="troBlocks">
+          <div class="tro-block tro-b1"></div>
+          <div class="tro-block tro-b2"></div>
+          <div class="tro-block tro-b3"></div>
+          <div class="tro-block tro-b4"></div>
+          <div class="tro-block tro-b5"></div>
+        </div>
+        <div class="ao-label" id="troLabel">Packaging brand intelligence…</div>
+        <div class="ao-progress-wrap">
+          <div class="ao-progress-bar"><div class="ao-progress-fill" id="troFill"></div></div>
+          <span class="ao-pct" id="troPct">0%</span>
+        </div>
+        <div class="ao-steps-list" id="troStepsList"></div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('ao-visible')));
+
+    const fill   = document.getElementById('troFill');
+    const label  = document.getElementById('troLabel');
+    const pctEl  = document.getElementById('troPct');
+    const list   = document.getElementById('troStepsList');
+    const blocks = document.getElementById('troBlocks');
+
+    const sequence = [
+      { pct: 16, label: 'Encoding Emotional Tone…',              delay: 0    },
+      { pct: 32, label: 'Encoding Colour Mood…',                 delay: 460  },
+      { pct: 50, label: 'Encoding Material Feeling…',            delay: 920  },
+      { pct: 68, label: 'Encoding Spatial Rhythm…',              delay: 1380 },
+      { pct: 84, label: 'Encoding Reflective Surface data…',     delay: 1840 },
+      { pct: 96, label: 'Writing spatial rule grammar…',         delay: 2280 },
+      { pct: 100,label: 'Data blocks ready — handing to engine', delay: 2700 },
+    ];
+
+    // Block fill animation — each block fills as its dimension encodes
+    const blockColors = [
+      'rgba(107,191,181,0.7)',  // teal   — Emotion
+      'rgba(200,169,126,0.7)',  // sand   — Colour
+      'rgba(140,127,168,0.7)',  // lavender — Material
+      'rgba(76,175,125,0.7)',   // green  — Rhythm
+      'rgba(200,169,126,0.55)', // sand 2 — Reflective
+    ];
+
+    sequence.forEach((step, i) => {
+      setTimeout(() => {
+        if (!document.getElementById('translationOverlay')) return;
+        if (fill)  fill.style.width  = step.pct + '%';
+        if (pctEl) pctEl.textContent = step.pct + '%';
+        if (label) {
+          label.style.opacity = '0';
+          setTimeout(() => {
+            if (label) { label.textContent = step.label; label.style.opacity = '1'; }
+          }, 100);
+        }
+        // Fill a block per dimension
+        if (i < 5 && blocks) {
+          const b = blocks.children[i];
+          if (b) {
+            b.style.background  = blockColors[i];
+            b.style.borderColor = blockColors[i].replace('0.7','0.9').replace('0.55','0.8');
+            b.classList.add('tro-block-filled');
+          }
+        }
+        // Log completed step
+        if (i > 0 && list) {
+          const prev = sequence[i - 1];
+          const item = document.createElement('div');
+          item.className = 'ao-step-item';
+          item.innerHTML = `<span class="ao-step-check">✓</span><span>${prev.label}</span>`;
+          item.style.cssText = 'opacity:0;transform:translateX(-8px);transition:opacity 0.25s ease,transform 0.25s ease';
+          list.appendChild(item);
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            item.style.opacity = '1'; item.style.transform = 'translateX(0)';
+          }));
+          const all = list.querySelectorAll('.ao-step-item');
+          if (all.length > 4) all[0].remove();
+        }
+      }, step.delay);
+    });
+
+    setTimeout(() => dismissTranslationOverlay(overlay), 3400);
+  }
+
+  function dismissTranslationOverlay(overlay) {
+    // 1. Update sidebar: mark step 02 completed, activate step 03
+    const allSteps = document.querySelectorAll('.workflow-steps .step');
+    allSteps.forEach(s => s.classList.remove('active'));
+
+    const checkSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    ['.step[data-step="01"]', '.step[data-step="02"]'].forEach(sel => {
+      const s = document.querySelector(sel);
+      if (!s) return;
+      s.classList.remove('active', 'pending');
+      s.classList.add('completed');
+      const icon = s.querySelector('.step-icon');
+      if (icon) { icon.innerHTML = checkSVG; icon.classList.remove('pulse'); }
+      const bar = s.querySelector('.bar-fill');
+      if (bar)  bar.style.width = '100%';
+    });
+
+    const s3el = document.querySelector('.step[data-step="03"]');
+    if (s3el) {
+      s3el.classList.remove('pending');
+      s3el.classList.add('active');
+    }
+
+    // 2. Fade workspace out
+    const canvasEl = document.getElementById('step-canvas-content');
+    const rightEl  = document.getElementById('right-panel-content');
+    if (canvasEl) canvasEl.classList.add('fade-out');
+    if (rightEl)  rightEl.classList.add('fade-out');
+
+    // 3. Dismiss overlay, render step 3
+    setTimeout(() => {
+      if (overlay) overlay.classList.add('ao-exit');
+      setTimeout(() => {
+        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+
+        currentStep = 3;
+        const data = STEPS[3];
+        if (!data) return;
+
+        const badge   = document.querySelector('.workspace-badge');
+        const titleEl = document.querySelector('.workspace-title');
+        if (canvasEl) canvasEl.innerHTML = data.canvasHTML();
+        if (rightEl)  rightEl.innerHTML  = data.rightHTML();
+        if (badge)    badge.textContent  = data.badge;
+        if (titleEl)  titleEl.textContent = data.title;
+
+        if (canvasEl) {
+          canvasEl.classList.remove('fade-out');
+          canvasEl.classList.add('fade-in');
+          if (rightEl) rightEl.classList.remove('fade-out');
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            canvasEl.classList.remove('fade-in');
+            postRender(3);
+          }));
+        }
+      }, 480);
+    }, 380);
+  }
+
   // ── RENDER ───────────────────────────────────
   function renderStep(num, instant = false) {
     const data = STEPS[num];
@@ -1171,11 +1320,8 @@ document.addEventListener('DOMContentLoaded', () => {
           if (btn) {
             btn.addEventListener('click', () => {
               btn.disabled = true;
-              btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin-icon"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="10 8"/></svg> Translating…`;
-              setTimeout(() => {
-                const s3 = document.querySelector('.step[data-step="03"]');
-                if (s3) s3.click();
-              }, 1800);
+              btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin-icon"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="10 8"/></svg> Building data blocks…`;
+              setTimeout(() => showTranslationOverlay(), 550);
             });
           }
         }

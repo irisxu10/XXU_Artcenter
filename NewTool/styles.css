@@ -2829,3 +2829,102 @@ html, body {
   30%       { opacity: 1;  transform: scale(1); }
   80%       { opacity: 0;  transform: scale(1.04); }
 }
+
+/* ═══════════════════════════════════════════════
+   TRANSLATION OVERLAY — Step 2 → Step 3
+   Data blocks fill animation
+═══════════════════════════════════════════════ */
+
+/* Reuse the base overlay shell from #analysisOverlay */
+#translationOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(10, 11, 13, 0.0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(0px);
+  transition: background 0.32s ease, backdrop-filter 0.32s ease;
+  pointer-events: none;
+}
+#translationOverlay.ao-visible {
+  background: rgba(10, 11, 13, 0.9);
+  backdrop-filter: blur(14px);
+  pointer-events: all;
+}
+#translationOverlay.ao-exit {
+  background: rgba(10, 11, 13, 0.0);
+  backdrop-filter: blur(0px);
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+#translationOverlay .ao-inner {
+  gap: 22px;
+}
+
+/* The 5 data blocks — start as hollow outlines, fill with colour */
+.tro-blocks-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  height: 64px;
+}
+
+.tro-block {
+  width: 44px;
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  transition: background 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.38s ease,
+              height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Resting heights — each block a different height like a bar chart */
+.tro-b1 { height: 34px; }
+.tro-b2 { height: 48px; }
+.tro-b3 { height: 40px; }
+.tro-b4 { height: 56px; }
+.tro-b5 { height: 44px; }
+
+/* Filled state */
+.tro-block-filled {
+  box-shadow: 0 0 12px rgba(255,255,255,0.08), 0 2px 16px rgba(0,0,0,0.4);
+}
+.tro-b1.tro-block-filled { height: 38px; }
+.tro-b2.tro-block-filled { height: 54px; }
+.tro-b3.tro-block-filled { height: 46px; }
+.tro-b4.tro-block-filled { height: 64px; }
+.tro-b5.tro-block-filled { height: 50px; }
+
+/* Shimmer sweep on each filled block */
+.tro-block-filled::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  animation: tro-block-shine 1.8s ease-in-out infinite;
+}
+@keyframes tro-block-shine {
+  0%   { transform: translateX(-150%); }
+  60%  { transform: translateX(350%); }
+  100% { transform: translateX(350%); }
+}
+
+/* Label for the overlay — reuse .ao-label but tighten it */
+#translationOverlay .ao-label {
+  letter-spacing: 0.005em;
+}
+
+/* Progress bar: use teal-gold gradient matching Step 3 palette */
+#troFill {
+  background: linear-gradient(90deg, var(--accent-d), var(--accent-a), var(--accent-b));
+  background-size: 200% 100%;
+  animation: s2-phase-sweep 2s linear infinite;
+  box-shadow: 0 0 8px rgba(200,169,126,0.35);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
