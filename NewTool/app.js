@@ -565,115 +565,391 @@ document.addEventListener('DOMContentLoaded', () => {
     },
 
     3: {
-      title: 'Translation Canvas',
+      title: 'Data Translation',
       badge: 'Step 03 — Data Translation',
+
       canvasHTML: () => `
-        <div class="canvas-section" style="animation-delay:0s">
-          <div class="section-label-float">INPUT — DESIGN TOKENS</div>
-          <div class="token-grid">
-            ${[
-              ['--color-sand-400','#C8A97E','Primary Warm'],
-              ['--color-espresso','#2D2926','Base Dark'],
-              ['--color-teal-300','#6BBFB5','Accent Cool'],
-              ['--color-linen','#E8E0D5','Surface Light'],
-              ['--color-terracotta','#D95A3C','Alert / CTA'],
-              ['--color-lavender','#8C7FA8','Secondary'],
-            ].map(([name,hex,tag])=>`
-              <div class="token-card" style="--tc:${hex}">
-                <div class="token-swatch"></div>
-                <div class="token-info">
-                  <div class="token-name">${name}</div>
-                  <div class="token-val">${hex}</div>
-                </div>
-                <div class="token-tag">${tag}</div>
-              </div>`).join('')}
-          </div>
-        </div>
-        <div class="canvas-arrow">
-          <div class="arrow-line"></div>
-          <div class="arrow-label">AI Translation Engine — 62% complete</div>
-          <div class="arrow-progress"><div class="ap-fill" id="arrowProgress"></div></div>
-        </div>
-        <div class="canvas-section output-section" style="animation-delay:0.15s">
-          <div class="section-label-float output">OUTPUT — SPATIAL RULE MAPPING</div>
-          <div class="rule-cards">
-            <div class="rule-card">
-              <div class="rule-header"><span class="rule-icon">◈</span><span class="rule-title">Material Luminance</span><span class="rule-status done">Mapped</span></div>
-              <div class="rule-desc">Sand-400 → Surface emissive at 0.42 intensity. Used for ceiling panels and wayfinding glow strips.</div>
-              <div class="rule-preview lum-preview"></div>
-            </div>
-            <div class="rule-card">
-              <div class="rule-header"><span class="rule-icon">◈</span><span class="rule-title">Spatial Accent Zones</span><span class="rule-status done">Mapped</span></div>
-              <div class="rule-desc">Teal-300 applied to interactive surfaces: door frames, kiosk borders, and floor inlay markers.</div>
-              <div class="rule-preview zone-preview"></div>
-            </div>
-            <div class="rule-card pending-card">
-              <div class="rule-header"><span class="rule-icon">◇</span><span class="rule-title">Depth Stratification</span><span class="rule-status pending">Processing</span></div>
-              <div class="rule-desc">Generating foreground/midground/background layer weights from token hierarchy tree…</div>
-              <div class="rule-processing"><div class="processing-bar"></div></div>
-            </div>
-            <div class="rule-card pending-card">
-              <div class="rule-header"><span class="rule-icon">◇</span><span class="rule-title">Typographic Volumetrics</span><span class="rule-status pending">Queued</span></div>
-              <div class="rule-desc">Converting font weight hierarchy to signage scale ratios for 3D environment.</div>
-              <div class="rule-processing"><div class="processing-bar" style="animation-delay:0.4s"></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="canvas-terminal" style="margin-top:16px;animation:fadeUp 0.4s ease 0.3s both">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span>
-            <span class="terminal-title">Translation Log</span>
-          </div>
-          <div class="terminal-body" id="terminalBody">
-            <div class="log-line"><span class="log-time">14:22:07</span><span class="log-tag ok">OK</span> Loaded 6 color tokens from BrandKit_v3.fig</div>
-            <div class="log-line"><span class="log-time">14:22:09</span><span class="log-tag ok">OK</span> Typography scale extracted — 4 levels detected</div>
-            <div class="log-line"><span class="log-time">14:22:11</span><span class="log-tag ok">OK</span> Luminance mapping complete → 2 spatial rules written</div>
-            <div class="log-line"><span class="log-time">14:22:14</span><span class="log-tag info">··</span> Running depth stratification model (est. 38s remaining)</div>
-            <div class="log-line"><span class="log-time">14:22:15</span><span class="log-tag info">··</span> Typographic volumetrics queued — awaiting depth output</div>
-          </div>
-        </div>`,
-      rightHTML: () => `
-        <div class="sidebar-section-label">PLUGIN STATUS</div>
-        <div class="plugin-list">
-          ${[
-            ['green','Figma Bridge','Synced · v2.4.1','Config',''],
-            ['green','AI Core Engine','Active · GPU node 3','Logs',''],
-            ['yellow','Unreal Exporter','Standby · awaiting Step 4','Wake',''],
-            ['yellow','Rhino 3D Link','Idle · last sync 2h ago','Sync',''],
-            ['red','XR Viewer','Auth error — reconnect','Fix','err'],
-          ].map(([dot,name,status,btn,cls])=>`
-            <div class="plugin-item">
-              <div class="plugin-dot ${dot}"></div>
-              <div class="plugin-info">
-                <div class="plugin-name">${name}</div>
-                <div class="plugin-status">${status}</div>
+
+        <!-- ① HEADER STRIP -->
+        <div class="dt-header-strip canvas-section" style="animation-delay:0s">
+          <div class="section-label-float">TRANSLATED DATA BLOCKS</div>
+          <div class="dt-header-inner">
+            <div class="dt-header-left">
+              <div class="dt-origin-chip">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="var(--accent-b)" stroke-width="1.1"/><circle cx="5.5" cy="5.5" r="1.8" fill="var(--accent-b)" opacity="0.5"/></svg>
+                Source: Brand Identity Guidance.pdf
               </div>
-              <button class="plugin-btn ${cls}">${btn}</button>
-            </div>`).join('')}
-        </div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">TRANSLATION METRICS</div>
-        <div class="metrics-grid">
-          <div class="metric-cell"><div class="metric-val">62<span class="metric-unit">%</span></div><div class="metric-label">Pipeline Progress</div></div>
-          <div class="metric-cell"><div class="metric-val">14</div><div class="metric-label">Rules Generated</div></div>
-          <div class="metric-cell"><div class="metric-val">6</div><div class="metric-label">Token Sources</div></div>
-          <div class="metric-cell"><div class="metric-val">3<span class="metric-unit">s</span></div><div class="metric-label">AI Latency</div></div>
-        </div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">SPATIAL PREVIEW</div>
-        <div class="preview-viewport">
-          <div class="vp-scene" id="vpScene">
-            <div class="vp-floor"></div><div class="vp-wall-back"></div>
-            <div class="vp-panel vp-panel-a"></div><div class="vp-panel vp-panel-b"></div>
-            <div class="vp-strip"></div>
-            <div class="vp-label">Lobby — Material Pass</div>
+              <div class="dt-origin-chip">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="1" y="1" width="9" height="9" rx="1.5" stroke="var(--accent-a)" stroke-width="1.1"/><path d="M3.5 5.5h4M5.5 3.5v4" stroke="var(--accent-a)" stroke-width="1" stroke-linecap="round"/></svg>
+                AI Analysis: 91% confidence
+              </div>
+            </div>
+            <div class="dt-header-right">
+              <span class="dt-block-count" id="dtBlockCount">0 / 5 blocks active</span>
+              <div class="dt-view-toggle">
+                <button class="dt-vt-btn dt-vt-active" id="dtViewGrid" title="Grid view">⊞</button>
+                <button class="dt-vt-btn" id="dtViewList" title="List view">☰</button>
+              </div>
+            </div>
           </div>
-          <div class="vp-controls">
-            <button class="vp-btn">↺ Orbit</button>
-            <button class="vp-btn">⊞ Grid</button>
-            <button class="vp-btn">▶ Animate</button>
+        </div>
+
+        <!-- ② DATA BLOCK GRID -->
+        <div class="dt-blocks-grid" id="dtBlocksGrid">
+
+          <!-- BLOCK 01 — Tone Intensity -->
+          <div class="dt-block dt-b-tone" data-block="0" data-type="numeric" tabindex="0">
+            <div class="dt-b-gutter"></div>
+            <div class="dt-b-inner">
+              <div class="dt-b-top">
+                <div class="dt-b-index">01</div>
+                <div class="dt-b-badges">
+                  <span class="dt-type-badge dt-type-numeric">Numeric</span>
+                  <span class="dt-status-badge dt-status-ready">Ready</span>
+                </div>
+              </div>
+              <div class="dt-b-title">Tone Intensity</div>
+              <div class="dt-b-desc">Encodes the overall emotional weight of the brand voice as a scalar between 0 (silent / absent) and 1 (forceful / dominant). Drives ambient light level and material opacity across spatial layers.</div>
+              <div class="dt-b-visual">
+                <div class="dt-numeric-display">
+                  <span class="dt-num-val" id="dtVal0">0.72</span>
+                  <div class="dt-num-bar"><div class="dt-num-fill" style="width:72%"></div></div>
+                  <span class="dt-num-range">0.0 → 1.0</span>
+                </div>
+              </div>
+              <div class="dt-b-footer">
+                <span class="dt-b-source">← Emotional Tone · AI Analysis</span>
+                <div class="dt-b-actions">
+                  <button class="dt-act-btn" title="Edit value">Edit</button>
+                  <button class="dt-act-btn" title="Link to output">Link</button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>`,
+
+          <!-- BLOCK 02 — Reflective Behaviour -->
+          <div class="dt-block dt-b-reflect" data-block="1" data-type="spatial" tabindex="0">
+            <div class="dt-b-gutter"></div>
+            <div class="dt-b-inner">
+              <div class="dt-b-top">
+                <div class="dt-b-index">02</div>
+                <div class="dt-b-badges">
+                  <span class="dt-type-badge dt-type-spatial">Spatial</span>
+                  <span class="dt-status-badge dt-status-editable">Editable</span>
+                </div>
+              </div>
+              <div class="dt-b-title">Reflective Behaviour</div>
+              <div class="dt-b-desc">Defines how surfaces in the spatial environment receive, absorb, and re-emit surrounding conditions. Informed by the 9× keyword frequency of "reflective" in source material.</div>
+              <div class="dt-b-visual">
+                <div class="dt-reflect-vis">
+                  <div class="dt-rv-col dt-rv-in">
+                    <div class="dt-rv-bar" style="height:60%"></div>
+                    <span>Absorb</span>
+                  </div>
+                  <div class="dt-rv-col dt-rv-mid">
+                    <div class="dt-rv-bar dt-rv-active" style="height:85%"></div>
+                    <span>Reflect</span>
+                  </div>
+                  <div class="dt-rv-col dt-rv-out">
+                    <div class="dt-rv-bar" style="height:42%"></div>
+                    <span>Emit</span>
+                  </div>
+                </div>
+              </div>
+              <div class="dt-b-footer">
+                <span class="dt-b-source">← Reflective Surface Potential · AI Analysis</span>
+                <div class="dt-b-actions">
+                  <button class="dt-act-btn">Edit</button>
+                  <button class="dt-act-btn">Link</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOCK 03 — Light Rhythm -->
+          <div class="dt-block dt-b-rhythm" data-block="2" data-type="temporal" tabindex="0">
+            <div class="dt-b-gutter"></div>
+            <div class="dt-b-inner">
+              <div class="dt-b-top">
+                <div class="dt-b-index">03</div>
+                <div class="dt-b-badges">
+                  <span class="dt-type-badge dt-type-temporal">Temporal</span>
+                  <span class="dt-status-badge dt-status-ready">Ready</span>
+                </div>
+              </div>
+              <div class="dt-b-title">Light Rhythm</div>
+              <div class="dt-b-desc">Translates the brand's "slow and elongated cadence" into a temporal light modulation curve. Long dwell times with low-frequency oscillation — light breathes rather than pulses.</div>
+              <div class="dt-b-visual">
+                <div class="dt-rhythm-wave" id="dtRhythmWave">
+                  <canvas class="dt-wave-canvas" id="dtWaveCanvas" width="240" height="44"></canvas>
+                </div>
+                <div class="dt-rhythm-meta">
+                  <span class="dt-rm-item">Period <b>8.4s</b></span>
+                  <span class="dt-rm-item">Amplitude <b>0.28</b></span>
+                  <span class="dt-rm-item">Curve <b>Sine</b></span>
+                </div>
+              </div>
+              <div class="dt-b-footer">
+                <span class="dt-b-source">← Spatial Rhythm · AI Analysis</span>
+                <div class="dt-b-actions">
+                  <button class="dt-act-btn">Edit</button>
+                  <button class="dt-act-btn">Link</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOCK 04 — Colour Temperature -->
+          <div class="dt-block dt-b-temp" data-block="3" data-type="visual" tabindex="0">
+            <div class="dt-b-gutter"></div>
+            <div class="dt-b-inner">
+              <div class="dt-b-top">
+                <div class="dt-b-index">04</div>
+                <div class="dt-b-badges">
+                  <span class="dt-type-badge dt-type-visual">Visual</span>
+                  <span class="dt-status-badge dt-status-linked">Linked</span>
+                </div>
+              </div>
+              <div class="dt-b-title">Colour Temperature</div>
+              <div class="dt-b-desc">Warm dominant palette (68%) converted to a Kelvin range of 2700K–3200K for material lighting. Cool accent moments (22%) mapped to 5500K–6000K for threshold and transition zones.</div>
+              <div class="dt-b-visual">
+                <div class="dt-temp-gradient">
+                  <div class="dt-tg-bar"></div>
+                  <div class="dt-tg-markers">
+                    <div class="dt-tg-mark" style="left:15%">
+                      <div class="dt-tg-tick"></div>
+                      <span>2700K</span>
+                    </div>
+                    <div class="dt-tg-mark" style="left:40%">
+                      <div class="dt-tg-tick"></div>
+                      <span>3200K</span>
+                    </div>
+                    <div class="dt-tg-mark dt-tg-mark-cool" style="left:68%">
+                      <div class="dt-tg-tick"></div>
+                      <span>5500K</span>
+                    </div>
+                    <div class="dt-tg-mark dt-tg-mark-cool" style="left:88%">
+                      <div class="dt-tg-tick"></div>
+                      <span>6000K</span>
+                    </div>
+                  </div>
+                  <div class="dt-tg-range-warm"></div>
+                  <div class="dt-tg-range-cool"></div>
+                </div>
+              </div>
+              <div class="dt-b-footer">
+                <span class="dt-b-source">← Colour Mood · AI Analysis</span>
+                <div class="dt-b-actions">
+                  <button class="dt-act-btn">Edit</button>
+                  <button class="dt-act-btn dt-act-linked">Linked ↗</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOCK 05 — Surface Response -->
+          <div class="dt-block dt-b-surface" data-block="4" data-type="spatial" tabindex="0">
+            <div class="dt-b-gutter"></div>
+            <div class="dt-b-inner">
+              <div class="dt-b-top">
+                <div class="dt-b-index">05</div>
+                <div class="dt-b-badges">
+                  <span class="dt-type-badge dt-type-spatial">Spatial</span>
+                  <span class="dt-status-badge dt-status-editable">Editable</span>
+                </div>
+              </div>
+              <div class="dt-b-title">Surface Response</div>
+              <div class="dt-b-desc">Defines how physical materials react to occupant presence and environmental input. Matte surfaces with high tactility index (0.84) — touch-responsive, not visually demanding.</div>
+              <div class="dt-b-visual">
+                <div class="dt-surface-matrix">
+                  <div class="dt-sm-axis dt-sm-y">Tactility</div>
+                  <div class="dt-sm-grid">
+                    <div class="dt-sm-cell dt-sm-active" style="grid-area:1/3"></div>
+                    <div class="dt-sm-cell dt-sm-active" style="grid-area:2/3"></div>
+                    <div class="dt-sm-cell dt-sm-mid"    style="grid-area:1/2"></div>
+                    <div class="dt-sm-cell"              style="grid-area:2/2"></div>
+                    <div class="dt-sm-cell"              style="grid-area:1/1"></div>
+                    <div class="dt-sm-cell"              style="grid-area:2/1"></div>
+                    <div class="dt-sm-dot"               id="dtSurfaceDot"></div>
+                  </div>
+                  <div class="dt-sm-axis dt-sm-x">Reflectivity</div>
+                </div>
+              </div>
+              <div class="dt-b-footer">
+                <span class="dt-b-source">← Material Feeling · AI Analysis</span>
+                <div class="dt-b-actions">
+                  <button class="dt-act-btn">Edit</button>
+                  <button class="dt-act-btn">Link</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOCK 06 — Spatial Depth Index -->
+          <div class="dt-block dt-b-depth" data-block="5" data-type="numeric" tabindex="0">
+            <div class="dt-b-gutter"></div>
+            <div class="dt-b-inner">
+              <div class="dt-b-top">
+                <div class="dt-b-index">06</div>
+                <div class="dt-b-badges">
+                  <span class="dt-type-badge dt-type-numeric">Numeric</span>
+                  <span class="dt-status-badge dt-status-ready">Ready</span>
+                </div>
+              </div>
+              <div class="dt-b-title">Spatial Depth Index</div>
+              <div class="dt-b-desc">Stratifies the environment into weighted foreground, midground, and background layers. Derived from the "considered stillness" tone — depth is expressed through recession, not complexity.</div>
+              <div class="dt-b-visual">
+                <div class="dt-depth-layers">
+                  <div class="dt-dl-layer dt-dl-fg">
+                    <span class="dt-dl-label">Foreground</span>
+                    <span class="dt-dl-val">0.85</span>
+                    <div class="dt-dl-bar"><div class="dt-dl-fill" style="width:85%"></div></div>
+                  </div>
+                  <div class="dt-dl-layer dt-dl-mid">
+                    <span class="dt-dl-label">Midground</span>
+                    <span class="dt-dl-val">0.55</span>
+                    <div class="dt-dl-bar"><div class="dt-dl-fill" style="width:55%"></div></div>
+                  </div>
+                  <div class="dt-dl-layer dt-dl-bg">
+                    <span class="dt-dl-label">Background</span>
+                    <span class="dt-dl-val">0.30</span>
+                    <div class="dt-dl-bar"><div class="dt-dl-fill" style="width:30%"></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dt-b-footer">
+                <span class="dt-b-source">← Spatial Rhythm · AI Analysis</span>
+                <div class="dt-b-actions">
+                  <button class="dt-act-btn">Edit</button>
+                  <button class="dt-act-btn">Link</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ③ OPEN VISUAL WORKSPACE CTA -->
+        <div class="dt-cta-row" style="animation:fadeUp 0.4s ease 0.35s both">
+          <div class="dt-cta-left">
+            <div class="dt-cta-title">6 data blocks ready</div>
+            <div class="dt-cta-sub">All blocks translated and available for visualisation output mapping</div>
+          </div>
+          <button class="dt-open-btn" id="dtOpenBtn">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <rect x="2" y="2" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M5 7.5h5M7.5 5v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            Open Visual Workspace
+          </button>
+        </div>
+      `,
+
+      rightHTML: () => `
+        <!-- Plugin cards -->
+        <div class="sidebar-section-label">INSTALLED PLUGINS</div>
+        <div class="dt-rp-plugins">
+
+          <div class="dt-rp-plugin-card dt-rp-active">
+            <div class="dt-rpp-left">
+              <div class="dt-rpp-icon" style="background:rgba(107,191,181,0.1);border-color:rgba(107,191,181,0.25)">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="2" stroke="var(--accent-b)" stroke-width="1.2"/><path d="M4 7h6M7 4v6" stroke="var(--accent-b)" stroke-width="1.2" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <div class="dt-rpp-name">Data Block Engine</div>
+                <div class="dt-rpp-ver">v3.1.0 · Active</div>
+              </div>
+            </div>
+            <span class="dt-rpp-dot green"></span>
+          </div>
+
+          <div class="dt-rp-plugin-card">
+            <div class="dt-rpp-left">
+              <div class="dt-rpp-icon" style="background:rgba(200,169,126,0.1);border-color:rgba(200,169,126,0.25)">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11L7 3l5 8H2z" stroke="var(--accent-a)" stroke-width="1.2" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <div class="dt-rpp-name">Visual Workspace</div>
+                <div class="dt-rpp-ver">v2.0.4 · Ready</div>
+              </div>
+            </div>
+            <span class="dt-rpp-dot green"></span>
+          </div>
+
+          <div class="dt-rp-plugin-card">
+            <div class="dt-rpp-left">
+              <div class="dt-rpp-icon" style="background:rgba(140,127,168,0.1);border-color:rgba(140,127,168,0.25)">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="var(--accent-d)" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="var(--accent-d)" stroke-width="1.2" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <div class="dt-rpp-name">Temporal Mapper</div>
+                <div class="dt-rpp-ver">v1.4.2 · Standby</div>
+              </div>
+            </div>
+            <span class="dt-rpp-dot yellow"></span>
+          </div>
+
+          <div class="dt-rp-plugin-card">
+            <div class="dt-rpp-left">
+              <div class="dt-rpp-icon" style="background:rgba(76,175,125,0.08);border-color:rgba(76,175,125,0.2)">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h2l2-4 2 8 2-4 2 4h2" stroke="var(--green)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <div class="dt-rpp-name">Spatial Rule Writer</div>
+                <div class="dt-rpp-ver">v2.2.0 · Active</div>
+              </div>
+            </div>
+            <span class="dt-rpp-dot green"></span>
+          </div>
+
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Collaborator -->
+        <div class="sidebar-section-label">COLLABORATOR</div>
+        <div class="dt-rp-collab-card">
+          <div class="dt-rp-collab-header">
+            <div class="avatar" style="width:32px;height:32px;font-size:11px;background:#1E2A3A;color:var(--accent-b);border:1.5px solid rgba(107,191,181,0.3)">JT</div>
+            <div class="dt-rp-collab-info">
+              <div class="dt-rp-collab-name">Jun Tanaka</div>
+              <div class="dt-rp-collab-role">Media Designer</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;margin-left:auto">
+              <span class="status-dot live" style="width:6px;height:6px"></span>
+              <span style="font-family:var(--font-mono);font-size:9px;color:var(--green)">Online</span>
+            </div>
+          </div>
+          <div class="dt-rp-collab-note">
+            <div class="dt-rp-note-label">Assigned to this step</div>
+            <div class="dt-rp-note-body">"Ready to begin visual output mapping. Will start with Tone Intensity and Light Rhythm blocks once workspace opens."</div>
+            <div class="dt-rp-note-time">Now online · Media Designer</div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Block summary -->
+        <div class="sidebar-section-label">BLOCK SUMMARY</div>
+        <div class="dt-rp-summary-card">
+          <div class="dt-rps-title">Available for visualisation</div>
+          <div class="dt-rps-body">6 data blocks have been successfully translated from AI analysis output and are now ready for visualisation and output mapping in the Visual Workspace.</div>
+          <div class="dt-rps-stats">
+            <div class="dt-rps-stat"><span class="dt-rps-val ok">3</span><span class="dt-rps-lbl">Ready</span></div>
+            <div class="dt-rps-stat"><span class="dt-rps-val warn">2</span><span class="dt-rps-lbl">Editable</span></div>
+            <div class="dt-rps-stat"><span class="dt-rps-val">1</span><span class="dt-rps-lbl">Linked</span></div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">BLOCK TYPES</div>
+        <div class="rp-stat-row" style="margin-bottom:0">
+          <div class="rp-stat-item"><span class="rp-stat-label">Numeric</span><span class="rp-stat-val">2</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Spatial</span><span class="rp-stat-val">2</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Temporal</span><span class="rp-stat-val">1</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Visual</span><span class="rp-stat-val">1</span></div>
+        </div>
+      `,
     },
 
     4: {
@@ -1440,6 +1716,355 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(document.getElementById('step-canvas-content') || document.body, { childList: true });
   }
 
+  // ── STEP 3 — Block reveal + wave canvas + interactions ──
+  function runStep3BlockReveal() {
+    const blocks = document.querySelectorAll('.dt-block');
+    const countEl = document.getElementById('dtBlockCount');
+
+    // Stagger each block in
+    blocks.forEach((block, i) => {
+      block.style.cssText += ';opacity:0;transform:translateY(14px) scale(0.98)';
+      setTimeout(() => {
+        block.style.transition = 'opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), border-color 0.2s, box-shadow 0.2s';
+        block.style.opacity   = '1';
+        block.style.transform = 'translateY(0) scale(1)';
+        // update counter
+        if (countEl) countEl.textContent = (i + 1) + ' / ' + blocks.length + ' blocks active';
+      }, 120 + i * 110);
+    });
+
+    // Animate numeric bar fills after reveal
+    setTimeout(() => {
+      document.querySelectorAll('.dt-num-fill, .dt-dl-fill').forEach(el => {
+        const w = el.style.width;
+        el.style.width = '0';
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          el.style.transition = 'width 0.7s cubic-bezier(0.4,0,0.2,1)';
+          el.style.width = w;
+        }));
+      });
+    }, 400);
+
+    // Draw wave canvas for block 03
+    setTimeout(() => drawWaveCanvas(), 500);
+
+    // ── Block detail data ──────────────────────
+    const blockData = [
+      {
+        name:    'Tone Intensity',
+        source:  'Emotional Tone · AI Analysis (p.4, 7, 22)',
+        type:    'Numeric  ·  Range: 0.0 → 1.0  ·  Value: 0.72',
+        origin:  'Derived from frequency and weight of calm/deliberate language patterns across 62-page corpus. Weighted above urgency signals per collaborator annotation.',
+        visual:  ['Ambient light level (0.72 = dim warmth)', 'Material opacity on surface layers', 'Glow intensity on accent planes', 'Fog/haze density in transition zones'],
+        physical:['Ceiling illumination circuit dimming', 'Fritted glass opacity setting', 'LED strip brightness on wayfinding', 'Indirect cove light output level'],
+        color:   'var(--accent-b)',
+      },
+      {
+        name:    'Reflective Behaviour',
+        source:  'Reflective Surface Potential · AI Analysis (9× frequency)',
+        type:    'Spatial  ·  Axes: Absorb / Reflect / Emit',
+        origin:  '"Reflective" is the highest-frequency spatial descriptor in the source document (9 occurrences across 9 distinct pages). Indicates a core material language requirement.',
+        visual:  ['Surface shader: reflection coefficient', 'Environment map contribution weight', 'Screen-space reflection intensity', 'Mirror / polished material assignment'],
+        physical:['Polished stone or terrazzo specification', 'Brushed stainless steel panel', 'Low-iron glass with anti-reflective coating', 'Water feature surface tension design'],
+        color:   'var(--accent-a)',
+      },
+      {
+        name:    'Light Rhythm',
+        source:  'Spatial Rhythm · AI Analysis',
+        type:    'Temporal  ·  Period: 8.4s  ·  Amplitude: 0.28  ·  Curve: Sine',
+        origin:  "Translated from the brand's \"slow and elongated cadence\" — generous negative space as a design gesture. Light modulates at human breath-rate, not mechanical pulse.",
+        visual:  ['Keyframe timing curve for light animations', 'Fade in / fade out duration on transitions', 'Particle system emission interval', 'Video loop cycle length'],
+        physical:['DMX scene transition time (8.4s)', 'HVAC airflow oscillation cycle', 'Water fountain arc timing', 'Kinetic facade panel movement rate'],
+        color:   'var(--accent-d)',
+      },
+      {
+        name:    'Colour Temperature',
+        source:  'Colour Mood · AI Analysis',
+        type:    'Visual  ·  Warm: 2700K–3200K  ·  Cool: 5500K–6000K',
+        origin:  'Warm earth tones (68%) converted to incandescent–halogen Kelvin range for primary volumes. Cool accents (22%) mapped to daylight-equivalent temperature for threshold moments.',
+        visual:  ['White balance target for 3D render engine', 'Emissive material colour shift', 'Post-process colour grading LUT', 'Sky dome colour temperature'],
+        physical:['Warm LED lamp specification (2700K CRI90+)', 'Cool accent lamp (5500K linear)', 'Daylight sensor tuning target', 'Facade cladding reflectance value'],
+        color:   '#E8A740',
+      },
+      {
+        name:    'Surface Response',
+        source:  'Material Feeling · AI Analysis',
+        type:    'Spatial  ·  Tactility: 0.84  ·  Reflectivity: 0.22',
+        origin:  'Brand resists gloss and spectacle. High tactility index (0.84) from recurring material references to linen, stone, brushed timber. Low reflectivity preserves weight without heaviness.',
+        visual:  ['Roughness value in PBR material graph', 'Normal map intensity setting', 'Micro-surface detail texture blend', 'Anisotropic highlight spread'],
+        physical:['Surface finish: fine-honed or brushed', 'Anti-slip texture coefficient spec', 'Tactile paving strip specification', 'Acoustic panel surface texture class'],
+        color:   'var(--green)',
+      },
+      {
+        name:    'Spatial Depth Index',
+        source:  'Spatial Rhythm · AI Analysis',
+        type:    'Numeric  ·  FG: 0.85  ·  MG: 0.55  ·  BG: 0.30',
+        origin:  'Three-layer stratification derived from the "considered stillness" brand character. Depth is expressed through graduated recession, not visual complexity. Each layer has distinct material weight.',
+        visual:  ['Depth-of-field focus plane weighting', 'Layer parallax factor in motion graphics', 'Z-depth fog density curve', 'Render layer compositing opacity'],
+        physical:['Foreground: dense/tactile (reception surfaces)', 'Midground: transitional material (corridors)', 'Background: recessive/quiet (far walls)', 'Layered lighting plan zone budget'],
+        color:   'var(--accent-d)',
+      },
+    ];
+
+    // ── Block click → show detail in right panel ──
+    blocks.forEach((block, i) => {
+      block.addEventListener('click', (e) => {
+        // Don't fire if clicking Edit/Link
+        if (e.target.closest('.dt-act-btn')) return;
+
+        const wasSelected = block.classList.contains('dt-b-selected');
+        blocks.forEach(b => b.classList.remove('dt-b-selected'));
+
+        const rightEl = document.getElementById('right-panel-content');
+        if (!rightEl) return;
+
+        if (wasSelected) {
+          // Deselect — restore default right panel
+          restoreDefaultRightPanel(rightEl);
+        } else {
+          block.classList.add('dt-b-selected');
+          showBlockDetail(rightEl, blockData[i], i);
+        }
+      });
+    });
+
+    // Edit / Link button micro-interactions
+    document.querySelectorAll('.dt-act-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        if (btn.textContent === 'Edit') {
+          btn.textContent = 'Editing…';
+          btn.classList.add('dt-act-editing');
+          setTimeout(() => { btn.textContent = 'Edit'; btn.classList.remove('dt-act-editing'); }, 1800);
+        } else if (btn.textContent === 'Link') {
+          btn.textContent = 'Linked ↗';
+          btn.classList.add('dt-act-linked');
+        }
+      });
+    });
+
+    // View toggle
+    const gridBtn = document.getElementById('dtViewGrid');
+    const listBtn = document.getElementById('dtViewList');
+    const grid    = document.getElementById('dtBlocksGrid');
+    if (gridBtn && listBtn && grid) {
+      gridBtn.addEventListener('click', () => {
+        grid.classList.remove('dt-list-view');
+        gridBtn.classList.add('dt-vt-active');
+        listBtn.classList.remove('dt-vt-active');
+      });
+      listBtn.addEventListener('click', () => {
+        grid.classList.add('dt-list-view');
+        listBtn.classList.add('dt-vt-active');
+        gridBtn.classList.remove('dt-vt-active');
+      });
+    }
+
+    // Open Visual Workspace button
+    const openBtn = document.getElementById('dtOpenBtn');
+    if (openBtn) {
+      openBtn.addEventListener('click', () => {
+        openBtn.disabled = true;
+        openBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin-icon"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="10 8"/></svg> Opening…`;
+        setTimeout(() => {
+          const s4 = document.querySelector('.step[data-step="04"]');
+          if (s4) s4.click();
+        }, 1400);
+      });
+    }
+  }
+
+  function drawWaveCanvas() {
+    const canvas = document.getElementById('dtWaveCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    let phase = 0;
+
+    function frame() {
+      if (!document.getElementById('dtWaveCanvas')) return;
+      ctx.clearRect(0, 0, W, H);
+
+      // Background subtle grid
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x <= W; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+      }
+      ctx.beginPath(); ctx.moveTo(0, H/2); ctx.lineTo(W, H/2); ctx.stroke();
+
+      // Fill below wave
+      ctx.beginPath();
+      ctx.moveTo(0, H/2);
+      for (let x = 0; x <= W; x++) {
+        const y = H/2 + Math.sin((x / W) * Math.PI * 2.5 + phase) * (H * 0.35);
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, 'rgba(140,127,168,0.25)');
+      grad.addColorStop(1, 'rgba(140,127,168,0.03)');
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Wave line
+      ctx.beginPath();
+      for (let x = 0; x <= W; x++) {
+        const y = H/2 + Math.sin((x / W) * Math.PI * 2.5 + phase) * (H * 0.35);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = 'rgba(140,127,168,0.75)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Moving dot at wave crest
+      const dotX = ((phase / (Math.PI * 2)) % 1) * W;
+      const dotY = H/2 + Math.sin((dotX / W) * Math.PI * 2.5 + phase) * (H * 0.35);
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 3, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(200,169,126,0.9)';
+      ctx.fill();
+      // dot glow
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 6, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(200,169,126,0.12)';
+      ctx.fill();
+
+      phase += 0.012;
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  // ── STEP 3 — Block detail panel ─────────────
+  function showBlockDetail(rightEl, data, idx) {
+    // Fade out current content
+    rightEl.style.transition = 'opacity 0.18s ease';
+    rightEl.style.opacity = '0';
+
+    setTimeout(() => {
+      rightEl.innerHTML = buildDetailHTML(data, idx);
+      rightEl.style.opacity = '1';
+
+      // Wire close button
+      const closeBtn = rightEl.querySelector('#dtDetailClose');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          // Deselect all blocks
+          document.querySelectorAll('.dt-block').forEach(b => b.classList.remove('dt-b-selected'));
+          restoreDefaultRightPanel(rightEl);
+        });
+      }
+
+      // Wire apply button
+      const applyBtn = rightEl.querySelector('#dtDetailApply');
+      if (applyBtn) {
+        applyBtn.addEventListener('click', () => {
+          applyBtn.textContent = '✓ Applied to output';
+          applyBtn.style.background = 'rgba(76,175,125,0.15)';
+          applyBtn.style.borderColor = 'rgba(76,175,125,0.4)';
+          applyBtn.style.color = 'var(--green)';
+          applyBtn.disabled = true;
+        });
+      }
+    }, 180);
+  }
+
+  function restoreDefaultRightPanel(rightEl) {
+    rightEl.style.transition = 'opacity 0.18s ease';
+    rightEl.style.opacity = '0';
+    setTimeout(() => {
+      const data = STEPS[3];
+      if (data) rightEl.innerHTML = data.rightHTML();
+      rightEl.style.opacity = '1';
+    }, 180);
+  }
+
+  function buildDetailHTML(d, idx) {
+    const typeColorMap = {
+      'Numeric':  'var(--accent-b)',
+      'Spatial':  'var(--accent-a)',
+      'Temporal': 'var(--accent-d)',
+      'Visual':   '#E8A740',
+    };
+    const typeKey = d.type.split('  ·')[0].trim();
+    const typeColor = typeColorMap[typeKey] || 'var(--text-sec)';
+
+    const visualItems  = d.visual.map(v  => `<div class="dtd-output-item dtd-out-vis"><span class="dtd-out-dot"></span>${v}</div>`).join('');
+    const physicalItems= d.physical.map(p => `<div class="dtd-output-item dtd-out-phy"><span class="dtd-out-dot"></span>${p}</div>`).join('');
+
+    return `
+      <div class="dtd-panel">
+
+        <!-- Header -->
+        <div class="dtd-header">
+          <div class="dtd-header-left">
+            <div class="dtd-block-num">Block ${String(idx + 1).padStart(2,'0')}</div>
+            <div class="dtd-name">${d.name}</div>
+          </div>
+          <button class="dtd-close" id="dtDetailClose" title="Back to summary">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Type + origin badge row -->
+        <div class="dtd-meta-row">
+          <span class="dtd-type-pill" style="color:${typeColor};border-color:${typeColor}40;background:${typeColor}12">${typeKey}</span>
+          <span class="dtd-type-detail">${d.type.replace(typeKey + '  ·  ','')}</span>
+        </div>
+
+        <div class="dtd-divider"></div>
+
+        <!-- Source -->
+        <div class="dtd-section">
+          <div class="dtd-section-label">SOURCE</div>
+          <div class="dtd-source-chip">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="var(--accent-b)" stroke-width="1"/><circle cx="5.5" cy="5.5" r="1.5" fill="var(--accent-b)" opacity="0.5"/></svg>
+            ${d.source}
+          </div>
+        </div>
+
+        <!-- Origin explanation -->
+        <div class="dtd-section">
+          <div class="dtd-section-label">DERIVATION</div>
+          <div class="dtd-origin-text">${d.origin}</div>
+        </div>
+
+        <div class="dtd-divider"></div>
+
+        <!-- Visual outputs -->
+        <div class="dtd-section">
+          <div class="dtd-section-label dtd-label-vis">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><rect x="0.5" y="0.5" width="8" height="8" rx="1" stroke="var(--accent-d)" stroke-width="1"/></svg>
+            VISUAL OUTPUTS
+          </div>
+          <div class="dtd-output-list">
+            ${visualItems}
+          </div>
+        </div>
+
+        <!-- Physical outputs -->
+        <div class="dtd-section">
+          <div class="dtd-section-label dtd-label-phy">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="var(--accent-a)" stroke-width="1"/></svg>
+            PHYSICAL OUTPUTS
+          </div>
+          <div class="dtd-output-list">
+            ${physicalItems}
+          </div>
+        </div>
+
+        <div class="dtd-divider"></div>
+
+        <!-- Apply action -->
+        <button class="dtd-apply-btn" id="dtDetailApply">Apply to Output Mapping</button>
+
+      </div>
+    `;
+  }
+
   function postRender(num) {
     // Step 1 — file parse progress bar + Run AI button
     if (num === 1) {
@@ -1479,6 +2104,11 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => showAnalysisOverlay(), 600);
         });
       }
+    }
+
+    // ── Step 3 — Data blocks reveal ─────────────
+    if (num === 3) {
+      runStep3BlockReveal();
     }
 
     // ── Step 2 — AI scan animation ──────────────
