@@ -5,87 +5,247 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  let currentStep = 3;
+  let currentStep = 1;
 
   // ── STEP DATA ────────────────────────────────
   const STEPS = {
 
     1: {
-      title: 'Import Canvas',
+      title: 'Import Branding Guidance',
       badge: 'Step 01 — Import Branding Guidance',
       canvasHTML: () => `
-        <div class="canvas-section" style="animation-delay:0s">
-          <div class="section-label-float">SOURCE SELECTION</div>
-          <div class="import-drop-zone" id="dropZone">
-            <div class="import-drop-icon">
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-                <rect x="4" y="10" width="28" height="20" rx="2" stroke="var(--accent-a)" stroke-width="1.4"/>
-                <path d="M18 6v14M12 12l6-6 6 6" stroke="var(--accent-a)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- ① DROP ZONE -->
+        <div class="canvas-section ibg-drop-section" style="animation-delay:0s">
+          <div class="section-label-float">UPLOAD SOURCE MATERIAL</div>
+          <div class="ibg-dropzone" id="ibgDropzone">
+            <div class="ibg-dz-inner">
+              <div class="ibg-dz-icon">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                  <rect x="6" y="14" width="32" height="24" rx="3" stroke="var(--accent-a)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                  <path d="M22 8v18" stroke="var(--accent-a)" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M15 15l7-7 7 7" stroke="var(--accent-a)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="22" cy="31" r="2" fill="var(--accent-a)" opacity="0.5"/>
+                </svg>
+              </div>
+              <div class="ibg-dz-title">Drop branding files here</div>
+              <div class="ibg-dz-sub">PDF, Figma, AI, Notion export, or brand token JSON</div>
+              <div class="ibg-dz-actions">
+                <button class="ibg-btn-outline" id="browseBtn">Browse files</button>
+                <span class="ibg-dz-or">or</span>
+                <button class="ibg-btn-outline">Paste URL</button>
+                <button class="ibg-btn-outline">Connect Figma</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ② UPLOADED FILE CARD -->
+        <div class="canvas-section ibg-file-section" style="animation-delay:0.08s">
+          <div class="section-label-float">UPLOADED FILE</div>
+          <div class="ibg-file-card" id="ibgFileCard">
+            <div class="ibg-file-thumb">
+              <div class="ibg-pdf-icon">
+                <svg width="28" height="34" viewBox="0 0 28 34" fill="none">
+                  <path d="M2 2h16l8 8v22a2 2 0 01-2 2H2a2 2 0 01-2-2V4a2 2 0 012-2z" fill="var(--bg-raised)" stroke="var(--border-mid)" stroke-width="1.2"/>
+                  <path d="M18 2v8h8" stroke="var(--border-mid)" stroke-width="1.2" stroke-linejoin="round"/>
+                  <rect x="5" y="16" width="12" height="1.5" rx="0.75" fill="var(--accent-a)" opacity="0.7"/>
+                  <rect x="5" y="20" width="18" height="1.5" rx="0.75" fill="var(--text-muted)"/>
+                  <rect x="5" y="24" width="15" height="1.5" rx="0.75" fill="var(--text-muted)"/>
+                </svg>
+              </div>
+              <div class="ibg-pdf-badge">PDF</div>
+            </div>
+            <div class="ibg-file-meta">
+              <div class="ibg-file-name">Brand Identity Guidance.pdf</div>
+              <div class="ibg-file-details">
+                <span class="ibg-detail-chip">62 pages</span>
+                <span class="ibg-detail-chip">8.3 MB</span>
+                <span class="ibg-detail-chip">Uploaded just now</span>
+              </div>
+              <div class="ibg-file-progress">
+                <div class="ibg-fp-bar"><div class="ibg-fp-fill" id="ibgFpFill"></div></div>
+                <span class="ibg-fp-label" id="ibgFpLabel">Parsing…</span>
+              </div>
+            </div>
+            <div class="ibg-file-actions">
+              <button class="ibg-icon-btn" title="Preview">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M1 7c1.5-3.5 9.5-3.5 12 0-2.5 3.5-10.5 3.5-12 0z" stroke="currentColor" stroke-width="1.3"/></svg>
+              </button>
+              <button class="ibg-icon-btn" title="Remove">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ③ EXTRACTED BRAND CONTENT -->
+        <div class="canvas-section ibg-content-section" style="animation-delay:0.16s">
+          <div class="section-label-float output">EXTRACTED BRAND CONTENT</div>
+
+          <div class="ibg-content-grid">
+
+            <!-- Keywords -->
+            <div class="ibg-content-card ibg-keywords-card">
+              <div class="ibg-cc-header">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 6.5h11M6.5 1v11" stroke="var(--accent-b)" stroke-width="1.4" stroke-linecap="round"/></svg>
+                <span class="ibg-cc-title">Brand Keywords</span>
+                <span class="ibg-cc-source">p.4 — Identity Section</span>
+              </div>
+              <div class="ibg-keyword-chips">
+                <div class="ibg-kw-chip kw-a">reflective</div>
+                <div class="ibg-kw-chip kw-b">immersive</div>
+                <div class="ibg-kw-chip kw-c">futuristic</div>
+                <div class="ibg-kw-chip kw-d">calm</div>
+                <div class="ibg-kw-chip kw-e">precise</div>
+                <div class="ibg-kw-chip kw-f">considered</div>
+              </div>
+            </div>
+
+            <!-- Tone -->
+            <div class="ibg-content-card ibg-tone-card">
+              <div class="ibg-cc-header">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="var(--accent-a)" stroke-width="1.3"/><path d="M4 6.5h5M6.5 4v5" stroke="var(--accent-a)" stroke-width="1.3" stroke-linecap="round"/></svg>
+                <span class="ibg-cc-title">Tone of Voice</span>
+                <span class="ibg-cc-source">p.7 — Voice & Messaging</span>
+              </div>
+              <div class="ibg-tone-statement">
+                <div class="ibg-tone-primary">"Minimal and atmospheric"</div>
+                <div class="ibg-tone-desc">The brand communicates through restraint — silence is as meaningful as language. Avoid urgency; favour considered, deliberate phrasing.</div>
+              </div>
+              <div class="ibg-tone-sliders">
+                <div class="ibg-ts-row">
+                  <span class="ibg-ts-label">Formal</span>
+                  <div class="ibg-ts-track"><div class="ibg-ts-fill" style="width:72%"></div></div>
+                  <span class="ibg-ts-label">Casual</span>
+                </div>
+                <div class="ibg-ts-row">
+                  <span class="ibg-ts-label">Sparse</span>
+                  <div class="ibg-ts-track"><div class="ibg-ts-fill" style="width:80%"></div></div>
+                  <span class="ibg-ts-label">Rich</span>
+                </div>
+                <div class="ibg-ts-row">
+                  <span class="ibg-ts-label">Abstract</span>
+                  <div class="ibg-ts-track"><div class="ibg-ts-fill" style="width:55%"></div></div>
+                  <span class="ibg-ts-label">Concrete</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Brand Goal -->
+            <div class="ibg-content-card ibg-goal-card">
+              <div class="ibg-cc-header">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="var(--accent-d)" stroke-width="1.3"/><circle cx="6.5" cy="6.5" r="2.5" stroke="var(--accent-d)" stroke-width="1.3"/></svg>
+                <span class="ibg-cc-title">Brand Goal</span>
+                <span class="ibg-cc-source">p.2 — Vision Statement</span>
+              </div>
+              <div class="ibg-goal-statement">
+                "Connect identity with spatial experience"
+              </div>
+              <div class="ibg-goal-tags">
+                <span class="ibg-goal-tag">Identity → Space</span>
+                <span class="ibg-goal-tag">Experience Design</span>
+                <span class="ibg-goal-tag">Sensory Coherence</span>
+              </div>
+            </div>
+
+            <!-- Raw excerpt -->
+            <div class="ibg-content-card ibg-excerpt-card">
+              <div class="ibg-cc-header">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2" width="11" height="9" rx="1" stroke="var(--text-sec)" stroke-width="1.2"/><path d="M3.5 5h6M3.5 7.5h4" stroke="var(--text-sec)" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <span class="ibg-cc-title">Source Excerpt</span>
+                <span class="ibg-cc-source">p.4, para 1</span>
+              </div>
+              <div class="ibg-excerpt-text">
+                <span class="ibg-excerpt-quote">"</span>
+                Our spaces are an extension of brand consciousness — not decoration applied to architecture, but identity expressed as atmosphere. Every material choice, every threshold, every moment of stillness or movement is a continuation of who we are.
+                <span class="ibg-excerpt-quote">"</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ④ RUN AI ANALYSIS CTA -->
+        <div class="ibg-cta-row" style="animation:fadeUp 0.4s ease 0.28s both">
+          <div class="ibg-cta-info">
+            <div class="ibg-cta-info-title">Ready to analyse</div>
+            <div class="ibg-cta-info-sub">1 file parsed · 4 primary keywords · tone model loaded</div>
+          </div>
+          <button class="ibg-run-btn" id="runAiBtn">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 5l5 2.5-5 2.5V5z" fill="currentColor"/></svg>
+            Run AI Analysis
+          </button>
+        </div>
+      `,
+
+      rightHTML: () => `
+        <!-- Plugin card -->
+        <div class="sidebar-section-label">ACTIVE PLUGIN</div>
+        <div class="ibg-plugin-card">
+          <div class="ibg-plugin-header">
+            <div class="ibg-plugin-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <rect x="2" y="2" width="14" height="14" rx="2" stroke="var(--accent-b)" stroke-width="1.3"/>
+                <path d="M6 9h6M9 6v6" stroke="var(--accent-b)" stroke-width="1.3" stroke-linecap="round"/>
               </svg>
             </div>
-            <div class="import-drop-title">Drop files or connect a source</div>
-            <div class="import-drop-sub">Supports: .fig, .pdf, .json, .tokens, .svg, Notion URLs</div>
+            <div class="ibg-plugin-name-group">
+              <div class="ibg-plugin-name">Branding Analysis Plugin</div>
+              <div class="ibg-plugin-ver">v1.8.2 — Loaded</div>
+            </div>
+            <div class="plugin-dot green" style="margin-left:auto;flex-shrink:0"></div>
           </div>
-          <div class="source-cards">
-            <div class="source-card">
-              <div class="source-card-icon">🎨</div>
-              <div class="source-card-name">BrandKit_v3.fig</div>
-              <div class="source-card-meta">Figma · 12.4 MB · 3 pages</div>
-              <div class="source-card-tag tag-ok">✓ Synced</div>
-            </div>
-            <div class="source-card">
-              <div class="source-card-icon">📄</div>
-              <div class="source-card-name">Brand_Guidelines.pdf</div>
-              <div class="source-card-meta">PDF · 4.8 MB · 48 pages</div>
-              <div class="source-card-tag tag-ok">✓ Parsed</div>
-            </div>
-            <div class="source-card">
-              <div class="source-card-icon">⚙️</div>
-              <div class="source-card-name">design-tokens.json</div>
-              <div class="source-card-meta">JSON · 84 KB · 142 tokens</div>
-              <div class="source-card-tag tag-warn">⚠ 3 conflicts</div>
-            </div>
+          <div class="ibg-plugin-caps">
+            <div class="ibg-cap-item"><span class="ibg-cap-dot"></span>PDF deep-parse</div>
+            <div class="ibg-cap-item"><span class="ibg-cap-dot"></span>Keyword extraction (NLP)</div>
+            <div class="ibg-cap-item"><span class="ibg-cap-dot"></span>Tone vector mapping</div>
+            <div class="ibg-cap-item"><span class="ibg-cap-dot"></span>Spatial intent scoring</div>
+          </div>
+          <div class="ibg-plugin-footer">
+            <span class="ibg-pf-stat"><span class="ibg-pf-val ok">Ready</span></span>
+            <span class="ibg-pf-stat">Est. run time <span class="ibg-pf-val">~12s</span></span>
           </div>
         </div>
-        <div class="canvas-terminal" style="margin-top:16px;animation:fadeUp 0.4s ease 0.2s both">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span>
-            <span class="terminal-title">Import Log</span>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Collaborator card -->
+        <div class="sidebar-section-label">COLLABORATOR INPUT</div>
+        <div class="ibg-collab-card">
+          <div class="ibg-collab-header">
+            <div class="avatar av1" style="width:32px;height:32px;font-size:11px">MO</div>
+            <div class="ibg-collab-info">
+              <div class="ibg-collab-name">Mira Osei</div>
+              <div class="ibg-collab-role">Branding Designer</div>
+            </div>
+            <div class="ibg-collab-status">
+              <span class="status-dot live" style="width:6px;height:6px"></span>
+              <span style="font-family:var(--font-mono);font-size:9px;color:var(--green)">Online</span>
+            </div>
           </div>
-          <div class="terminal-body">
-            <div class="log-line"><span class="log-time">13:58:02</span><span class="log-tag ok">OK</span> BrandKit_v3.fig — Figma API connected</div>
-            <div class="log-line"><span class="log-time">13:58:04</span><span class="log-tag ok">OK</span> PDF parsed — 48 pages, 12 colour mentions extracted</div>
-            <div class="log-line"><span class="log-time">13:58:06</span><span class="log-tag ok">OK</span> design-tokens.json loaded — 142 tokens indexed</div>
-            <div class="log-line"><span class="log-time">13:58:07</span><span class="log-tag warn">!!</span> Token conflict: --color-neutral-100 defined in 2 sources</div>
-            <div class="log-line"><span class="log-time">13:58:08</span><span class="log-tag info">··</span> Awaiting conflict resolution to proceed to Step 02</div>
+          <div class="ibg-collab-note">
+            <div class="ibg-collab-note-label">Latest annotation</div>
+            <div class="ibg-collab-note-body">"The 'calm' and 'reflective' keywords are load-bearing for the spatial concept — please weight these above 'futuristic' in the AI pass."</div>
+            <div class="ibg-collab-note-time">Posted 6 minutes ago</div>
           </div>
-        </div>`,
-      rightHTML: () => `
-        <div class="sidebar-section-label">SOURCE SUMMARY</div>
+          <div class="ibg-collab-actions">
+            <button class="ibg-btn-sm">Reply</button>
+            <button class="ibg-btn-sm">View thread</button>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Quick stats -->
+        <div class="sidebar-section-label">IMPORT SUMMARY</div>
         <div class="rp-stat-row">
-          <div class="rp-stat-item"><span class="rp-stat-label">Files connected</span><span class="rp-stat-val ok">3</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">Tokens indexed</span><span class="rp-stat-val">142</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">Conflicts</span><span class="rp-stat-val err">3</span></div>
-          <div class="rp-stat-item"><span class="rp-stat-label">PDF pages parsed</span><span class="rp-stat-val">48</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Files uploaded</span><span class="rp-stat-val ok">1</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Pages parsed</span><span class="rp-stat-val">62</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Keywords found</span><span class="rp-stat-val ok">6</span></div>
+          <div class="rp-stat-item"><span class="rp-stat-label">Tone model</span><span class="rp-stat-val ok">Loaded</span></div>
         </div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">READINESS CHECK</div>
-        <div class="rp-checklist">
-          <div class="rp-check-item done"><div class="rp-chk checked">✓</div>Figma source connected</div>
-          <div class="rp-check-item done"><div class="rp-chk checked">✓</div>PDF ingested</div>
-          <div class="rp-check-item done"><div class="rp-chk checked">✓</div>Token file loaded</div>
-          <div class="rp-check-item pending-item"><div class="rp-chk unchecked">○</div>Resolve token conflicts</div>
-          <div class="rp-check-item pending-item"><div class="rp-chk unchecked">○</div>Approve source priority</div>
-        </div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-section-label">FILE PREVIEW</div>
-        <div class="rp-mini-preview">
-          <div style="width:80%;height:60%;display:flex;gap:6px;align-items:flex-end;padding:8px">
-            ${['#C8A97E','#2D2926','#6BBFB5','#E8E0D5','#D95A3C','#8C7FA8']
-              .map((c,i)=>`<div style="flex:1;background:${c};border-radius:3px;height:${50+i*8}%"></div>`).join('')}
-          </div>
-          <div class="rp-mini-label">Palette preview — BrandKit_v3</div>
-        </div>`,
+      `,
     },
 
     2: {
@@ -459,6 +619,50 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function postRender(num) {
+    // Step 1 — file parse progress bar + Run AI button
+    if (num === 1) {
+      const fill  = document.getElementById('ibgFpFill');
+      const label = document.getElementById('ibgFpLabel');
+      if (fill && label) {
+        let pct = 0;
+        const iv = setInterval(() => {
+          pct = Math.min(pct + (2 + Math.random() * 3), 100);
+          fill.style.width = pct + '%';
+          if (pct >= 100) {
+            clearInterval(iv);
+            label.textContent = 'Parsed — ready';
+            label.style.color = 'var(--green)';
+            fill.style.background = 'var(--green)';
+          } else {
+            label.textContent = `Parsing… ${Math.round(pct)}%`;
+          }
+        }, 80);
+      }
+
+      // Drop zone hover feedback
+      const dz = document.getElementById('ibgDropzone');
+      if (dz) {
+        dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('dz-hover'); });
+        dz.addEventListener('dragleave', () => dz.classList.remove('dz-hover'));
+        dz.addEventListener('drop',      e => { e.preventDefault(); dz.classList.remove('dz-hover'); });
+      }
+
+      // Run AI Analysis button
+      const runBtn = document.getElementById('runAiBtn');
+      if (runBtn) {
+        runBtn.addEventListener('click', () => {
+          runBtn.classList.add('running');
+          runBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin-icon"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4" stroke-dasharray="10 8"/></svg> Analysing…`;
+          runBtn.disabled = true;
+          setTimeout(() => {
+            // auto-advance to step 2
+            const s2 = document.querySelector('.step[data-step="02"]');
+            if (s2) s2.click();
+          }, 2200);
+        });
+      }
+    }
+
     // Arrow progress (step 3)
     const ap = document.getElementById('arrowProgress');
     if (ap) setTimeout(() => { ap.style.width = '62%'; }, 100);
@@ -591,6 +795,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── BOOT ─────────────────────────────────────
-  renderStep(3, true);
+  // Set sidebar step 1 as active visually
+  const initStep = document.querySelector('.step[data-step="01"]');
+  if (initStep) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    initStep.classList.add('active');
+  }
+  renderStep(1, true);
 
 });
